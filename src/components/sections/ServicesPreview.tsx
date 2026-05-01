@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
 import { Section } from "../layout/Section";
 import { SectionHeading } from "../ui/SectionHeading";
-import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import { Globe, Target, Megaphone, Search, Settings, ArrowRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
