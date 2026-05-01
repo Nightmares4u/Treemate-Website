@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(npx --no tsc --noEmit)",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(node_modules/.bin/vite build *)",
+      "Bash(node_modules/.bin/vite --port 5173)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)"
+    ]
+  }
+}
