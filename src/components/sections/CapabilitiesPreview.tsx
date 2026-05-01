@@ -3,7 +3,7 @@ import { Container } from "../layout/Container";
 import { Section } from "../layout/Section";
 import { SectionHeading } from "../ui/SectionHeading";
 import { SignalLine } from "../ui/SignalLine";
-import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import { Monitor, Workflow, Brain, Rocket, ArrowUpRight } from "lucide-react";
 
 const capabilities = [

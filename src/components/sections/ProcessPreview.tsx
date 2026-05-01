@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Container } from "../layout/Container";
 import { Section } from "../layout/Section";
-import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import { Search, Hammer, TrendingUp, BarChart2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 

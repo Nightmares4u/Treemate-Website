@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, useSpring } from "framer-motion";
 
 export function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
   const spring = useSpring(0, { stiffness: 300, damping: 40 });
 
   useEffect(() => {
     const update = () => {
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      const pct = scrollTop / (scrollHeight - clientHeight);
-      setProgress(pct);
-      spring.set(pct);
+      spring.set(scrollTop / (scrollHeight - clientHeight));
     };
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
