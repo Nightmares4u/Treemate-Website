@@ -66,7 +66,7 @@ export function Constellation({
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(168,85,247,${a})`;
+            ctx.strokeStyle = `rgba(13,148,136,${a})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -77,7 +77,7 @@ export function Constellation({
       for (const n of nodes) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(168,85,247,${opacity * 0.65})`;
+        ctx.fillStyle = `rgba(13,148,136,${opacity * 0.65})`;
         ctx.fill();
       }
 

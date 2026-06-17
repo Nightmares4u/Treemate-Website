@@ -1,38 +1,91 @@
 import { motion } from "framer-motion";
+import { ArrowRight, Headphones, Users, Cpu, type LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Container } from "../layout/Container";
-import { Section } from "../layout/Section";
-import { Button } from "../ui/Button";
-import { AuroraBackground } from "../ui/AuroraBackground";
+import { LinkButton } from "../ui/LinkButton";
 import { Constellation } from "../ui/Constellation";
-import { Eyebrow } from "../ui/Eyebrow";
 import { blurIn, fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
-import { ArrowRight, ChevronDown, TrendingUp, Target, BarChart3 } from "lucide-react";
 
-function FloatingPanel({
-  children,
-  className,
-  delay = 0,
-  floatY = [-8, 8, -8],
-  duration = 6,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-  floatY?: number[];
-  duration?: number;
-}) {
+const heroChips = [
+  "Live in 48 hours",
+  "24/7 coverage",
+  "US-based · Sheridan, WY",
+];
+
+interface HeroCard {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  to: string;
+  tone: "light" | "teal" | "dark";
+}
+
+const heroCards: HeroCard[] = [
+  {
+    icon: Headphones,
+    title: "BPO Solutions",
+    desc: "Dedicated support & dispatch teams",
+    to: "/bpo-solutions",
+    tone: "light",
+  },
+  {
+    icon: Users,
+    title: "Human Capital",
+    desc: "Vetted talent, managed by us",
+    to: "/human-capital",
+    tone: "teal",
+  },
+  {
+    icon: Cpu,
+    title: "AI & Software",
+    desc: "Automation that pays for itself",
+    to: "/ai-services",
+    tone: "dark",
+  },
+];
+
+function FloatCard({ card, delay, float }: { card: HeroCard; delay: number; float: number }) {
+  const Icon = card.icon;
+  const styles = {
+    light: "bg-white border-slate-100",
+    teal: "bg-teal border-teal-light/40",
+    dark: "bg-navy-light border-white/10",
+  }[card.tone];
+  const titleColor = card.tone === "light" ? "text-navy" : "text-white";
+  const descColor = card.tone === "light" ? "text-slate-500" : "text-white/80";
+  const iconWrap =
+    card.tone === "light"
+      ? "bg-teal/10 border-teal/20 text-teal"
+      : "bg-white/15 border-white/20 text-white";
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28, scale: 0.94 }}
+      initial={{ opacity: 0, y: 24, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1.1, delay, ease: easeOutExpo }}
-      className={className}
+      transition={{ duration: 0.9, delay, ease: easeOutExpo }}
     >
       <motion.div
-        animate={{ y: floatY }}
-        transition={{ duration, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [float, -float, float] }}
+        transition={{ duration: 6 + delay, repeat: Infinity, ease: "easeInOut" }}
       >
-        {children}
+        <Link
+          to={card.to}
+          className={`group flex items-center gap-4 rounded-2xl border p-4 md:p-5 shadow-xl transition-transform duration-300 hover:-translate-y-0.5 ${styles}`}
+        >
+          <span className={`w-11 h-11 shrink-0 rounded-xl border flex items-center justify-center ${iconWrap}`}>
+            <Icon className="w-5 h-5" strokeWidth={2.2} />
+          </span>
+          <span className="min-w-0">
+            <span className={`block font-heading font-bold text-base ${titleColor}`}>{card.title}</span>
+            <span className={`block text-sm font-medium truncate ${descColor}`}>{card.desc}</span>
+          </span>
+          <ArrowRight
+            className={`ml-auto w-4 h-4 shrink-0 transition-transform group-hover:translate-x-1 ${
+              card.tone === "light" ? "text-teal" : "text-white"
+            }`}
+            strokeWidth={2.2}
+          />
+        </Link>
       </motion.div>
     </motion.div>
   );
@@ -40,266 +93,128 @@ function FloatingPanel({
 
 export function Hero() {
   return (
-    <Section className="relative min-h-[100svh] flex items-center pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
-      {/* Layer 0: deep background */}
-      <div className="absolute inset-0 -z-30 bg-base" />
-
-      {/* Layer 1: constellation signal nodes */}
-      <div className="absolute inset-0 -z-20">
-        <Constellation nodeCount={22} opacity={0.55} />
-      </div>
-
-      {/* Layer 2: aurora light source */}
-      <AuroraBackground variant="hero" className="-z-10" />
-
-      {/* Layer 3: subtle dot grid — masked to top-center */}
-      <div
-        className="absolute inset-0 -z-10 bg-dots opacity-40"
-        style={{
-          maskImage: "radial-gradient(ellipse 70% 50% at 50% 0%, #000 60%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(ellipse 70% 50% at 50% 0%, #000 60%, transparent 100%)",
-        }}
-      />
-
+    <section className="relative min-h-[100svh] flex items-center pt-28 pb-16 lg:pt-32 lg:pb-24 overflow-hidden bg-base">
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-4 items-center">
-
-          {/* ═══ LEFT: Copy ═══ */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          {/* LEFT: Copy */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-start gap-6 lg:col-span-6 xl:col-span-5"
+            className="flex flex-col items-start gap-6 lg:col-span-6"
           >
-            {/* Live status eyebrow */}
-            <motion.div variants={fadeIn}>
-              <Eyebrow variant="live">Premium digital growth systems</Eyebrow>
-            </motion.div>
-
-            {/* Display headline */}
-            <motion.h1
-              variants={blurIn}
-              className="font-heading font-bold text-text-primary tracking-[-0.03em] leading-[0.97]"
-              style={{ fontSize: "clamp(3rem, 6.5vw, 5.5rem)" }}
-            >
-              Growth,{" "}
-              <span
-                className="text-transparent bg-clip-text bg-[length:200%_auto] animate-shimmer"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(120deg, #C4B5FD 0%, #A855F7 30%, #7DFF4D 70%, #C4B5FD 100%)",
-                }}
-              >
-                engineered.
-              </span>
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p
-              variants={fadeIn}
-              className="text-base md:text-lg text-text-secondary leading-relaxed max-w-[38ch] font-light text-pretty"
-            >
-              Premium websites, lead generation systems, and growth infrastructure
-              for service businesses across North America.
-            </motion.p>
-
-            {/* CTA cluster */}
-            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-3 pt-1">
-              <Button size="lg" magnetic>
-                Get Your Growth System
-                <ArrowRight className="w-4 h-4" strokeWidth={2} />
-              </Button>
-              <Button variant="ghost" size="lg" className="text-text-secondary hover:text-text-primary">
-                See How It Works
-                <ChevronDown className="w-4 h-4" strokeWidth={1.75} />
-              </Button>
-            </motion.div>
-
-            {/* Stats row */}
             <motion.div
               variants={fadeIn}
-              className="flex items-center gap-7 pt-5 mt-1"
+              className="inline-flex items-center gap-2.5 rounded-full bg-white border border-slate-200 px-3.5 py-1.5 shadow-sm"
             >
-              <div className="h-px flex-1 bg-gradient-to-r from-border/0 via-border to-border/0 max-w-[1px] hidden" />
-              {[
-                { value: "3×", label: "Avg. Lead Increase" },
-                { value: "50+", label: "Businesses Served" },
-                { value: "<24h", label: "Launch Ready" },
-              ].map((stat, i) => (
-                <div key={i} className="flex items-stretch gap-7">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[1.75rem] font-heading font-bold text-text-primary leading-none tracking-[-0.03em]">
-                      {stat.value}
-                    </span>
-                    <span className="text-[11px] text-text-muted leading-none tracking-wide whitespace-nowrap">
-                      {stat.label}
-                    </span>
-                  </div>
-                  {i < 2 && (
-                    <div className="w-px self-stretch bg-border/60 shrink-0" />
-                  )}
+              <span className="relative flex h-2 w-2">
+                <span className="animate-signal-pulse absolute h-full w-full rounded-full bg-teal opacity-75" />
+                <span className="relative h-2 w-2 rounded-full bg-teal" />
+              </span>
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-navy">
+                US-based · Tech-enabled outsourcing
+              </span>
+            </motion.div>
+
+            <motion.h1
+              variants={blurIn}
+              className="font-heading font-bold text-navy tracking-tight leading-[1.05]"
+              style={{ fontSize: "clamp(2.75rem, 6vw, 4.5rem)" }}
+            >
+              People-Powered.
+              <br className="hidden md:block" />{" "}
+              <span className="text-teal">Tech-Enabled.</span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeIn}
+              className="text-base md:text-lg text-slate-600 leading-relaxed max-w-[46ch] font-medium text-pretty"
+            >
+              Treemate runs your support, dispatch, and back-office operations with dedicated teams —
+              and builds the software that makes them faster. One accountable partner for people,
+              process, and the technology that connects them.
+            </motion.p>
+
+            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-4 pt-2">
+              <LinkButton to="/bpo-solutions" size="lg">
+                Explore Solutions
+                <ArrowRight className="w-4 h-4" strokeWidth={2.2} />
+              </LinkButton>
+              <LinkButton to="/contact" variant="outline" size="lg">
+                Book a Call
+              </LinkButton>
+            </motion.div>
+
+            <motion.div variants={fadeIn} className="flex items-center gap-2.5 pt-4 flex-wrap">
+              {heroChips.map((chip) => (
+                <div
+                  key={chip}
+                  className="px-3.5 py-2 bg-white border border-slate-200 rounded-full shadow-sm"
+                >
+                  <span className="text-[13px] font-semibold text-navy">{chip}</span>
                 </div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* ═══ RIGHT: Visual Composition ═══ */}
-          <div className="relative lg:col-span-6 xl:col-span-7 h-[440px] md:h-[520px] lg:h-[600px]">
+          {/* RIGHT: Visual */}
+          <div className="relative lg:col-span-6">
+            <div className="relative rounded-[2rem] bg-navy overflow-hidden shadow-2xl p-6 md:p-8">
+              <div className="absolute inset-0 z-0 opacity-70">
+                <Constellation nodeCount={30} opacity={0.6} />
+              </div>
+              <div className="absolute -top-1/4 -right-1/4 w-[420px] h-[420px] rounded-full bg-teal blur-[120px] opacity-25 pointer-events-none" />
 
-            {/* Single refined orbital */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="absolute w-[360px] h-[360px] lg:w-[460px] lg:h-[460px] rounded-full border border-primary/[0.07] animate-spin-slower" />
-              <div className="absolute w-[240px] h-[240px] lg:w-[300px] lg:h-[300px] rounded-full border border-accent-green/[0.05] animate-spin-reverse" />
-              {/* Core signal dot */}
-              <motion.div
-                animate={{
-                  boxShadow: [
-                    "0 0 0 0 rgba(124,58,237,0)",
-                    "0 0 0 12px rgba(124,58,237,0.12)",
-                    "0 0 0 0 rgba(124,58,237,0)",
-                  ],
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
-                className="w-2.5 h-2.5 rounded-full bg-primary/60"
-              />
-            </div>
-
-            {/* ── Panel 1: Lead Engine (hero panel) ── */}
-            <FloatingPanel
-              className="absolute top-[10%] left-[5%] lg:left-[8%] w-[280px] md:w-[310px] z-30"
-              delay={0.4}
-              floatY={[-10, 8, -10]}
-              duration={7}
-            >
-              <div className="glass-elevated rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.45)]">
-                <div className="flex items-center justify-between mb-5">
+              <div className="relative z-10 flex flex-col gap-5">
+                {/* live status bar */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: easeOutExpo }}
+                  className="flex items-center justify-between rounded-xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm"
+                >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-primary/15 border border-primary/25 flex items-center justify-center">
-                      <Target className="w-3.5 h-3.5 text-primary-accent" strokeWidth={1.75} />
-                    </div>
-                    <span className="font-heading text-sm text-text-primary font-semibold">Lead Engine</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent-green/10 border border-accent-green/25">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-signal-pulse absolute h-full w-full rounded-full bg-accent-green opacity-70" />
-                      <span className="relative h-1.5 w-1.5 rounded-full bg-accent-green" />
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-signal-pulse absolute h-full w-full rounded-full bg-teal-light opacity-75" />
+                      <span className="relative h-2 w-2 rounded-full bg-teal-light" />
                     </span>
-                    <span className="text-[10px] font-mono text-accent-green">LIVE</span>
+                    <span className="text-xs font-semibold text-white">Operations live</span>
                   </div>
+                  <span className="text-xs font-medium text-slate-400">24/7 · all time zones</span>
+                </motion.div>
+
+                {/* stacked service cards — evenly spaced, no overlap */}
+                <div className="flex flex-col gap-4">
+                  {heroCards.map((card, i) => (
+                    <FloatCard key={card.title} card={card} delay={0.3 + i * 0.18} float={4 + i} />
+                  ))}
                 </div>
 
-                <div className="space-y-3.5">
+                {/* mini stats footer */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.9 }}
+                  className="grid grid-cols-3 gap-3 rounded-xl bg-white/5 border border-white/10 px-4 py-4 backdrop-blur-sm"
+                >
                   {[
-                    { label: "Conversion Rate", value: "12.4%", pct: "87%", color: "from-primary to-primary-accent" },
-                    { label: "Calls Booked", value: "47 / wk", pct: "94%", color: "from-accent-secondary to-accent-green" },
-                  ].map((row) => (
-                    <div key={row.label}>
-                      <div className="flex justify-between items-center text-xs mb-1.5">
-                        <span className="text-text-secondary">{row.label}</span>
-                        <span className="text-text-primary font-mono">{row.value}</span>
-                      </div>
-                      <div className="w-full h-[3px] bg-surface-light rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: row.pct }}
-                          transition={{ delay: 1.2, duration: 1, ease: easeOutExpo }}
-                          className={`h-full bg-gradient-to-r ${row.color} rounded-full`}
-                        />
+                    { v: "48 hrs", l: "to launch" },
+                    { v: "99.9%", l: "uptime target" },
+                    { v: "3", l: "service lines" },
+                  ].map((s) => (
+                    <div key={s.l} className="text-center">
+                      <div className="font-heading font-bold text-xl text-teal-light">{s.v}</div>
+                      <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
+                        {s.l}
                       </div>
                     </div>
                   ))}
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-white/[0.04] font-mono text-[10px] space-y-1.5 text-text-muted">
-                  <div>
-                    <span className="text-primary-accent/80">leads</span>
-                    {".captured "}
-                    <span className="text-text-secondary">312</span>
-                    <span className="text-text-muted/60"> this month</span>
-                  </div>
-                  <div>
-                    <span className="text-accent-secondary/80">funnel</span>
-                    {".status "}
-                    <span className="text-accent-green">● active</span>
-                  </div>
-                </div>
+                </motion.div>
               </div>
-            </FloatingPanel>
-
-            {/* ── Panel 2: Analytics ── */}
-            <FloatingPanel
-              className="absolute bottom-[10%] right-[3%] lg:right-[8%] w-[210px] z-30"
-              delay={0.8}
-              floatY={[-6, 10, -6]}
-              duration={6.5}
-            >
-              <div className="glass-elevated rounded-xl p-4 shadow-2xl">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <BarChart3 className="w-3.5 h-3.5 text-accent-green" strokeWidth={1.75} />
-                    <span className="text-[10px] font-heading font-medium text-text-secondary uppercase tracking-widest">
-                      Analytics
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-text-muted font-mono">30d</span>
-                </div>
-                {/* Mini bar chart */}
-                <div className="flex items-end gap-0.5 h-10 mb-2.5">
-                  {[35, 55, 40, 72, 55, 88, 65, 80, 92, 70, 84, 95].map((h, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ scaleY: 0 }}
-                      animate={{ scaleY: 1 }}
-                      transition={{ delay: 1.4 + i * 0.04, duration: 0.45, ease: easeOutExpo }}
-                      style={{ height: `${h}%` }}
-                      className="flex-1 rounded-[2px] bg-gradient-to-t from-accent-secondary/60 to-accent-green/90 origin-bottom"
-                    />
-                  ))}
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-text-muted">Leads Generated</span>
-                  <span className="text-[11px] text-text-primary font-mono font-medium">+312</span>
-                </div>
-              </div>
-            </FloatingPanel>
-
-            {/* ── Panel 3: Pipeline status pill ── */}
-            <FloatingPanel
-              className="absolute top-[8%] right-[8%] lg:right-[14%] z-20"
-              delay={1.1}
-              floatY={[5, -8, 5]}
-              duration={5}
-            >
-              <div className="glass rounded-full px-4 py-2.5 shadow-xl flex items-center gap-2.5">
-                <TrendingUp className="w-3.5 h-3.5 text-primary-accent flex-shrink-0" strokeWidth={1.75} />
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-mono text-text-secondary leading-none">PIPELINE</span>
-                  <span className="text-xs font-heading text-text-primary font-medium leading-none mt-0.5">
-                    Capture → Convert → Close
-                  </span>
-                </div>
-              </div>
-            </FloatingPanel>
-
+            </div>
           </div>
         </div>
-
-        {/* Scroll cue */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.7 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
-        >
-          <span className="text-[10px] font-mono text-text-muted tracking-[0.2em] uppercase">Scroll</span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-3.5 h-3.5 text-text-muted/60" strokeWidth={1.5} />
-          </motion.div>
-        </motion.div>
       </Container>
-    </Section>
+    </section>
   );
 }
