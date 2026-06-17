@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Container } from "../components/layout/Container";
 import { ImageBand } from "../components/sections/ImageBand";
+import { SaasTree } from "../components/sections/SaasTree";
 import { TalentNetwork } from "../components/sections/TalentNetwork";
 import { PageHero } from "../components/sections/PageHero";
 import { CTASection } from "../components/sections/CTASection";
@@ -59,6 +60,7 @@ export function ServicePage({ slug }: { slug: string }) {
         </Container>
       </section>
 
+      {slug === "ai-services" && <SaasTree />}
       {slug === "human-capital" && <TalentNetwork />}
 
       {/* Process */}
