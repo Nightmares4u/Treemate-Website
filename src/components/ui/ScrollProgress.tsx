@@ -25,7 +25,8 @@ export function ScrollProgress() {
       className="fixed top-0 left-0 right-0 h-[3px] z-[100] origin-left pointer-events-none"
       style={{
         scaleX: spring,
-        background: "linear-gradient(90deg, #0D9488 0%, #14B8A6 100%)",
+        // Match the logo teal exactly (the "mate" wordmark / head dot).
+        background: "#0D9488",
       }}
       aria-hidden="true"
     />
