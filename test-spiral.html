@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    background-color: #F5F3EC;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+  }
+</style>
+</head>
+<body>
+  <!-- Left ripple/spiral -->
+  <svg style="position: absolute; top: 10%; left: -100px; width: 600px; height: 800px; opacity: 0.1;" viewBox="0 0 600 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 100 0 C 400 200, 500 500, 100 800" stroke="#0D9488" stroke-width="1.5" />
+    <path d="M 80 0 C 420 220, 540 520, 80 800" stroke="#0D9488" stroke-width="1.5" />
+    <path d="M 60 0 C 440 240, 580 540, 60 800" stroke="#0D9488" stroke-width="1.5" />
+    <path d="M 40 0 C 460 260, 620 560, 40 800" stroke="#0D9488" stroke-width="1.5" />
+    <path d="M 20 0 C 480 280, 660 580, 20 800" stroke="#0D9488" stroke-width="1.5" />
+    
+    <!-- loop back -->
+    <path d="M 100 800 C -200 500, 100 200, 100 0" stroke="#0D9488" stroke-width="1.5" />
+  </svg>
+</body>
+</html>

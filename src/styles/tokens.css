@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --color-navy: #0a1628;
+    --color-teal: #0d9488;
+    --color-mint: #b8f0dc;
+    --color-cream: #f5f3ec;
+  }
+  html {
+    background-color: var(--color-cream);
+    color: var(--color-navy);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply font-body min-h-screen;
+    background-color: var(--color-cream);
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADx+r92AAAACHRSTlMzMzMzMzMzM/6T10EAAACSSURBVDjLpZTBDoMwCEVB2qR/rP//z27bNmkSRXh8yF2M967XWkR8I6I+ERFf+BMR9Y2I+EREfCEiPhMRn4mIT0TEFyLiKxHxBxHxjYj4RER8ISLiCxHxNxHxiYj4TER8IiK+EBE3IuI/RMRnIuITERF/iIgvRMRXRETcIiK+ExEfiYgvRER8ISK+EhFfERHxN/gC/g/9g9Q+C24AAAAASUVORK5CYII=");
+    background-repeat: repeat;
+    opacity: 0.7;
+    mix-blend-mode: color-burn;
+    filter: contrast(180%) brightness(70%);
+  }
+  ::selection {
+    background-color: var(--color-teal);
+    color: white;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
+}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(10, 22, 40, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.03) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.05) 1px, transparent 1px);
+    background-size:
+      72px 72px,
+      72px 72px,
+      116px 116px,
+      116px 116px,
+      168px 168px,
+      168px 168px;
+  }
+  .bg-grid-dense {
+    background-image:
+      linear-gradient(to right, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.06) 1px, transparent 1px);
+    background-size:
+      48px 48px,
+      48px 48px,
+      76px 76px,
+      76px 76px,
+      112px 112px,
+      112px 112px;
+  }
+}

@@ -1,0 +1,19 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+.vercel
+.vite
+
+# Internal documents — not for the repository
+*.pdf
+*.docx
+
+# Source image originals (optimized copies live in src/assets/office)
+/Treemateoffice1.png
+/executiveoffice2.png
+/Kpmgpic.png
+/careerfair.png
+/WhatsApp*.jpeg

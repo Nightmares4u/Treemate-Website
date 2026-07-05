@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(npx --no tsc --noEmit)",
+      "Bash(node_modules/.bin/tsc --noEmit)",
+      "Bash(node_modules/.bin/vite build *)",
+      "Bash(node_modules/.bin/vite --port 5173)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(cd *)",
+      "Bash(sips -g pixelWidth -g pixelHeight Careerfair.png careerfair.png CareerFair.png)",
+      "Bash(sips -s format jpeg -s formatOptions 82 --resampleWidth 1400 careerfair.png --out src/assets/office/career-fair.jpg)",
+      "Bash(awk '{print $9, $5\" bytes\"}')",
+      "Bash(git restore *)",
+      "Bash(git commit *)",
+      "Bash(ls /Users/user/Downloads/Treemate-Website-main/design-reference/ 2>/dev/null || find /Users/user/Downloads -maxdepth 2 -iname '*design-reference*' -o -maxdepth 2 -iname '*blueprint*' 2>/dev/null)",
+      "Bash(python3 -c ' *)",
+      "Bash(grep -E '^\\(tsc|vite\\)$')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(cp /Users/user/Downloads/hero-image.png /Users/user/Downloads/Treemate-Website-main/src/assets/illustrations/hero-meeting.png && ls -la /Users/user/Downloads/Treemate-Website-main/src/assets/illustrations/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)"
+    ]
+  }
+}
