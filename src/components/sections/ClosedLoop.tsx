@@ -114,7 +114,7 @@ export function ClosedLoop() {
                     <span className="u-icon w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center">
                       <Icon className="w-6 h-6" strokeWidth={2} />
                     </span>
-                    <span className="font-heading font-semibold text-4xl text-ink/10 leading-none transition-colors duration-300 group-hover:text-teal/30">
+                    <span className="font-heading font-semibold text-4xl text-ink/10 leading-none transition-colors duration-300 group-hover:text-teal/60">
                       {i + 1}
                     </span>
                   </div>

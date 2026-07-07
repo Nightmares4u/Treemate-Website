@@ -86,7 +86,7 @@ export function ServicePage({ slug }: { slug: string }) {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="group u-card relative rounded-2xl border border-ink/10 bg-surface-2 p-6"
               >
-                <span className="font-heading font-bold text-5xl text-teal/25 leading-none transition-colors duration-300 group-hover:text-teal/50">
+                <span className="font-heading font-bold text-5xl text-teal/25 leading-none transition-colors duration-300 group-hover:text-teal/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="font-heading font-bold text-lg text-ink mt-4 mb-2">
