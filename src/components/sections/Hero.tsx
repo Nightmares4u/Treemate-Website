@@ -11,7 +11,7 @@ import heroMeeting from "../../assets/illustrations/hero-meeting.png";
 import bigTreeLogo from "../../assets/logo-treemate.png";
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#F8F9FA] min-h-[100svh] flex flex-col pt-20 lg:pt-24 pb-4 lg:pb-8">
+    <section className="relative overflow-hidden bg-page min-h-[100svh] flex flex-col pt-20 lg:pt-24 pb-4 lg:pb-8">
       {}
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-100" />
       {}
@@ -19,7 +19,7 @@ export function Hero() {
       {}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[10%] left-[15%] w-[800px] h-[700px] rounded-[100%] bg-[#A7F3D0]/50 blur-[130px]"
+        className="pointer-events-none absolute top-[10%] left-[15%] w-[800px] h-[700px] rounded-[100%] bg-mint/50 blur-[130px]"
       />
       <Container className="relative z-10 w-full flex-1 flex flex-col justify-between h-full gap-4 lg:gap-6">
         <motion.div
@@ -33,10 +33,9 @@ export function Hero() {
             {}
             <motion.h1
               variants={blurIn}
-              className="font-heading font-normal tracking-tight leading-[1.1]"
+              className="font-heading font-normal tracking-tight leading-[1.1] text-ink"
               style={{
                 fontSize: "clamp(3rem, 6.5vw, 6.5rem)",
-                color: "#0A1628",
               }}
             >
               Empowering <br />
@@ -66,8 +65,7 @@ export function Hero() {
           {}
           <motion.p
             variants={fadeIn}
-            className="mt-6 max-w-[800px] text-sm md:text-base leading-relaxed font-mono tracking-tight"
-            style={{ color: "#0A1628" }}
+            className="mt-6 max-w-[760px] text-base md:text-lg leading-relaxed text-ink/75 text-pretty"
           >
             From startups to multinational corporations, we deliver scalable,
             reliable, and cost-effective services to address your unique
@@ -97,10 +95,7 @@ export function Hero() {
           {}
           <div className="lg:col-span-5 xl:col-start-8 flex flex-col gap-6 lg:ml-8 xl:ml-12 self-center relative -top-7 lg:-top-10">
             {}
-            <p
-              className="text-sm md:text-base leading-relaxed font-mono tracking-tight max-w-[420px]"
-              style={{ color: "#0A1628" }}
-            >
+            <p className="text-base md:text-lg leading-relaxed text-ink/75 max-w-[420px] text-pretty">
               Transform your business with expert engineering, seamless
               migrations, and innovative digital solutions, no matter where you
               are.
@@ -110,18 +105,14 @@ export function Hero() {
               <LinkButton
                 to="/contact"
                 size="md"
-                className="bg-[#1C2C3F] text-white hover:bg-[#1C2C3F]/90 rounded-none px-6 py-3 font-heading font-medium tracking-wide flex items-center"
+                className="bg-navy text-white hover:bg-navy-light rounded-xl px-6 py-3 font-heading font-medium tracking-wide flex items-center"
               >
                 Book A Meeting
                 <ChevronsRight className="w-5 h-5 ml-1" strokeWidth={2} />
               </LinkButton>
               <a
                 href="#case-studies"
-                className="font-heading font-bold text-sm underline underline-offset-4 decoration-2 hover:decoration-[#0A1628] transition-all"
-                style={{
-                  color: "#0A1628",
-                  textDecorationColor: "rgba(10, 22, 40, 0.8)",
-                }}
+                className="font-heading font-bold text-sm text-ink underline underline-offset-4 decoration-2 decoration-ink/50 hover:decoration-ink transition-all"
               >
                 View Case Studies
               </a>

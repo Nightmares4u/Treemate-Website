@@ -31,7 +31,7 @@ const pillars: Pillar[] = [
 ];
 export function TalentNetwork() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-surface">
       <Container>
         <SectionTitle
           eyebrow="Talent Network"
@@ -55,7 +55,7 @@ export function TalentNetwork() {
                 className="h-full w-full object-cover"
               />
             </div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/5 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/25 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6 md:p-8">
               <p className="font-heading font-semibold text-white text-lg drop-shadow">
                 Recruiting on the ground — US &amp; Pakistan
@@ -79,10 +79,10 @@ export function TalentNetwork() {
                   <pillar.icon className="w-6 h-6 text-teal" strokeWidth={2} />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-navy mb-1.5">
+                  <h3 className="font-heading font-bold text-lg text-ink mb-1.5">
                     {pillar.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-ink/70 leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>

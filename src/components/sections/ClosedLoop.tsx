@@ -115,17 +115,17 @@ export function ClosedLoop() {
                     <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center">
                       <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
                     </span>
-                    <span className="font-heading font-semibold text-4xl text-navy/10 leading-none">
+                    <span className="font-heading font-semibold text-4xl text-ink/10 leading-none">
                       {i + 1}
                     </span>
                   </div>
                   <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                     {step.pillar}
                   </span>
-                  <h3 className="font-heading font-bold text-lg text-navy leading-snug mb-2">
+                  <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-navy/70 leading-relaxed">
+                  <p className="text-sm text-ink/70 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -154,7 +154,7 @@ export function ClosedLoop() {
           <span className="w-12 h-12 shrink-0 rounded-xl bg-teal flex items-center justify-center shadow-lg shadow-teal/20">
             <RefreshCcw className="w-6 h-6 text-white" strokeWidth={2} />
           </span>
-          <p className="text-navy leading-relaxed">
+          <p className="text-ink leading-relaxed">
             <span className="font-heading font-bold">And the loop closes.</span>{" "}
             Every layer runs in software we built and systems we operate — so
             your customers are served, your agents are managed, and nothing

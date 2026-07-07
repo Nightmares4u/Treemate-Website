@@ -34,7 +34,7 @@ const faqs: FaqItem[] = [
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       <BackgroundSpirals side="left" opacity={0.14} />
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-12 gap-8 mb-14 md:mb-20 items-end">
@@ -59,10 +59,10 @@ export function FAQ() {
               <div
                 key={faq.question}
                 className={cn(
-                  "overflow-hidden transition-colors border-b",
+                  "group overflow-hidden transition-colors border-b",
                   isOpen
                     ? "border-teal/40"
-                    : "border-navy/10 hover:border-navy/25",
+                    : "border-ink/10 hover:border-ink/25",
                 )}
               >
                 <button
@@ -71,15 +71,18 @@ export function FAQ() {
                   aria-expanded={isOpen}
                   className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 md:px-7 md:py-6"
                 >
-                  <span className="font-heading font-semibold text-base md:text-lg text-navy">
+                  <span className={cn(
+                    "font-heading font-semibold text-base md:text-lg transition-colors duration-200",
+                    isOpen ? "text-teal" : "text-ink group-hover:text-teal",
+                  )}>
                     {faq.question}
                   </span>
                   <span
                     className={cn(
-                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-all",
+                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center border transition-all duration-300",
                       isOpen
-                        ? "bg-teal text-white rotate-45"
-                        : "bg-cream text-navy",
+                        ? "bg-teal text-white border-teal rotate-45"
+                        : "bg-surface text-ink border-ink/10 group-hover:border-teal/40 group-hover:text-teal",
                     )}
                   >
                     <Plus className="w-4 h-4" strokeWidth={2.4} />
@@ -95,7 +98,7 @@ export function FAQ() {
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="px-6 pb-6 md:px-7 md:pb-7 text-navy/70 leading-relaxed">
+                      <p className="px-6 pb-6 md:px-7 md:pb-7 text-ink/70 leading-relaxed">
                         {faq.answer}
                       </p>
                     </motion.div>

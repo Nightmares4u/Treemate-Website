@@ -36,7 +36,7 @@ const scenarios: Scenario[] = [
 ];
 export function LoopInAction() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
       {}
       <MarkerAccent
         variant="star"
@@ -85,21 +85,21 @@ export function LoopInAction() {
               <motion.article
                 key={s.vertical}
                 variants={fadeIn}
-                className="flex flex-col p-6 transition-all duration-300"
+                className="group u-card flex flex-col rounded-2xl border border-ink/10 bg-surface p-6"
               >
-                <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center mb-5">
-                  <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                <span className="u-icon w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center mb-5">
+                  <Icon className="w-6 h-6" strokeWidth={2} />
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                   {s.vertical}
                 </span>
-                <h3 className="font-heading font-bold text-lg text-navy leading-snug mb-3">
+                <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-3">
                   {s.headline}
                 </h3>
-                <p className="text-sm text-navy/70 leading-relaxed mb-6 flex-1">
+                <p className="text-sm text-ink/70 leading-relaxed mb-6 flex-1">
                   {s.body}
                 </p>
-                <p className="pt-5 border-t border-navy/10 text-xs font-semibold text-navy/80">
+                <p className="pt-5 border-t border-ink/10 text-xs font-semibold text-ink/80">
                   {s.loopSummary}
                 </p>
               </motion.article>

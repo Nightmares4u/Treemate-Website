@@ -32,7 +32,7 @@ export function ServicePage({ slug }: { slug: string }) {
         />
       )}
       {}
-      <section className="py-24 bg-base">
+      <section className="py-24 bg-page">
         <Container>
           <SectionTitle
             eyebrow="What we deliver"
@@ -50,15 +50,15 @@ export function ServicePage({ slug }: { slug: string }) {
               <motion.div
                 key={cap.title}
                 variants={fadeIn}
-                className="group flex flex-col p-2 transition-all duration-300"
+                className="group u-card flex flex-col rounded-2xl border border-ink/10 bg-surface p-7"
               >
-                <div className="w-12 h-12 flex items-center justify-center mb-6">
-                  <cap.icon className="w-8 h-8 text-teal" strokeWidth={1.8} />
+                <div className="u-icon w-12 h-12 flex items-center justify-center mb-6 rounded-xl border border-teal/20 bg-teal/10 text-teal">
+                  <cap.icon className="w-6 h-6" strokeWidth={1.9} />
                 </div>
-                <h3 className="font-heading font-bold text-xl text-navy mb-3">
+                <h3 className="font-heading font-bold text-xl text-ink mb-3">
                   {cap.title}
                 </h3>
-                <p className="text-navy/70 leading-relaxed">
+                <p className="text-ink/70 leading-relaxed">
                   {cap.description}
                 </p>
               </motion.div>
@@ -69,7 +69,7 @@ export function ServicePage({ slug }: { slug: string }) {
       {slug === "software-ai" && <SaasTree />}
       {slug === "hr-solutions" && <TalentNetwork />}
       {}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-surface">
         <Container>
           <SectionTitle
             eyebrow="How it works"
@@ -81,17 +81,18 @@ export function ServicePage({ slug }: { slug: string }) {
               <motion.div
                 key={step.title}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="relative p-2"
+                className="group u-card relative rounded-2xl border border-ink/10 bg-surface-2 p-6"
               >
-                <span className="font-heading font-bold text-5xl text-teal/25 leading-none">
+                <span className="font-heading font-bold text-5xl text-teal/25 leading-none transition-colors duration-300 group-hover:text-teal/50">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-heading font-bold text-lg text-navy mt-4 mb-2">
+                <h3 className="font-heading font-bold text-lg text-ink mt-4 mb-2">
                   {step.title}
                 </h3>
-                <p className="text-sm text-navy/70 leading-relaxed">
+                <p className="text-sm text-ink/70 leading-relaxed">
                   {step.description}
                 </p>
               </motion.div>
@@ -99,7 +100,7 @@ export function ServicePage({ slug }: { slug: string }) {
           </div>
         </Container>
       </section>
-      <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+      <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
         <BackgroundSpirals side="both" opacity={0.15} />
         <MarkerAccent
           variant="star"
@@ -135,7 +136,8 @@ export function ServicePage({ slug }: { slug: string }) {
               </p>
             </div>
           </div>
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            {/* Outcomes — numbered editorial list */}
             <div className="lg:col-span-7">
               <motion.ol
                 key={service.slug + "-outcomes"}
@@ -149,19 +151,19 @@ export function ServicePage({ slug }: { slug: string }) {
                   <motion.li
                     key={outcome}
                     variants={fadeIn}
-                    className="flex items-start gap-6 py-5 border-b border-navy/10 last:border-b-0"
+                    className="group flex items-baseline gap-6 py-5 border-b border-ink/10 last:border-b-0"
                   >
-                    <span className="font-mono font-bold text-teal text-xs tracking-[0.14em] shrink-0 pt-1.5 w-8">
+                    <span className="font-heading font-bold text-2xl text-teal/40 tabular-nums shrink-0 w-10 transition-colors duration-300 group-hover:text-teal">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-navy text-lg leading-snug font-medium">
+                    <span className="text-ink text-lg md:text-xl leading-snug font-medium transition-transform duration-300 group-hover:translate-x-1">
                       {outcome}
                     </span>
                   </motion.li>
                 ))}
               </motion.ol>
             </div>
-            {}
+            {/* Highlights — clean spec cards with a teal keyline */}
             <div className="lg:col-span-5">
               <motion.div
                 key={service.slug + "-stats"}
@@ -169,20 +171,24 @@ export function ServicePage({ slug }: { slug: string }) {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-80px" }}
-                className="flex flex-col"
+                className="flex flex-col gap-4"
               >
                 {service.stats.map((stat) => (
                   <motion.div
                     key={stat.label}
                     variants={fadeIn}
-                    className="flex flex-col py-6 border-b border-navy/10 last:border-b-0 items-start"
+                    className="u-card group relative overflow-hidden rounded-2xl border border-ink/10 bg-surface p-6 pl-7"
                   >
-                    <span className="font-heading font-semibold leading-[0.95] tracking-[-0.03em] bg-teal text-white px-3 pb-1 pt-2 rounded-md text-3xl md:text-4xl mb-3">
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-5 bottom-5 w-1 rounded-full bg-teal/70 transition-all duration-300 group-hover:top-4 group-hover:bottom-4 group-hover:bg-teal"
+                    />
+                    <div className="font-heading font-bold text-2xl md:text-[1.7rem] text-ink leading-tight mb-1.5">
                       {stat.value}
-                    </span>
-                    <span className="text-xs font-mono text-navy/60 uppercase tracking-[0.14em]">
+                    </div>
+                    <div className="text-sm text-ink/60 leading-relaxed">
                       {stat.label}
-                    </span>
+                    </div>
                   </motion.div>
                 ))}
               </motion.div>

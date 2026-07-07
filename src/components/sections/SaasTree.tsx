@@ -8,15 +8,13 @@ import {
   LifeBuoy,
   BarChart3,
   Check,
+  GitBranch,
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
-import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn } from "../../lib/motion";
 import { cn } from "../../lib/cn";
-import logoMark from "../../assets/logo-treemate.png";
+
 interface SaasProduct {
   id: string;
   name: string;
@@ -26,6 +24,7 @@ interface SaasProduct {
   description: string;
   features: string[];
 }
+
 const products: SaasProduct[] = [
   {
     id: "crm",
@@ -124,13 +123,12 @@ const products: SaasProduct[] = [
     ],
   },
 ];
-const ORIGIN = { x: 8, y: 50 };
-const LINE_ORIGIN_X = 15;
-const SPINE_X = 30;
-const NODE_X = 74;
-const LINE_COLOR = "#0D9488";
-const LINE_OPACITY = 0.9;
-const nodeY = (i: number, n: number) => 12 + (i * 76) / (n - 1);
+
+// Vertical placement (%) of each node in the diagram, evenly distributed.
+const nodeY = (i: number, n: number) => 10 + (i * 80) / (n - 1);
+const ORIGIN = { x: 9, y: 50 };
+const NODE_X = 70;
+
 function Diagram({
   selected,
   onSelect,
@@ -138,72 +136,52 @@ function Diagram({
   selected: string;
   onSelect: (id: string) => void;
 }) {
-  const yValues = products.map((_, i) => nodeY(i, products.length));
-  const spineY1 = Math.min(...yValues);
-  const spineY2 = Math.max(...yValues);
   return (
-    <div className="relative h-[520px] w-full">
+    <div className="relative h-[540px] w-full">
+      {/* connectors */}
       <svg
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full z-10 pointer-events-none"
+        className="absolute inset-0 h-full w-full"
         aria-hidden="true"
       >
-        {}
-        <path
-          d={`M ${LINE_ORIGIN_X} ${ORIGIN.y} H ${SPINE_X}`}
-          fill="none"
-          stroke={LINE_COLOR}
-          strokeOpacity={LINE_OPACITY}
-          strokeWidth={1}
-          strokeLinecap="square"
-          vectorEffect="non-scaling-stroke"
-        />
-        {}
-        <path
-          d={`M ${SPINE_X} ${spineY1} V ${spineY2}`}
-          fill="none"
-          stroke={LINE_COLOR}
-          strokeOpacity={LINE_OPACITY}
-          strokeWidth={1}
-          strokeLinecap="square"
-          vectorEffect="non-scaling-stroke"
-        />
-        {}
         {products.map((p, i) => {
           const y = nodeY(i, products.length);
+          const isActive = p.id === selected;
           return (
-            <path
+            <motion.path
               key={p.id}
-              d={`M ${SPINE_X} ${y} H ${NODE_X}`}
+              d={`M ${ORIGIN.x} ${ORIGIN.y} C 40 ${ORIGIN.y}, 46 ${y}, ${NODE_X} ${y}`}
               fill="none"
-              stroke={LINE_COLOR}
-              strokeOpacity={LINE_OPACITY}
-              strokeWidth={1}
-              strokeLinecap="square"
+              stroke={isActive ? "#14B8A6" : "#ffffff"}
+              strokeOpacity={isActive ? 1 : 0.18}
+              strokeWidth={isActive ? 2.4 : 1.4}
+              strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
             />
           );
         })}
       </svg>
-      {}
+
+      {/* origin node */}
       <div
-        className="absolute z-0 -translate-x-1/2 -translate-y-1/2"
+        className="absolute -translate-x-1/2 -translate-y-1/2"
         style={{ left: `${ORIGIN.x}%`, top: `${ORIGIN.y}%` }}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <img
-            src={logoMark}
-            alt=""
-            aria-hidden="true"
-            className="w-28 h-28 object-contain"
-          />
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-navy/60 leading-tight w-32">
+          <span className="w-16 h-16 rounded-2xl bg-teal flex items-center justify-center shadow-lg shadow-teal/30 ring-4 ring-teal/20">
+            <GitBranch className="w-7 h-7 text-white" strokeWidth={2.2} />
+          </span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-teal-light leading-tight w-24">
             Treemate Platform
           </span>
         </div>
       </div>
-      {}
+
+      {/* product nodes */}
       {products.map((p, i) => {
         const y = nodeY(i, products.length);
         const isActive = p.id === selected;
@@ -216,27 +194,26 @@ function Diagram({
             onMouseEnter={() => onSelect(p.id)}
             onFocus={() => onSelect(p.id)}
             aria-pressed={isActive}
-            className="absolute z-20 outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-cream -translate-y-1/2"
+            className="absolute -translate-y-1/2 outline-none"
             style={{ left: `${NODE_X}%`, top: `${y}%` }}
           >
             <span
               className={cn(
-                "inline-flex items-center gap-3 min-w-[150px] px-4 py-3 border transition-all duration-300 bg-cream",
+                "flex items-center gap-3 rounded-full border pl-2.5 pr-5 py-2.5 transition-all duration-300 whitespace-nowrap",
                 isActive
-                  ? "border-teal text-navy"
-                  : "border-navy/15 text-navy/55 hover:border-navy/40 hover:text-navy",
+                  ? "bg-teal border-teal-light text-white scale-105 shadow-xl shadow-teal/30"
+                  : "bg-white/5 border-white/15 text-slate-200 hover:bg-white/10 hover:border-white/30",
               )}
             >
-              <Icon
+              <span
                 className={cn(
-                  "w-4.5 h-4.5 shrink-0",
-                  isActive ? "text-teal" : "text-navy/45",
+                  "w-9 h-9 rounded-full flex items-center justify-center shrink-0",
+                  isActive ? "bg-white/20" : "bg-white/10",
                 )}
-                strokeWidth={2}
-              />
-              <span className="font-mono font-semibold text-[13px] uppercase tracking-[0.1em] whitespace-nowrap">
-                {p.abbr}
+              >
+                <Icon className="w-[18px] h-[18px]" strokeWidth={2.2} />
               </span>
+              <span className="font-semibold text-sm">{p.abbr}</span>
             </span>
           </button>
         );
@@ -244,49 +221,33 @@ function Diagram({
     </div>
   );
 }
+
 export function SaasTree() {
   const [selected, setSelected] = useState(products[0].id);
   const active = products.find((p) => p.id === selected) ?? products[0];
   const ActiveIcon = active.icon;
+
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
-      <BackgroundSpirals side="both" opacity={0.15} />
-      {}
-      <MarkerAccent
-        variant="star"
-        className="absolute top-28 right-[5%] w-12 h-12 opacity-60"
-        color="#0D9488"
-        rotate={16}
-      />
-      <MarkerAccent
-        variant="scribble"
-        className="absolute bottom-28 left-[4%] w-20 h-14 opacity-55"
-        color="#0D9488"
-        rotate={-12}
-      />
+    <section className="py-24 bg-navy relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-teal blur-[180px] opacity-15 pointer-events-none" />
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-12 gap-8 mb-14 md:mb-20 items-end">
-          <div className="lg:col-span-8">
-            <SectionTitle
-              title="One platform, branching into the tools you run on"
-              subtitle="We turn the software we build for our own operations into products you can run your business on. Hover a branch to explore."
-              align="left"
-              className="mb-0 max-w-none"
-            />
-          </div>
-          <div className="lg:col-span-4 lg:justify-self-end">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              6 tools · One platform
-            </p>
-          </div>
-        </div>
+        <SectionTitle
+          eyebrow="Proprietary SaaS"
+          title="One platform, branching into the tools you run on"
+          subtitle="We turn the software we build for our own operations into products you can run your business on. Explore where the platform branches."
+          tone="dark"
+          align="left"
+          marker="none"
+        />
+
         <div className="grid lg:grid-cols-12 gap-10 items-center">
-          {}
+          {/* Diagram (desktop) */}
           <div className="lg:col-span-7">
             <div className="hidden lg:block">
               <Diagram selected={selected} onSelect={setSelected} />
             </div>
-            {}
+
+            {/* Mobile / tablet selector */}
             <div className="lg:hidden flex flex-wrap gap-2.5">
               {products.map((p) => {
                 const isActive = p.id === selected;
@@ -298,66 +259,63 @@ export function SaasTree() {
                     onClick={() => setSelected(p.id)}
                     aria-pressed={isActive}
                     className={cn(
-                      "inline-flex items-center gap-2 pl-3 pr-4 py-2.5 border transition-all text-xs font-mono font-semibold uppercase tracking-[0.1em]",
+                      "flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold transition-all",
                       isActive
-                        ? "border-teal text-navy bg-cream"
-                        : "border-navy/15 text-navy/60 bg-transparent",
+                        ? "bg-teal border-teal-light text-white"
+                        : "bg-white/5 border-white/15 text-slate-200",
                     )}
                   >
-                    <Icon className="w-4 h-4" strokeWidth={2} />
+                    <Icon className="w-4 h-4" strokeWidth={2.2} />
                     {p.abbr}
                   </button>
                 );
               })}
             </div>
           </div>
-          {}
+
+          {/* Detail panel */}
           <div className="lg:col-span-5">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id}
-                variants={fadeIn}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
+                exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="flex flex-col"
+                className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm p-8"
               >
-                <ActiveIcon
-                  className="w-8 h-8 text-teal mb-5"
-                  strokeWidth={1.8}
-                />
-                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
-                  {active.abbr}
-                </span>
-                <h3 className="font-heading font-bold text-2xl text-navy leading-tight mb-3">
-                  {active.name}
-                </h3>
-                <p className="text-navy font-medium mb-3 leading-snug">
-                  {active.tagline}
-                </p>
-                <p className="text-navy/65 leading-relaxed mb-5">
-                  {active.description}
-                </p>
-                <ul className="flex flex-col gap-2">
+                <div className="flex items-center gap-4 mb-5">
+                  <span className="w-14 h-14 rounded-2xl bg-teal/15 border border-teal/30 flex items-center justify-center shrink-0">
+                    <ActiveIcon className="w-7 h-7 text-teal-light" strokeWidth={2} />
+                  </span>
+                  <div>
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-teal-light">
+                      {active.abbr}
+                    </div>
+                    <h3 className="font-heading font-bold text-xl text-white leading-tight">
+                      {active.name}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-teal-light font-medium mb-3">{active.tagline}</p>
+                <p className="text-slate-300 leading-relaxed mb-6">{active.description}</p>
+
+                <ul className="flex flex-col gap-2.5">
                   {active.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2 text-sm text-navy/80"
-                    >
-                      <Check
-                        className="w-3.5 h-3.5 text-teal mt-[3px] shrink-0"
-                        strokeWidth={2.6}
-                      />
-                      <span>{f}</span>
+                    <li key={f} className="flex items-start gap-3">
+                      <span className="mt-0.5 w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center shrink-0">
+                        <Check className="w-3 h-3 text-teal-light" strokeWidth={3} />
+                      </span>
+                      <span className="text-slate-200 text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
               </motion.div>
             </AnimatePresence>
-            <p className="text-xs text-navy/50 mt-6 font-mono">
-              Each product is battle-tested on our own operations before it
-              reaches you.
+
+            <p className="text-xs text-slate-400 mt-4 text-center lg:text-left">
+              Each product is battle-tested on our own operations before it reaches you.
             </p>
           </div>
         </div>

@@ -15,7 +15,7 @@ const stats: Stat[] = [
 ];
 export function Impact() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
       <BackgroundSpirals side="right" opacity={0.15} />
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-12 gap-8 mb-14 md:mb-20 items-end">
@@ -45,12 +45,12 @@ export function Impact() {
             <motion.div
               key={stat.label}
               variants={fadeIn}
-              className="flex flex-col"
+              className="group flex flex-col cursor-default"
             >
-              <span className="font-heading font-semibold text-navy leading-none tracking-[-0.03em] text-5xl md:text-6xl mb-3">
+              <span className="font-heading font-semibold text-ink leading-none tracking-[-0.03em] text-5xl md:text-6xl mb-3 transition-colors duration-300 group-hover:text-teal">
                 {stat.value}
               </span>
-              <span className="text-sm font-medium text-navy/60 uppercase tracking-wider">
+              <span className="text-sm font-medium text-ink/60 uppercase tracking-wider transition-colors duration-300 group-hover:text-ink/80">
                 {stat.label}
               </span>
             </motion.div>
@@ -72,7 +72,7 @@ export function Impact() {
           </motion.p>
           <motion.p
             variants={fadeIn}
-            className="text-base md:text-lg font-medium text-navy/70 max-w-xl"
+            className="text-base md:text-lg font-medium text-ink/70 max-w-xl"
           >
             Software, staff, and support — under one accountable partnership.
           </motion.p>

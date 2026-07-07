@@ -22,7 +22,7 @@ export function CTASection({
 }: CTASectionProps) {
   const parts = heading.split(/(loop)/i);
   return (
-    <section className="relative overflow-hidden bg-cream py-24 md:py-32">
+    <section className="relative overflow-hidden bg-page py-24 md:py-32">
       <BackgroundSpirals side="both" opacity={0.18} />
       <MarkerAccent
         variant="star"
@@ -60,7 +60,7 @@ export function CTASection({
             </motion.p>
             <motion.h2
               variants={blurIn}
-              className="font-heading font-semibold text-navy leading-[0.95] tracking-[-0.03em]"
+              className="font-heading font-semibold text-ink leading-[0.95] tracking-[-0.03em]"
               style={{ fontSize: "clamp(2.5rem, 5.5vw, 4.75rem)" }}
             >
               {parts.map((part, i) =>
@@ -85,7 +85,7 @@ export function CTASection({
             variants={fadeIn}
             className="lg:col-span-5 flex flex-col gap-8 lg:pt-4"
           >
-            <p className="text-navy/80 leading-relaxed max-w-md">{subtext}</p>
+            <p className="text-ink/80 leading-relaxed max-w-md">{subtext}</p>
             <div className="flex flex-wrap items-center gap-6">
               <LinkButton to="/contact" size="lg" variant="primary">
                 Book a Discovery Call
@@ -93,17 +93,17 @@ export function CTASection({
               </LinkButton>
               <a
                 href={`mailto:${siteConfig.emails.sales}`}
-                className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+                className="text-ink font-semibold text-sm underline underline-offset-4 decoration-ink/40 hover:decoration-navy transition-colors"
               >
                 Email sales
               </a>
             </div>
             {}
-            <ul className="flex flex-col gap-3 pt-6 border-t border-navy/10">
+            <ul className="flex flex-col gap-3 pt-6 border-t border-ink/10">
               {trustPoints.map(({ icon: Icon, label }) => (
                 <li
                   key={label}
-                  className="flex items-center gap-2.5 text-navy/70 text-sm font-mono"
+                  className="flex items-center gap-2.5 text-ink/70 text-sm"
                 >
                   <Icon className="w-4 h-4 text-teal" strokeWidth={2} />
                   <span>{label}</span>

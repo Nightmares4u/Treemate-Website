@@ -38,7 +38,7 @@ const reasons: Reason[] = [
 ];
 export function WhyChoose() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="scribble"
@@ -85,20 +85,20 @@ export function WhyChoose() {
             <motion.article
               key={r.title}
               variants={fadeIn}
-              className="flex flex-col"
+              className="group flex flex-col"
             >
               <IllustrationSlot
                 src={r.src}
                 aspect="aspect-[4/3]"
                 filenameHint={r.filename}
                 alt={r.title}
-                className="mb-6 rounded-xl overflow-hidden"
+                className="u-media mb-6 rounded-xl overflow-hidden ring-1 ring-ink/5"
                 imgClassName="object-cover"
               />
-              <h3 className="font-heading font-bold text-xl text-navy mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3 transition-colors duration-300 group-hover:text-teal">
                 {r.title}
               </h3>
-              <p className="text-navy/70 leading-relaxed">{r.description}</p>
+              <p className="text-ink/70 leading-relaxed">{r.description}</p>
             </motion.article>
           ))}
         </motion.div>

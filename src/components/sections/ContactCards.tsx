@@ -47,7 +47,7 @@ const cards: ContactCard[] = [
 ];
 export function ContactCards() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="star"
@@ -111,13 +111,13 @@ export function ContactCards() {
               <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                 {c.eyebrow}
               </span>
-              <h3 className="font-heading font-bold text-xl text-navy mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3">
                 {c.title}
               </h3>
-              <p className="text-navy/80 leading-relaxed mb-4 flex-1 break-words">
+              <p className="text-ink/80 leading-relaxed mb-4 flex-1 break-words">
                 {c.value}
               </p>
-              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy group-hover:text-teal transition-colors">
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink group-hover:text-teal transition-colors">
                 {c.eyebrow}
                 <ChevronsRight
                   className="w-4 h-4 transition-transform group-hover:translate-x-1"

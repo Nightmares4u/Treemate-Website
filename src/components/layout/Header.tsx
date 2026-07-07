@@ -22,7 +22,7 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "py-2.5 bg-[#F8F9FA]/90 backdrop-blur-md border-b border-navy/10"
+            ? "py-2.5 bg-page/85 backdrop-blur-md border-b border-ink/10"
             : "py-4 bg-transparent border-b border-transparent",
         )}
       >
@@ -41,7 +41,7 @@ export function Header() {
                 className={({ isActive }) =>
                   cn(
                     "px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200",
-                    isActive ? "text-teal" : "text-navy/70 hover:text-navy",
+                    isActive ? "text-teal" : "text-ink/70 hover:text-ink",
                   )
                 }
               >
@@ -49,17 +49,18 @@ export function Header() {
               </RouterNavLink>
             ))}
           </nav>
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center gap-3">
             <LinkButton to="/contact" variant="teal" size="sm">
               Get a Booking
               <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
             </LinkButton>
           </div>
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-lg text-navy hover:bg-navy/5 transition-all duration-200"
-            aria-label="Toggle menu"
-          >
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 rounded-lg text-ink hover:bg-ink/5 transition-all duration-200"
+              aria-label="Toggle menu"
+            >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
                 <motion.span
@@ -83,7 +84,8 @@ export function Header() {
                 </motion.span>
               )}
             </AnimatePresence>
-          </button>
+            </button>
+          </div>
         </Container>
       </header>
       <AnimatePresence>
@@ -95,7 +97,7 @@ export function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-navy/20 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-navy/30 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
@@ -104,7 +106,7 @@ export function Header() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.98 }}
               transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-4 top-[76px] z-50 bg-white rounded-2xl p-6 shadow-xl border border-navy/10 lg:hidden"
+              className="fixed inset-x-4 top-[76px] z-50 bg-surface rounded-2xl p-6 shadow-xl border border-ink/10 lg:hidden"
             >
               <nav className="flex flex-col gap-1 mb-6" aria-label="Mobile">
                 {navigationLinks.map((link) => (
@@ -118,7 +120,7 @@ export function Header() {
                         "px-4 py-3 text-[13px] font-semibold uppercase tracking-[0.1em] rounded-xl transition-all duration-200",
                         isActive
                           ? "text-teal bg-teal/5"
-                          : "text-navy hover:bg-navy/5",
+                          : "text-ink hover:bg-ink/5",
                       )
                     }
                   >
@@ -126,7 +128,7 @@ export function Header() {
                   </RouterNavLink>
                 ))}
               </nav>
-              <div className="pt-4 border-t border-navy/10">
+              <div className="pt-4 border-t border-ink/10">
                 <LinkButton
                   to="/contact"
                   variant="teal"

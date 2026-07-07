@@ -41,7 +41,7 @@ const pillars: Pillar[] = [
 ];
 export function JoinUs() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
       {}
       <MarkerAccent
         variant="scribble"
@@ -106,10 +106,10 @@ export function JoinUs() {
                 className="mb-6 rounded-xl overflow-hidden"
                 imgClassName="object-cover"
               />
-              <h3 className="font-heading font-bold text-xl text-navy mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3">
                 {p.title}
               </h3>
-              <p className="text-navy/70 leading-relaxed">{p.description}</p>
+              <p className="text-ink/70 leading-relaxed">{p.description}</p>
             </motion.article>
           ))}
         </motion.div>

@@ -52,7 +52,7 @@ export function SectionTitle({
           variants={blurIn}
           className={cn(
             "font-heading font-semibold tracking-[-0.02em] leading-[1.02] text-4xl md:text-5xl lg:text-[3.75rem]",
-            isDark ? "text-white" : "text-navy",
+            isDark ? "text-white" : "text-ink",
           )}
         >
           {title}
@@ -88,7 +88,7 @@ export function SectionTitle({
           variants={fadeIn}
           className={cn(
             "text-base md:text-lg leading-relaxed text-pretty",
-            isDark ? "text-slate-300" : "text-slate-600",
+            isDark ? "text-slate-300" : "text-ink/70",
             marker === "underline" || marker === "underline-double"
               ? "pt-3 md:pt-4"
               : "",

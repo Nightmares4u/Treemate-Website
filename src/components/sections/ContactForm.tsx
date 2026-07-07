@@ -30,7 +30,7 @@ const services = [
   { value: "not-sure", label: "Not sure yet — help me scope" },
 ];
 const inputBase =
-  "w-full rounded-xl border border-navy/15 bg-white px-4 py-3 text-navy placeholder-navy/40 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors";
+  "w-full rounded-xl border border-ink/15 bg-surface px-4 py-3 text-ink placeholder-ink/40 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors";
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm);
   const onChange = (
@@ -55,7 +55,7 @@ export function ContactForm() {
     window.location.href = href;
   };
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="scribble"
@@ -107,7 +107,7 @@ export function ContactForm() {
         >
           <div className="grid md:grid-cols-2 gap-6">
             <motion.label variants={fadeIn} className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-navy">
+              <span className="text-sm font-semibold text-ink">
                 First Name
               </span>
               <input
@@ -121,7 +121,7 @@ export function ContactForm() {
               />
             </motion.label>
             <motion.label variants={fadeIn} className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-navy">Last Name</span>
+              <span className="text-sm font-semibold text-ink">Last Name</span>
               <input
                 name="lastName"
                 type="text"
@@ -135,7 +135,7 @@ export function ContactForm() {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             <motion.label variants={fadeIn} className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-navy">Service</span>
+              <span className="text-sm font-semibold text-ink">Service</span>
               <select
                 name="service"
                 required
@@ -154,7 +154,7 @@ export function ContactForm() {
               </select>
             </motion.label>
             <motion.label variants={fadeIn} className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-navy">Budget</span>
+              <span className="text-sm font-semibold text-ink">Budget</span>
               <input
                 name="budget"
                 type="text"
@@ -166,7 +166,7 @@ export function ContactForm() {
             </motion.label>
           </div>
           <motion.label variants={fadeIn} className="flex flex-col gap-2">
-            <span className="text-sm font-semibold text-navy">Subject</span>
+            <span className="text-sm font-semibold text-ink">Subject</span>
             <input
               name="subject"
               type="text"
@@ -177,7 +177,7 @@ export function ContactForm() {
             />
           </motion.label>
           <motion.label variants={fadeIn} className="flex flex-col gap-2">
-            <span className="text-sm font-semibold text-navy">Message</span>
+            <span className="text-sm font-semibold text-ink">Message</span>
             <textarea
               name="message"
               required

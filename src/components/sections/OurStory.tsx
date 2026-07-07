@@ -37,7 +37,7 @@ const milestones: Milestone[] = [
 ];
 export function OurStory() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       <BackgroundSpirals side="both" opacity={0.12} />
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-12 gap-8 mb-14 md:mb-20 items-end">
@@ -66,7 +66,7 @@ export function OurStory() {
           {}
           <span
             aria-hidden="true"
-            className="absolute left-4 md:left-1/2 top-2 bottom-2 w-px bg-navy/15 md:-translate-x-1/2"
+            className="absolute left-4 md:left-1/2 top-2 bottom-2 w-px bg-ink/15 md:-translate-x-1/2"
           />
           {milestones.map((m, i) => {
             const alignRight = i % 2 === 1;
@@ -95,10 +95,10 @@ export function OurStory() {
                   <span className="text-sm font-semibold uppercase tracking-[0.14em] text-teal mb-2">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-navy leading-tight mb-3">
+                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink leading-tight mb-3">
                     {m.title}
                   </h3>
-                  <p className="text-navy/70 leading-relaxed">
+                  <p className="text-ink/70 leading-relaxed">
                     {m.description}
                   </p>
                 </div>

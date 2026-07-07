@@ -26,7 +26,7 @@ const executives = [
 ];
 export function MeetTheTeam() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.90] scale-[1.2] lg:scale-100 overflow-hidden">
         <BackgroundSpirals />
@@ -106,13 +106,13 @@ export function MeetTheTeam() {
             </div>
             {}
             <div className="flex flex-col justify-center text-center lg:text-left">
-              <h3 className="font-heading font-bold text-2xl md:text-3xl text-navy">
+              <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink">
                 Syed Raza
               </h3>
               <p className="text-[15px] text-teal font-semibold mt-1 mb-4">
                 Chairman, Treemate US
               </p>
-              <p className="text-navy/70 leading-relaxed text-[15px]">
+              <p className="text-ink/70 leading-relaxed text-[15px]">
                 Syed Raza brings 25+ years of executive leadership across
                 engineering, finance, and pharma. As Lead Project Manager at
                 Siemens, he delivered complex initiatives at enterprise scale.
@@ -139,13 +139,13 @@ export function MeetTheTeam() {
                   imgClassName="object-cover object-top"
                 />
                 <figcaption className="flex flex-col flex-grow px-2">
-                  <div className="font-heading font-bold text-2xl text-navy leading-tight">
+                  <div className="font-heading font-bold text-2xl text-ink leading-tight">
                     {f.name}
                   </div>
                   <div className="text-[15px] text-teal font-semibold mt-1 mb-4">
                     {f.role}
                   </div>
-                  <p className="text-[15px] text-navy/70 leading-relaxed">
+                  <p className="text-[15px] text-ink/70 leading-relaxed">
                     {f.bio}
                   </p>
                 </figcaption>

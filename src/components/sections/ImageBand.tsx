@@ -16,7 +16,7 @@ export function ImageBand({
   bg = "base",
 }: ImageBandProps) {
   const bgClass =
-    bg === "white" ? "bg-white" : bg === "navy" ? "bg-navy" : "bg-base";
+    bg === "white" ? "bg-surface" : bg === "navy" ? "bg-navy" : "bg-surface-2";
   return (
     <section className={`py-16 md:py-20 ${bgClass}`}>
       <Container>
@@ -37,7 +37,7 @@ export function ImageBand({
             />
           </div>
           {}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
           <div className="pointer-events-none absolute inset-0 bg-teal/10" />
           {caption && (
             <div className="absolute bottom-0 left-0 p-6 md:p-8">
