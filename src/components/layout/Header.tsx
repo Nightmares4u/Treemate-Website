@@ -1,34 +1,83 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { cn } from "../../lib/cn";
 import { Container } from "./Container";
 import { LinkButton } from "../ui/LinkButton";
 import { TreemateLogo } from "../ui/TreemateLogo";
 import { navigationLinks } from "../../data/navigation";
+import { easeOutExpo } from "../../lib/motion";
 import { Menu, X, ChevronsRight } from "lucide-react";
+
 export function Header() {
+  const reduced = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Lock body scroll while the full-screen mobile menu is open.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const overlayVariants: Variants = reduced
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.2 } },
+        exit: { opacity: 0, transition: { duration: 0.15 } },
+      }
+    : {
+        hidden: { clipPath: "inset(0% 0% 100% 0%)" },
+        visible: {
+          clipPath: "inset(0% 0% 0% 0%)",
+          transition: {
+            duration: 0.5,
+            ease: easeOutExpo,
+            when: "beforeChildren",
+            staggerChildren: 0.07,
+            delayChildren: 0.12,
+          },
+        },
+        exit: {
+          clipPath: "inset(0% 0% 100% 0%)",
+          transition: { duration: 0.35, ease: easeOutExpo },
+        },
+      };
+
+  const linkVariants: Variants = reduced
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5, ease: easeOutExpo },
+        },
+      };
+
   return (
     <>
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "py-2.5 bg-[#F8F9FA]/90 backdrop-blur-md border-b border-navy/10"
+            ? "py-2.5 bg-[#F8F9FA]/85 backdrop-blur-md border-b border-navy/10 shadow-[0_1px_20px_-8px_rgba(10,22,40,0.25)]"
             : "py-4 bg-transparent border-b border-transparent",
         )}
       >
         <Container className="flex items-center justify-between">
           <TreemateLogo size="md" wordmarkCase="upper" />
-          {}
+
           <nav
             className="hidden lg:flex items-center gap-1"
             aria-label="Primary"
@@ -40,25 +89,42 @@ export function Header() {
                 end={link.href === "/"}
                 className={({ isActive }) =>
                   cn(
-                    "px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200",
+                    "relative px-3 py-2 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors duration-200",
                     isActive ? "text-teal" : "text-navy/70 hover:text-navy",
                   )
                 }
               >
-                {link.name}
+                {({ isActive }) => (
+                  <span className="relative inline-block">
+                    {link.name}
+                    {isActive &&
+                      (reduced ? (
+                        <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-teal" />
+                      ) : (
+                        <motion.span
+                          layoutId="header-underline"
+                          className="absolute -bottom-1 left-0 right-0 h-[2px] rounded-full bg-teal"
+                          transition={{ duration: 0.35, ease: easeOutExpo }}
+                        />
+                      ))}
+                  </span>
+                )}
               </RouterNavLink>
             ))}
           </nav>
+
           <div className="hidden lg:flex items-center">
             <LinkButton to="/contact" variant="teal" size="sm">
               Get a Booking
               <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
             </LinkButton>
           </div>
+
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 rounded-lg text-navy hover:bg-navy/5 transition-all duration-200"
+            className="lg:hidden relative z-[70] p-2 rounded-lg text-navy hover:bg-navy/5 transition-all duration-200"
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
@@ -86,60 +152,57 @@ export function Header() {
           </button>
         </Container>
       </header>
+
+      {/* Full-screen mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
-          <>
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-navy/20 backdrop-blur-sm lg:hidden"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.div
-              key="drawer"
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-4 top-[76px] z-50 bg-white rounded-2xl p-6 shadow-xl border border-navy/10 lg:hidden"
-            >
-              <nav className="flex flex-col gap-1 mb-6" aria-label="Mobile">
+          <motion.div
+            key="mobile-menu"
+            variants={overlayVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-[60] bg-cream lg:hidden"
+          >
+            <div className="flex h-full flex-col justify-center px-8">
+              <nav
+                className="flex flex-col gap-2"
+                aria-label="Mobile"
+              >
                 {navigationLinks.map((link) => (
-                  <RouterNavLink
-                    key={link.name}
-                    to={link.href}
-                    end={link.href === "/"}
-                    onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      cn(
-                        "px-4 py-3 text-[13px] font-semibold uppercase tracking-[0.1em] rounded-xl transition-all duration-200",
-                        isActive
-                          ? "text-teal bg-teal/5"
-                          : "text-navy hover:bg-navy/5",
-                      )
-                    }
-                  >
-                    {link.name}
-                  </RouterNavLink>
+                  <motion.div key={link.name} variants={linkVariants}>
+                    <RouterNavLink
+                      to={link.href}
+                      end={link.href === "/"}
+                      onClick={() => setMobileOpen(false)}
+                      className={({ isActive }) =>
+                        cn(
+                          "block py-3 font-heading text-3xl font-semibold tracking-tight transition-colors duration-200",
+                          isActive
+                            ? "text-teal"
+                            : "text-navy hover:text-teal",
+                        )
+                      }
+                    >
+                      {link.name}
+                    </RouterNavLink>
+                  </motion.div>
                 ))}
               </nav>
-              <div className="pt-4 border-t border-navy/10">
+              <motion.div variants={linkVariants} className="mt-10">
                 <LinkButton
                   to="/contact"
                   variant="teal"
-                  size="md"
+                  size="lg"
                   className="w-full"
                   onClick={() => setMobileOpen(false)}
                 >
                   Get a Booking
                   <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
                 </LinkButton>
-              </div>
-            </motion.div>
-          </>
+              </motion.div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
