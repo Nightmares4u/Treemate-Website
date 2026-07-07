@@ -87,7 +87,7 @@ export function MeetTheTeam() {
           {}
           <motion.div
             variants={fadeIn}
-            className="grid grid-cols-1 lg:grid-cols-[1fr_420px_1fr] xl:grid-cols-[1fr_460px_1fr] gap-8 lg:gap-10 xl:gap-16 items-center max-w-[1600px] mx-auto w-full px-4 lg:px-6"
+            className="group grid grid-cols-1 lg:grid-cols-[1fr_420px_1fr] xl:grid-cols-[1fr_460px_1fr] gap-8 lg:gap-10 xl:gap-16 items-center max-w-[1600px] mx-auto w-full px-4 lg:px-6"
           >
             {}
             <div className="hidden lg:block"></div>
@@ -99,14 +99,14 @@ export function MeetTheTeam() {
                   aspect="aspect-square"
                   filenameHint="sir-raza-portrait.png"
                   alt="Syed Raza — Chairman, Treemate US"
-                  className="rounded-[3rem] overflow-hidden w-full shadow-lg"
+                  className="u-media rounded-[3rem] overflow-hidden w-full shadow-lg ring-1 ring-ink/5 transition-shadow duration-300 group-hover:shadow-xl group-hover:shadow-teal/10"
                   imgClassName="object-cover object-top"
                 />
               </div>
             </div>
             {}
             <div className="flex flex-col justify-center text-center lg:text-left">
-              <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink">
+              <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink transition-colors duration-300 group-hover:text-teal">
                 Syed Raza
               </h3>
               <p className="text-[15px] text-teal font-semibold mt-1 mb-4">

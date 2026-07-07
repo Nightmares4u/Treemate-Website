@@ -191,10 +191,10 @@ export function ContactForm() {
           <motion.div variants={fadeIn}>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-full bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2"
+              className="group inline-flex items-center gap-2 rounded-xl bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2"
             >
               Send Message
-              <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
+              <ChevronsRight className="u-arrow w-4 h-4" strokeWidth={2.4} />
             </button>
           </motion.div>
         </motion.form>

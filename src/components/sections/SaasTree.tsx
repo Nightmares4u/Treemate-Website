@@ -130,14 +130,23 @@ const ORIGIN = { x: 9, y: 50 };
 const NODE_X = 70;
 
 function Diagram({
-  selected,
-  onSelect,
+  activeId,
+  lockedId,
+  onHover,
+  onLock,
+  onReset,
 }: {
-  selected: string;
-  onSelect: (id: string) => void;
+  activeId: string | null;
+  lockedId: string | null;
+  onHover: (id: string | null) => void;
+  onLock: (id: string) => void;
+  onReset: () => void;
 }) {
   return (
-    <div className="relative h-[540px] w-full">
+    <div
+      className="relative h-[540px] w-full"
+      onMouseLeave={() => onHover(null)}
+    >
       {/* connectors */}
       <svg
         viewBox="0 0 100 100"
@@ -147,20 +156,30 @@ function Diagram({
       >
         {products.map((p, i) => {
           const y = nodeY(i, products.length);
-          const isActive = p.id === selected;
+          const isActive = p.id === activeId;
+          const d = `M ${ORIGIN.x} ${ORIGIN.y} C 40 ${ORIGIN.y}, 46 ${y}, ${NODE_X} ${y}`;
           return (
             <motion.path
               key={p.id}
-              d={`M ${ORIGIN.x} ${ORIGIN.y} C 40 ${ORIGIN.y}, 46 ${y}, ${NODE_X} ${y}`}
+              d={d}
               fill="none"
-              stroke={isActive ? "#14B8A6" : "#ffffff"}
-              strokeOpacity={isActive ? 1 : 0.18}
-              strokeWidth={isActive ? 2.4 : 1.4}
+              stroke="#0A1628"
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
+              style={{ filter: isActive ? "drop-shadow(0 0 3px rgba(13,148,136,0.45))" : "none" }}
               initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              animate={{
+                pathLength: 1,
+                opacity: 1,
+                stroke: isActive ? "#0D9488" : "#0A1628",
+                strokeOpacity: isActive ? 1 : 0.12,
+                strokeWidth: isActive ? 2.6 : 1.3,
+              }}
+              transition={{
+                pathLength: { duration: 0.9, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] },
+                opacity: { duration: 0.9, delay: 0.15 + i * 0.08 },
+                default: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+              }}
             />
           );
         })}
@@ -171,49 +190,73 @@ function Diagram({
         className="absolute -translate-x-1/2 -translate-y-1/2"
         style={{ left: `${ORIGIN.x}%`, top: `${ORIGIN.y}%` }}
       >
-        <div className="flex flex-col items-center gap-2 text-center">
-          <span className="w-16 h-16 rounded-2xl bg-teal flex items-center justify-center shadow-lg shadow-teal/30 ring-4 ring-teal/20">
+        <button
+          type="button"
+          onClick={onReset}
+          aria-label="Collapse platform preview"
+          className="group/origin flex flex-col items-center gap-2 text-center outline-none"
+        >
+          <motion.span
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 400, damping: 18 }}
+            className="w-16 h-16 rounded-2xl bg-teal flex items-center justify-center shadow-lg shadow-teal/30 ring-4 ring-teal/15 transition-shadow group-hover/origin:shadow-teal/50"
+          >
             <GitBranch className="w-7 h-7 text-white" strokeWidth={2.2} />
-          </span>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-teal-light leading-tight w-24">
+          </motion.span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-teal leading-tight w-24">
             Treemate Platform
           </span>
-        </div>
+        </button>
       </div>
 
       {/* product nodes */}
       {products.map((p, i) => {
         const y = nodeY(i, products.length);
-        const isActive = p.id === selected;
+        const isActive = p.id === activeId;
+        const isPinned = p.id === lockedId;
         const Icon = p.icon;
         return (
           <button
             key={p.id}
             type="button"
-            onClick={() => onSelect(p.id)}
-            onMouseEnter={() => onSelect(p.id)}
-            onFocus={() => onSelect(p.id)}
-            aria-pressed={isActive}
+            onClick={() => onLock(p.id)}
+            onMouseEnter={() => onHover(p.id)}
+            onMouseLeave={() => onHover(null)}
+            onFocus={() => onHover(p.id)}
+            onBlur={() => onHover(null)}
+            aria-pressed={isPinned}
             className="absolute -translate-y-1/2 outline-none"
             style={{ left: `${NODE_X}%`, top: `${y}%` }}
           >
             <span
               className={cn(
-                "flex items-center gap-3 rounded-full border pl-2.5 pr-5 py-2.5 transition-all duration-300 whitespace-nowrap",
+                "flex items-center gap-3 rounded-full border pl-2.5 pr-5 py-2.5 whitespace-nowrap transition-all duration-[350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                 isActive
-                  ? "bg-teal border-teal-light text-white scale-105 shadow-xl shadow-teal/30"
-                  : "bg-white/5 border-white/15 text-slate-200 hover:bg-white/10 hover:border-white/30",
+                  ? "bg-teal border-teal text-white scale-[1.06] shadow-lg shadow-teal/30"
+                  : isPinned
+                    ? "bg-surface border-teal/50 text-ink ring-2 ring-teal/30 shadow-sm hover:scale-[1.03]"
+                    : "bg-surface border-ink/12 text-ink/80 shadow-sm hover:scale-[1.03] hover:border-teal/40 hover:text-ink",
               )}
             >
               <span
                 className={cn(
-                  "w-9 h-9 rounded-full flex items-center justify-center shrink-0",
-                  isActive ? "bg-white/20" : "bg-white/10",
+                  "w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors duration-300",
+                  isActive ? "bg-white/20 text-white" : "bg-teal/10 text-teal",
                 )}
               >
                 <Icon className="w-[18px] h-[18px]" strokeWidth={2.2} />
               </span>
               <span className="font-semibold text-sm">{p.abbr}</span>
+              {isPinned && (
+                <span
+                  className={cn(
+                    "ml-0.5 w-1.5 h-1.5 rounded-full",
+                    isActive ? "bg-white" : "bg-teal",
+                  )}
+                  aria-hidden="true"
+                />
+              )}
             </span>
           </button>
         );
@@ -223,19 +266,25 @@ function Diagram({
 }
 
 export function SaasTree() {
-  const [selected, setSelected] = useState(products[0].id);
-  const active = products.find((p) => p.id === selected) ?? products[0];
-  const ActiveIcon = active.icon;
+  const [locked, setLocked] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const activeId = hovered ?? locked;
+  const active = activeId
+    ? products.find((p) => p.id === activeId) ?? null
+    : null;
+  const ActiveIcon = active?.icon;
+
+  const toggleLock = (id: string) =>
+    setLocked((cur) => (cur === id ? null : id));
 
   return (
-    <section className="py-24 bg-navy relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-teal blur-[180px] opacity-15 pointer-events-none" />
+    <section className="py-24 md:py-32 bg-surface-2 relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-mint blur-[170px] opacity-40 pointer-events-none" />
       <Container className="relative z-10">
         <SectionTitle
           eyebrow="Proprietary SaaS"
           title="One platform, branching into the tools you run on"
-          subtitle="We turn the software we build for our own operations into products you can run your business on. Explore where the platform branches."
-          tone="dark"
+          subtitle="We turn the software we build for our own operations into products you can run your business on. Hover a branch to preview it — click to keep it open."
           align="left"
           marker="none"
         />
@@ -244,25 +293,34 @@ export function SaasTree() {
           {/* Diagram (desktop) */}
           <div className="lg:col-span-7">
             <div className="hidden lg:block">
-              <Diagram selected={selected} onSelect={setSelected} />
+              <Diagram
+                activeId={activeId}
+                lockedId={locked}
+                onHover={setHovered}
+                onLock={toggleLock}
+                onReset={() => {
+                  setLocked(null);
+                  setHovered(null);
+                }}
+              />
             </div>
 
             {/* Mobile / tablet selector */}
             <div className="lg:hidden flex flex-wrap gap-2.5">
               {products.map((p) => {
-                const isActive = p.id === selected;
+                const isActive = p.id === activeId;
                 const Icon = p.icon;
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    onClick={() => setSelected(p.id)}
+                    onClick={() => toggleLock(p.id)}
                     aria-pressed={isActive}
                     className={cn(
                       "flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold transition-all",
                       isActive
-                        ? "bg-teal border-teal-light text-white"
-                        : "bg-white/5 border-white/15 text-slate-200",
+                        ? "bg-teal border-teal text-white shadow-sm shadow-teal/30"
+                        : "bg-surface border-ink/12 text-ink/80",
                     )}
                   >
                     <Icon className="w-4 h-4" strokeWidth={2.2} />
@@ -276,45 +334,75 @@ export function SaasTree() {
           {/* Detail panel */}
           <div className="lg:col-span-5">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm p-8"
-              >
-                <div className="flex items-center gap-4 mb-5">
-                  <span className="w-14 h-14 rounded-2xl bg-teal/15 border border-teal/30 flex items-center justify-center shrink-0">
-                    <ActiveIcon className="w-7 h-7 text-teal-light" strokeWidth={2} />
-                  </span>
-                  <div>
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-teal-light">
-                      {active.abbr}
+              {active && ActiveIcon ? (
+                <motion.div
+                  key={active.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="rounded-3xl border border-ink/10 bg-surface shadow-xl shadow-ink/5 p-8"
+                >
+                  <div className="flex items-center gap-4 mb-5">
+                    <span className="w-14 h-14 rounded-2xl bg-teal/10 border border-teal/20 flex items-center justify-center shrink-0">
+                      <ActiveIcon className="w-7 h-7 text-teal" strokeWidth={2} />
+                    </span>
+                    <div>
+                      <div className="text-[11px] font-bold uppercase tracking-wider text-teal">
+                        {active.abbr}
+                      </div>
+                      <h3 className="font-heading font-bold text-xl text-ink leading-tight">
+                        {active.name}
+                      </h3>
                     </div>
-                    <h3 className="font-heading font-bold text-xl text-white leading-tight">
-                      {active.name}
-                    </h3>
                   </div>
-                </div>
 
-                <p className="text-teal-light font-medium mb-3">{active.tagline}</p>
-                <p className="text-slate-300 leading-relaxed mb-6">{active.description}</p>
+                  <p className="text-teal font-semibold mb-3">{active.tagline}</p>
+                  <p className="text-ink/70 leading-relaxed mb-6">
+                    {active.description}
+                  </p>
 
-                <ul className="flex flex-col gap-2.5">
-                  {active.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <span className="mt-0.5 w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center shrink-0">
-                        <Check className="w-3 h-3 text-teal-light" strokeWidth={3} />
-                      </span>
-                      <span className="text-slate-200 text-sm">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                  <ul className="flex flex-col gap-2.5">
+                    {active.features.map((f) => (
+                      <motion.li
+                        key={f}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.05 }}
+                        className="flex items-start gap-3"
+                      >
+                        <span className="mt-0.5 w-5 h-5 rounded-full bg-teal/15 flex items-center justify-center shrink-0">
+                          <Check className="w-3 h-3 text-teal" strokeWidth={3} />
+                        </span>
+                        <span className="text-ink/80 text-sm">{f}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="placeholder"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="rounded-3xl border border-dashed border-ink/15 bg-surface/60 p-8 min-h-[320px] flex flex-col items-center justify-center text-center gap-3"
+                >
+                  <span className="w-14 h-14 rounded-2xl bg-teal/10 border border-teal/20 flex items-center justify-center">
+                    <GitBranch className="w-7 h-7 text-teal" strokeWidth={2} />
+                  </span>
+                  <h3 className="font-heading font-bold text-lg text-ink">
+                    Explore the platform
+                  </h3>
+                  <p className="text-sm text-ink/60 max-w-xs">
+                    Hover any branch to preview what it does — click to keep it
+                    open while you read.
+                  </p>
+                </motion.div>
+              )}
             </AnimatePresence>
 
-            <p className="text-xs text-slate-400 mt-4 text-center lg:text-left">
+            <p className="text-xs text-ink/50 mt-4 text-center lg:text-left">
               Each product is battle-tested on our own operations before it reaches you.
             </p>
           </div>

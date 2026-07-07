@@ -45,14 +45,8 @@ export function LoopInAction() {
         rotate={-8}
       />
       <MarkerAccent
-        variant="scribble"
-        className="absolute bottom-24 left-[6%] w-20 h-14 opacity-60"
-        color="#0D9488"
-        rotate={12}
-      />
-      <MarkerAccent
         variant="arrow"
-        className="absolute top-1/2 right-[3%] w-16 h-12 opacity-50"
+        className="absolute top-1/2 right-[3%] w-16 h-12 opacity-45"
         color="#0D9488"
         rotate={-25}
       />
@@ -93,7 +87,7 @@ export function LoopInAction() {
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                   {s.vertical}
                 </span>
-                <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-3">
+                <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-3 transition-colors duration-300 group-hover:text-teal">
                   {s.headline}
                 </h3>
                 <p className="text-sm text-ink/70 leading-relaxed mb-6 flex-1">

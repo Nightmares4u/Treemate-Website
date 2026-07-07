@@ -74,14 +74,14 @@ export function OurStory() {
               <motion.li
                 key={m.title}
                 variants={fadeIn}
-                className="relative pb-12 md:pb-16 last:pb-0"
+                className="group relative pb-12 md:pb-16 last:pb-0"
               >
                 {}
                 <span
                   aria-hidden="true"
                   className="absolute left-4 md:left-1/2 top-2 -translate-x-1/2 flex items-center justify-center z-10"
                 >
-                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-cream" />
+                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-page transition-all duration-300 group-hover:scale-[1.6] group-hover:ring-teal/20" />
                 </span>
                 {}
                 <div
@@ -95,7 +95,7 @@ export function OurStory() {
                   <span className="text-sm font-semibold uppercase tracking-[0.14em] text-teal mb-2">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink leading-tight mb-3">
+                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink leading-tight mb-3 transition-colors duration-300 group-hover:text-teal">
                     {m.title}
                   </h3>
                   <p className="text-ink/70 leading-relaxed">

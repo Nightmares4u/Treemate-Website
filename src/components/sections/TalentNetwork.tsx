@@ -73,13 +73,13 @@ export function TalentNetwork() {
               <motion.div
                 key={pillar.title}
                 variants={fadeIn}
-                className="flex gap-5 p-2 transition-colors"
+                className="group flex gap-5 rounded-2xl p-3 transition-colors duration-300 hover:bg-surface/70"
               >
-                <div className="w-12 h-12 shrink-0 rounded-xl bg-teal/10 flex items-center justify-center">
-                  <pillar.icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                <div className="u-icon w-12 h-12 shrink-0 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center active:scale-90">
+                  <pillar.icon className="w-6 h-6" strokeWidth={2} />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-ink mb-1.5">
+                  <h3 className="font-heading font-bold text-lg text-ink mb-1.5 transition-colors duration-300 group-hover:text-teal">
                     {pillar.title}
                   </h3>
                   <p className="text-ink/70 leading-relaxed">

@@ -93,17 +93,17 @@ export function Values() {
             <motion.article
               key={v.title}
               variants={fadeIn}
-              className="flex flex-col"
+              className="group flex flex-col"
             >
               <IllustrationSlot
                 src={v.src}
                 aspect="aspect-square"
                 filenameHint={v.filename}
                 alt={v.title}
-                className="mb-8 rounded-2xl overflow-hidden"
+                className="u-media mb-8 rounded-2xl overflow-hidden ring-1 ring-ink/5 transition-shadow duration-300 group-hover:shadow-lg group-hover:shadow-teal/10"
                 imgClassName="object-contain"
               />
-              <h3 className="font-heading font-bold text-xl text-ink mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3 transition-colors duration-300 group-hover:text-teal">
                 {v.title}
               </h3>
               <p className="text-ink/70 leading-relaxed">{v.description}</p>

@@ -36,6 +36,7 @@ export function BookingSection() {
     (async function () {
       const cal = await getCalApi();
       cal("ui", {
+        theme: "light",
         styles: { branding: { brandColor: "#0D9488" } },
         hideEventTypeDetails: false,
         layout: "month_view",

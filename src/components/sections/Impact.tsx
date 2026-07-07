@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
+import { CountUp } from "../ui/CountUp";
 import { fadeIn, staggerContainer, blurIn } from "../../lib/motion";
 interface Stat {
   value: string;
@@ -47,9 +48,10 @@ export function Impact() {
               variants={fadeIn}
               className="group flex flex-col cursor-default"
             >
-              <span className="font-heading font-semibold text-ink leading-none tracking-[-0.03em] text-5xl md:text-6xl mb-3 transition-colors duration-300 group-hover:text-teal">
-                {stat.value}
-              </span>
+              <CountUp
+                value={stat.value}
+                className="font-heading font-semibold text-ink leading-none tracking-[-0.03em] text-5xl md:text-6xl mb-3 transition-colors duration-300 group-hover:text-teal"
+              />
               <span className="text-sm font-medium text-ink/60 uppercase tracking-wider transition-colors duration-300 group-hover:text-ink/80">
                 {stat.label}
               </span>

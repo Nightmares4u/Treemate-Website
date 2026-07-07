@@ -81,15 +81,15 @@ export function Hero() {
         >
           {}
           <div className="lg:col-span-7 xl:col-span-6 lg:ml-8 xl:ml-12 relative">
-            <CornerMarks color="#0D9488" opacity={0.55} size={18} inset={-2} />
+            <CornerMarks color="#0D9488" opacity={0.55} size={18} inset={-6} />
             <IllustrationSlot
               src={heroMeeting}
-              aspect="aspect-[4/3]"
+              aspect="aspect-[16/10]"
               filenameHint="illustrations/hero-meeting.png"
               alt="Team collaborating"
               loading="eager"
-              className="w-full h-full max-w-3xl"
-              imgClassName="w-full h-full object-contain object-bottom left-0 max-h-[40vh] lg:max-h-[44vh]"
+              className="w-full"
+              imgClassName="w-full h-full object-contain object-center p-2"
             />
           </div>
           {}

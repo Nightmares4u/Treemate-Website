@@ -56,14 +56,8 @@ export function ContactCards() {
         rotate={-12}
       />
       <MarkerAccent
-        variant="scribble"
-        className="absolute bottom-24 left-[4%] w-20 h-14 opacity-55"
-        color="#0D9488"
-        rotate={12}
-      />
-      <MarkerAccent
         variant="arrow"
-        className="absolute top-1/2 left-[3%] w-16 h-12 opacity-45"
+        className="absolute top-1/2 left-[3%] w-16 h-12 opacity-40"
         color="#0D9488"
         rotate={-40}
       />

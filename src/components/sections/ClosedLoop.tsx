@@ -4,7 +4,6 @@ import {
   Database,
   Headphones,
   UserCog,
-  ChevronsRight,
   RefreshCcw,
   type LucideIcon,
 } from "lucide-react";
@@ -110,34 +109,25 @@ export function ClosedLoop() {
                 variants={fadeIn}
                 className="relative flex"
               >
-                <div className="flex flex-col h-full w-full p-6 transition-colors">
+                <div className="group u-card flex flex-col h-full w-full rounded-2xl border border-ink/10 bg-surface p-6">
                   <div className="flex items-center justify-between mb-5">
-                    <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                    <span className="u-icon w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center">
+                      <Icon className="w-6 h-6" strokeWidth={2} />
                     </span>
-                    <span className="font-heading font-semibold text-4xl text-ink/10 leading-none">
+                    <span className="font-heading font-semibold text-4xl text-ink/10 leading-none transition-colors duration-300 group-hover:text-teal/30">
                       {i + 1}
                     </span>
                   </div>
                   <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                     {step.pillar}
                   </span>
-                  <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-2">
+                  <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-2 transition-colors duration-300 group-hover:text-teal">
                     {step.title}
                   </h3>
                   <p className="text-sm text-ink/70 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
-                {}
-                {i < steps.length - 1 && (
-                  <span className="absolute z-10 hidden lg:flex items-center justify-center -right-4 top-1/2 -translate-y-1/2 w-8 h-8">
-                    <ChevronsRight
-                      className="w-4 h-4 text-teal"
-                      strokeWidth={2.4}
-                    />
-                  </span>
-                )}
               </motion.div>
             );
           })}
