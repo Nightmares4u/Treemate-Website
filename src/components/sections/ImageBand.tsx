@@ -1,6 +1,5 @@
-import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
-import { easeOutExpo } from "../../lib/motion";
+import { Reveal } from "../motion/Reveal";
 interface ImageBandProps {
   src: string;
   alt: string;
@@ -20,13 +19,7 @@ export function ImageBand({
   return (
     <section className={`py-16 md:py-20 ${bgClass}`}>
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.9, ease: easeOutExpo }}
-          className="relative overflow-hidden"
-        >
+        <Reveal variant="frame" as="div" className="relative overflow-hidden">
           <div className={aspect}>
             <img
               src={src}
@@ -46,7 +39,7 @@ export function ImageBand({
               </p>
             </div>
           )}
-        </motion.div>
+        </Reveal>
       </Container>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Users,
   UserCog,
@@ -14,7 +14,8 @@ import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn } from "../../lib/motion";
+import { RevealGroup } from "../motion/Reveal";
+import { fadeIn, easeOutExpo, easeOutBack, viewportConfig } from "../../lib/motion";
 import { cn } from "../../lib/cn";
 import logoMark from "../../assets/logo-treemate.png";
 interface SaasProduct {
@@ -138,9 +139,19 @@ function Diagram({
   selected: string;
   onSelect: (id: string) => void;
 }) {
+  const reduced = useReducedMotion();
   const yValues = products.map((_, i) => nodeY(i, products.length));
   const spineY1 = Math.min(...yValues);
   const spineY2 = Math.max(...yValues);
+  const linePath = (delay: number) =>
+    reduced
+      ? {}
+      : {
+          initial: { pathLength: 0 } as const,
+          whileInView: { pathLength: 1 } as const,
+          viewport: viewportConfig,
+          transition: { duration: 0.35, ease: easeOutExpo, delay },
+        };
   return (
     <div className="relative h-[520px] w-full">
       <svg
@@ -150,7 +161,7 @@ function Diagram({
         aria-hidden="true"
       >
         {}
-        <path
+        <motion.path
           d={`M ${LINE_ORIGIN_X} ${ORIGIN.y} H ${SPINE_X}`}
           fill="none"
           stroke={LINE_COLOR}
@@ -158,9 +169,10 @@ function Diagram({
           strokeWidth={1}
           strokeLinecap="square"
           vectorEffect="non-scaling-stroke"
+          {...linePath(0.15)}
         />
         {}
-        <path
+        <motion.path
           d={`M ${SPINE_X} ${spineY1} V ${spineY2}`}
           fill="none"
           stroke={LINE_COLOR}
@@ -168,12 +180,13 @@ function Diagram({
           strokeWidth={1}
           strokeLinecap="square"
           vectorEffect="non-scaling-stroke"
+          {...linePath(0.42)}
         />
         {}
         {products.map((p, i) => {
           const y = nodeY(i, products.length);
           return (
-            <path
+            <motion.path
               key={p.id}
               d={`M ${SPINE_X} ${y} H ${NODE_X}`}
               fill="none"
@@ -182,14 +195,19 @@ function Diagram({
               strokeWidth={1}
               strokeLinecap="square"
               vectorEffect="non-scaling-stroke"
+              {...linePath(0.68 + i * 0.07)}
             />
           );
         })}
       </svg>
       {}
-      <div
+      <motion.div
         className="absolute z-0 -translate-x-1/2 -translate-y-1/2"
         style={{ left: `${ORIGIN.x}%`, top: `${ORIGIN.y}%` }}
+        initial={reduced ? undefined : { opacity: 0, scale: 0.85 }}
+        whileInView={reduced ? undefined : { opacity: 1, scale: 1 }}
+        viewport={viewportConfig}
+        transition={{ duration: 0.5, ease: easeOutExpo }}
       >
         <div className="flex flex-col items-center gap-2 text-center">
           <img
@@ -202,14 +220,14 @@ function Diagram({
             Treemate Platform
           </span>
         </div>
-      </div>
+      </motion.div>
       {}
       {products.map((p, i) => {
         const y = nodeY(i, products.length);
         const isActive = p.id === selected;
         const Icon = p.icon;
         return (
-          <button
+          <motion.button
             key={p.id}
             type="button"
             onClick={() => onSelect(p.id)}
@@ -218,6 +236,14 @@ function Diagram({
             aria-pressed={isActive}
             className="absolute z-20 outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-cream -translate-y-1/2"
             style={{ left: `${NODE_X}%`, top: `${y}%` }}
+            initial={reduced ? undefined : { opacity: 0, scale: 0.6 }}
+            whileInView={reduced ? undefined : { opacity: 1, scale: 1 }}
+            viewport={viewportConfig}
+            transition={{
+              duration: 0.35,
+              ease: easeOutBack,
+              delay: 0.72 + i * 0.07,
+            }}
           >
             <span
               className={cn(
@@ -238,7 +264,7 @@ function Diagram({
                 {p.abbr}
               </span>
             </span>
-          </button>
+          </motion.button>
         );
       })}
     </div>
@@ -287,7 +313,12 @@ export function SaasTree() {
               <Diagram selected={selected} onSelect={setSelected} />
             </div>
             {}
-            <div className="lg:hidden flex flex-wrap gap-2.5">
+            <RevealGroup
+              variant="scale"
+              stagger={0.06}
+              as="div"
+              className="lg:hidden flex flex-wrap gap-2.5"
+            >
               {products.map((p) => {
                 const isActive = p.id === selected;
                 const Icon = p.icon;
@@ -309,7 +340,7 @@ export function SaasTree() {
                   </button>
                 );
               })}
-            </div>
+            </RevealGroup>
           </div>
           {}
           <div className="lg:col-span-5">

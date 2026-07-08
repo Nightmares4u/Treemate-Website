@@ -6,7 +6,9 @@ import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
 import { HighlighterMark } from "../ui/HighlighterMark";
 import { CornerMarks } from "../ui/CornerMarks";
-import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
+import { Reveal } from "../motion/Reveal";
+import { AnimatedHeadline } from "../motion/AnimatedHeadline";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import heroMeeting from "../../assets/illustrations/hero-meeting.png";
 import bigTreeLogo from "../../assets/logo-treemate.png";
 export function Hero() {
@@ -31,15 +33,15 @@ export function Hero() {
           {}
           <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-8">
             {}
-            <motion.h1
-              variants={blurIn}
+            <h1
               className="font-heading font-normal tracking-tight leading-[1.1]"
               style={{
                 fontSize: "clamp(3rem, 6.5vw, 6.5rem)",
                 color: "#0A1628",
               }}
             >
-              Empowering <br />
+              <AnimatedHeadline as="span" text="Empowering" className="inline-block" />
+              <br />
               <span className="relative inline-block">
                 {}
                 <HighlighterMark
@@ -48,9 +50,14 @@ export function Hero() {
                   rotate={-1.4}
                   className="absolute left-[-2%] right-[-2%] top-[18%] bottom-[10%] w-[104%] h-[72%] -z-10"
                 />
-                <span className="relative z-10">Global Businesses</span>
+                <AnimatedHeadline
+                  as="span"
+                  text="Global Businesses"
+                  delay={0.3}
+                  className="relative z-10 inline-block"
+                />
               </span>
-            </motion.h1>
+            </h1>
             {}
             <motion.div
               variants={fadeIn}
@@ -82,7 +89,11 @@ export function Hero() {
           className="mt-2 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-end"
         >
           {}
-          <div className="lg:col-span-7 xl:col-span-6 lg:ml-8 xl:ml-12 relative">
+          <Reveal
+            variant="frame"
+            as="div"
+            className="lg:col-span-7 xl:col-span-6 lg:ml-8 xl:ml-12 relative"
+          >
             <CornerMarks color="#0D9488" opacity={0.55} size={18} inset={-2} />
             <IllustrationSlot
               src={heroMeeting}
@@ -93,7 +104,7 @@ export function Hero() {
               className="w-full h-full max-w-3xl"
               imgClassName="w-full h-full object-contain object-bottom left-0 max-h-[40vh] lg:max-h-[44vh]"
             />
-          </div>
+          </Reveal>
           {}
           <div className="lg:col-span-5 xl:col-start-8 flex flex-col gap-6 lg:ml-8 xl:ml-12 self-center relative -top-7 lg:-top-10">
             {}

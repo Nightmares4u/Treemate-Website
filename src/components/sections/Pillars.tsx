@@ -5,7 +5,7 @@ import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { RevealGroup } from "../motion/Reveal";
 import customSoftwareSvg from "../../assets/illustrations/our-expertise/custom-software.svg";
 import aiPoweredSvg from "../../assets/illustrations/our-expertise/Ai-powered.svg";
 import staffMeetSvg from "../../assets/illustrations/our-expertise/staff-meet.svg";
@@ -114,26 +114,24 @@ export function Pillars() {
             </p>
           </div>
         </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="scale"
+          stagger={0.1}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {capabilities.map((c) => (
-            <motion.article
+            <article
               key={c.title}
-              variants={fadeIn}
-              className="group flex flex-col"
+              className="group flex flex-col rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
             >
               <IllustrationSlot
                 src={c.src}
                 aspect="aspect-[4/3]"
                 filenameHint={c.filename}
                 alt={c.title}
-                className="mb-8 rounded-xl overflow-hidden p-4 lg:p-8"
-                imgClassName="object-contain"
+                className="mb-8 rounded-xl overflow-hidden p-4 lg:p-8 transition-[filter] duration-300 group-hover:drop-shadow-[0_12px_24px_rgba(13,148,136,0.25)]"
+                imgClassName="object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                 {c.pillar}
@@ -144,9 +142,9 @@ export function Pillars() {
               <p className="text-sm text-navy/70 leading-relaxed">
                 {c.description}
               </p>
-            </motion.article>
+            </article>
           ))}
-        </motion.div>
+        </RevealGroup>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

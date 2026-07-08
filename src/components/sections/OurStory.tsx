@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { staggerContainer, fadeOnly, easeOutExpo, scaleIn } from "../../lib/motion";
 import { cn } from "../../lib/cn";
 interface Milestone {
   year: string;
@@ -36,6 +37,20 @@ const milestones: Milestone[] = [
   },
 ];
 export function OurStory() {
+  const reduced = useReducedMotion();
+
+  const slideVariants = (alignRight: boolean): Variants =>
+    reduced
+      ? fadeOnly
+      : {
+          hidden: { opacity: 0, x: alignRight ? 28 : -28 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.7, ease: easeOutExpo },
+          },
+        };
+
   return (
     <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
       <BackgroundSpirals side="both" opacity={0.12} />
@@ -73,16 +88,17 @@ export function OurStory() {
             return (
               <motion.li
                 key={m.title}
-                variants={fadeIn}
+                variants={slideVariants(alignRight)}
                 className="relative pb-12 md:pb-16 last:pb-0"
               >
                 {}
-                <span
+                <motion.span
                   aria-hidden="true"
+                  variants={reduced ? fadeOnly : scaleIn}
                   className="absolute left-4 md:left-1/2 top-2 -translate-x-1/2 flex items-center justify-center z-10"
                 >
                   <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-cream" />
-                </span>
+                </motion.span>
                 {}
                 <div
                   className={cn(

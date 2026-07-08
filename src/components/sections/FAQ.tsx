@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
+import { Reveal } from "../motion/Reveal";
 import { cn } from "../../lib/cn";
 interface FaqItem {
   question: string;
@@ -56,10 +57,13 @@ export function FAQ() {
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <div
+              <Reveal
                 key={faq.question}
+                variant="fade"
+                delay={i * 0.08}
+                as="div"
                 className={cn(
-                  "overflow-hidden transition-colors border-b",
+                  "overflow-hidden border-b",
                   isOpen
                     ? "border-teal/40"
                     : "border-navy/10 hover:border-navy/25",
@@ -76,7 +80,7 @@ export function FAQ() {
                   </span>
                   <span
                     className={cn(
-                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-all",
+                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-transform duration-300",
                       isOpen
                         ? "bg-teal text-white rotate-45"
                         : "bg-cream text-navy",
@@ -101,7 +105,7 @@ export function FAQ() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </Reveal>
             );
           })}
         </div>

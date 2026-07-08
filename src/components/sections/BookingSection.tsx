@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
+import { Reveal } from "../motion/Reveal";
 export function BookingSection() {
   useEffect(() => {
     (async function () {
@@ -46,7 +47,7 @@ export function BookingSection() {
             align="center"
           />
         </div>
-        <div className="w-full max-w-5xl mx-auto">
+        <Reveal variant="frame" as="div" className="w-full max-w-5xl mx-auto">
           <Cal
             calLink="treemate"
             style={{
@@ -57,7 +58,7 @@ export function BookingSection() {
             }}
             config={{ layout: "month_view" }}
           />
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

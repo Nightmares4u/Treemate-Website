@@ -32,10 +32,10 @@ export function IntroCurtain() {
 
   // Reduced motion: never play; record so nothing flashes later either.
   useEffect(() => {
-    if (reduced && show) {
-      markSeen();
-      setShow(false);
-    }
+    if (!(reduced && show)) return;
+    markSeen();
+    const id = window.setTimeout(() => setShow(false), 0);
+    return () => window.clearTimeout(id);
   }, [reduced, show]);
 
   if (!show || reduced) return null;

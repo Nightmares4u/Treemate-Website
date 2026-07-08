@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   Handshake,
   Database,
@@ -11,7 +10,7 @@ import {
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
+import { Reveal, RevealGroup } from "../motion/Reveal";
 interface LoopStep {
   icon: LucideIcon;
   pillar: string;
@@ -95,24 +94,19 @@ export function ClosedLoop() {
           </div>
         </div>
         {}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="frame"
+          stagger={0.12}
           className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-4"
         >
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <motion.div
-                key={step.title}
-                variants={fadeIn}
-                className="relative flex"
-              >
-                <div className="flex flex-col h-full w-full p-6 transition-colors">
+              <div key={step.title} className="group relative flex">
+                <div className="flex flex-col h-full w-full p-6 transition-transform duration-300 ease-out group-hover:-translate-y-1">
                   <div className="flex items-center justify-between mb-5">
-                    <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center">
+                    <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                       <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
                     </span>
                     <span className="font-heading font-semibold text-4xl text-navy/10 leading-none">
@@ -138,17 +132,14 @@ export function ClosedLoop() {
                     />
                   </span>
                 )}
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </RevealGroup>
         {}
-        <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: easeOutExpo }}
+        <Reveal
+          variant="blur"
+          as="div"
           className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 py-6 border-t border-dashed border-teal/40"
         >
           <span className="w-12 h-12 shrink-0 rounded-xl bg-teal flex items-center justify-center shadow-lg shadow-teal/20">
@@ -160,7 +151,7 @@ export function ClosedLoop() {
             your customers are served, your agents are managed, and nothing
             falls through the gaps between four separate companies.
           </p>
-        </motion.div>
+        </Reveal>
       </Container>
     </section>
   );
