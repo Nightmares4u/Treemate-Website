@@ -44,6 +44,70 @@
     @apply font-heading tracking-tight;
   }
 }
+/* Reusable interaction system — consistent, on-brand hover motion
+   (ported from the Aakif's-mix design). */
+@layer components {
+  /* Lifting card: pairs with an existing `border` on the element.
+     Smooth expo ease + soft teal-tinted shadow (not a generic grey drop). */
+  .u-card {
+    @apply transition-all duration-[450ms] will-change-transform;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .u-card:hover {
+    @apply -translate-y-2 border-teal/35;
+    box-shadow:
+      0 22px 48px -24px rgba(13, 148, 136, 0.4),
+      0 8px 18px -12px rgba(10, 22, 40, 0.12);
+  }
+
+  /* Image/media that gently zooms on hover — wrap the <img> */
+  .u-media {
+    @apply overflow-hidden;
+  }
+  .u-media img {
+    @apply transition-transform duration-[900ms] ease-out will-change-transform;
+  }
+  .u-media:hover img,
+  .group:hover .u-media img {
+    @apply scale-[1.06];
+  }
+
+  /* Animated teal underline that grows from the left on hover */
+  .u-underline {
+    @apply relative;
+  }
+  .u-underline::after {
+    content: "";
+    @apply pointer-events-none absolute left-0 -bottom-1 h-px w-0 bg-teal transition-all duration-300 ease-out;
+  }
+  .u-underline:hover::after,
+  .group:hover .u-underline::after {
+    @apply w-full;
+  }
+
+  /* Icon tile that fills with teal when its `.group` ancestor is hovered,
+     and gives a quick press when clicked directly. */
+  .u-icon {
+    @apply transition-all duration-[450ms];
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .group:hover .u-icon {
+    @apply bg-teal text-white border-teal;
+    transform: scale(1.08) rotate(-3deg);
+  }
+  .u-icon:active {
+    transform: scale(0.9);
+    transition-duration: 120ms;
+  }
+
+  /* Chevron / arrow that slides on the group's hover */
+  .u-arrow {
+    @apply transition-transform duration-300 ease-out;
+  }
+  .group:hover .u-arrow {
+    @apply translate-x-1;
+  }
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

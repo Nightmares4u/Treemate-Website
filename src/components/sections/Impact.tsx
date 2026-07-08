@@ -11,8 +11,8 @@ interface Stat {
   label: string;
 }
 const stats: Stat[] = [
-  { value: "3", label: "Integrated pillars" },
-  { value: "US + AU", label: "Markets we serve" },
+  { value: "4", label: "Integrated pillars" },
+  { value: "Global", label: "Coverage" },
   { value: "24/7", label: "Support coverage" },
   { value: "1", label: "Loop, not four vendors" },
 ];

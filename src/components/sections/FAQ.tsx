@@ -63,7 +63,7 @@ export function FAQ() {
                 delay={i * 0.08}
                 as="div"
                 className={cn(
-                  "overflow-hidden border-b",
+                  "group overflow-hidden transition-colors border-b",
                   isOpen
                     ? "border-teal/40"
                     : "border-navy/10 hover:border-navy/25",
@@ -75,15 +75,22 @@ export function FAQ() {
                   aria-expanded={isOpen}
                   className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 md:px-7 md:py-6"
                 >
-                  <span className="font-heading font-semibold text-base md:text-lg text-navy">
+                  <span
+                    className={cn(
+                      "font-heading font-semibold text-base md:text-lg transition-colors duration-200",
+                      isOpen
+                        ? "text-teal"
+                        : "text-navy group-hover:text-teal",
+                    )}
+                  >
                     {faq.question}
                   </span>
                   <span
                     className={cn(
-                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-transform duration-300",
+                      "w-9 h-9 shrink-0 rounded-full flex items-center justify-center border transition-all duration-300",
                       isOpen
-                        ? "bg-teal text-white rotate-45"
-                        : "bg-cream text-navy",
+                        ? "bg-teal text-white border-teal rotate-45"
+                        : "bg-cream text-navy border-navy/10 group-hover:border-teal/40 group-hover:text-teal",
                     )}
                   >
                     <Plus className="w-4 h-4" strokeWidth={2.4} />

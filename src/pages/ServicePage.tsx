@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ChevronsRight } from "lucide-react";
 import { Container } from "../components/layout/Container";
 import { ImageBand } from "../components/sections/ImageBand";
 import { SaasTree } from "../components/sections/SaasTree";
@@ -11,7 +10,6 @@ import { BackgroundSpirals } from "../components/ui/BackgroundSpirals";
 import { MarkerAccent } from "../components/ui/MarkerAccent";
 import { RevealGroup } from "../components/motion/Reveal";
 import { Counter } from "../components/motion/Counter";
-import { lineRise, fadeIn, easeOutExpo, viewportConfig } from "../lib/motion";
 import { getService } from "../data/services";
 import { NotFoundPage } from "./NotFoundPage";
 export function ServicePage({ slug }: { slug: string }) {
@@ -69,25 +67,29 @@ export function ServicePage({ slug }: { slug: string }) {
           />
           <RevealGroup
             key={service.slug + "-capabilities"}
-            variant="scale"
-            stagger={0.09}
+            variant="frame"
+            stagger={0.1}
             as="div"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
           >
-            {service.capabilities.map((cap) => (
-              <div
-                key={cap.title}
-                className="group relative flex flex-col p-6 rounded-2xl border border-transparent transition-all duration-300 hover:-translate-y-1.5 hover:border-teal/40 hover:shadow-[0_20px_40px_-18px_rgba(13,148,136,0.35)]"
-              >
-                <div className="w-12 h-12 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-1">
-                  <cap.icon className="w-8 h-8 text-teal" strokeWidth={1.8} />
+            {service.capabilities.map((cap, i) => (
+              <div key={cap.title} className="group relative flex">
+                <div className="flex flex-col h-full w-full p-6 transition-transform duration-300 ease-out group-hover:-translate-y-1">
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                      <cap.icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                    </span>
+                    <span className="font-heading font-semibold text-4xl text-navy/10 leading-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-bold text-xl text-navy leading-snug mb-2">
+                    {cap.title}
+                  </h3>
+                  <p className="text-navy/70 leading-relaxed">
+                    {cap.description}
+                  </p>
                 </div>
-                <h3 className="font-heading font-bold text-xl text-navy mb-3">
-                  {cap.title}
-                </h3>
-                <p className="text-navy/70 leading-relaxed">
-                  {cap.description}
-                </p>
               </div>
             ))}
           </RevealGroup>
@@ -103,52 +105,37 @@ export function ServicePage({ slug }: { slug: string }) {
             title="From scope to live in four steps"
             subtitle="A clear, accountable path from first conversation to a team that's running your operation."
           />
-          <motion.div
+          <RevealGroup
             key={service.slug + "-process"}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.16, delayChildren: 0.05 } },
-            }}
-            className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            as="div"
+            variant="frame"
+            stagger={0.12}
+            className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 max-w-6xl mx-auto"
           >
-            <motion.div
-              aria-hidden="true"
-              className="hidden lg:block absolute left-0 right-0 top-[34px] h-px bg-teal/25 origin-left"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={viewportConfig}
-              transition={{ duration: 1.1, ease: easeOutExpo, delay: 0.2 }}
-            />
             {service.process.map((step, i) => (
-              <div key={step.title} className="relative p-2">
-                <div className="overflow-hidden">
-                  <motion.span
-                    variants={lineRise}
-                    className="inline-block font-heading font-bold text-5xl text-teal/25 leading-none"
-                  >
+              <div key={step.title} className="group relative flex">
+                <div className="flex flex-col h-full w-full p-6 transition-transform duration-300 ease-out group-hover:-translate-y-1">
+                  <span className="font-heading font-semibold text-5xl text-teal/25 leading-none mb-5 transition-colors duration-300 group-hover:text-teal/50">
                     {String(i + 1).padStart(2, "0")}
-                  </motion.span>
-                </div>
-                <div className="overflow-hidden mt-4 mb-2">
-                  <motion.h3
-                    variants={lineRise}
-                    className="font-heading font-bold text-lg text-navy leading-tight"
-                  >
+                  </span>
+                  <h3 className="font-heading font-bold text-lg text-navy leading-snug mb-2">
                     {step.title}
-                  </motion.h3>
+                  </h3>
+                  <p className="text-sm text-navy/70 leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-                <motion.p
-                  variants={fadeIn}
-                  className="text-sm text-navy/70 leading-relaxed"
-                >
-                  {step.description}
-                </motion.p>
+                {i < service.process.length - 1 && (
+                  <span className="absolute z-10 hidden lg:flex items-center justify-center -right-4 top-1/2 -translate-y-1/2 w-8 h-8">
+                    <ChevronsRight
+                      className="w-4 h-4 text-teal"
+                      strokeWidth={2.4}
+                    />
+                  </span>
+                )}
               </div>
             ))}
-          </motion.div>
+          </RevealGroup>
         </Container>
       </section>
       <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">

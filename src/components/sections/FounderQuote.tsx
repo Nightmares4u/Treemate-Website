@@ -6,7 +6,7 @@ import { fadeIn, staggerContainer } from "../../lib/motion";
 const quote =
   "Our focus is on building the loop — software, staff, and support — that lets clients grow without stitching together four vendors. That's the whole idea.";
 const name = "Mohommad Ibraheem Hashmi";
-const role = "Co-founder, Treemate";
+const role = "COO, Treemate";
 export function FounderQuote() {
   return (
     <section className="relative overflow-hidden bg-navy py-24 md:py-32">

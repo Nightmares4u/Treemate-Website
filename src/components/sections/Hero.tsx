@@ -4,7 +4,6 @@ import { Container } from "../layout/Container";
 import { LinkButton } from "../ui/LinkButton";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { HighlighterMark } from "../ui/HighlighterMark";
 import { CornerMarks } from "../ui/CornerMarks";
 import { Reveal } from "../motion/Reveal";
 import { AnimatedHeadline } from "../motion/AnimatedHeadline";
@@ -43,13 +42,6 @@ export function Hero() {
               <AnimatedHeadline as="span" text="Empowering" className="inline-block" />
               <br />
               <span className="relative inline-block">
-                {}
-                <HighlighterMark
-                  color="#B8F0DC"
-                  opacity={0.75}
-                  rotate={-1.4}
-                  className="absolute left-[-2%] right-[-2%] top-[18%] bottom-[10%] w-[104%] h-[72%] -z-10"
-                />
                 <AnimatedHeadline
                   as="span"
                   text="Global Businesses"

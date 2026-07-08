@@ -28,8 +28,8 @@ export default {
       },
       fontFamily: {
         heading: ['Geist', 'sans-serif'],
-        body: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-        mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        body: ['Geist', 'sans-serif'],
+        mono: ['Geist', 'sans-serif'],
       },
       animation: {
         'float-gentle': 'float-gentle 6s ease-in-out infinite',

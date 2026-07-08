@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { Layers, GraduationCap, Award, type LucideIcon } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
-import { Reveal, RevealGroup } from "../motion/Reveal";
-import { easeOutExpo, viewportConfig } from "../../lib/motion";
+import { Reveal } from "../motion/Reveal";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import careerFair from "../../assets/office/career-fair.jpg";
 interface Pillar {
   icon: LucideIcon;
@@ -59,45 +59,33 @@ export function TalentNetwork() {
             </div>
           </Reveal>
           {}
-          <div className="relative">
-            <motion.div
-              aria-hidden="true"
-              className="hidden md:block absolute left-6 top-6 bottom-6 w-px bg-teal/25 origin-top"
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={viewportConfig}
-              transition={{ duration: 1.1, ease: easeOutExpo, delay: 0.15 }}
-            />
-            <RevealGroup
-              variant="scale"
-              stagger={0.14}
-              delayChildren={0.1}
-              as="div"
-              className="flex flex-col gap-5 relative"
-            >
-              {pillars.map((pillar) => (
-                <div
-                  key={pillar.title}
-                  className="flex gap-5 p-2 transition-colors"
-                >
-                  <div className="relative z-10 w-12 h-12 shrink-0 rounded-xl bg-teal/10 flex items-center justify-center">
-                    <pillar.icon
-                      className="w-6 h-6 text-teal"
-                      strokeWidth={2}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-bold text-lg text-navy mb-1.5">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-slate-600 leading-relaxed">
-                      {pillar.description}
-                    </p>
-                  </div>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="flex flex-col gap-5"
+          >
+            {pillars.map((pillar) => (
+              <motion.div
+                key={pillar.title}
+                variants={fadeIn}
+                className="group flex gap-5 rounded-2xl p-3 transition-colors duration-300 hover:bg-cream-soft/70"
+              >
+                <div className="u-icon w-12 h-12 shrink-0 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center active:scale-90">
+                  <pillar.icon className="w-6 h-6" strokeWidth={2} />
                 </div>
-              ))}
-            </RevealGroup>
-          </div>
+                <div>
+                  <h3 className="font-heading font-bold text-lg text-navy mb-1.5 transition-colors duration-300 group-hover:text-teal">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-navy/70 leading-relaxed">
+                    {pillar.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </Container>
     </section>

@@ -15,14 +15,14 @@ const executives = [
     role: "CEO, Treemate US",
     photo: "team/yashal-treemate.jpeg",
     src: founder2,
-    bio: "Yashal pairs technical depth with entrepreneurial execution. A Computer Science student at the University of Alberta, he has built enterprise-grade systems as an AI Systems Engineer at Systems Ltd. and sharpened his auditing edge at KPMG. As CEO, he architects the technology and human capital systems that let businesses scale without friction.",
+    bio: "Yashal pairs technical depth with entrepreneurial execution. He has built enterprise-grade systems as an AI Systems Engineer at Systems Ltd. and sharpened his auditing edge at KPMG. As CEO, he architects the technology and human capital systems that let businesses scale without friction.",
   },
   {
     name: "Syed Ibraheem Hashmi",
-    role: "Co-Founder & COO, Treemate US",
+    role: "COO, Treemate US",
     photo: "team/Ibraheem-treemate.jpeg",
     src: founder1,
-    bio: "Ibraheem combines full-stack development with a strong background in BPO operations. Previously at IBEX Global, he spent 5 years running high-volume campaigns for major accounts like Walmart and SquareTrade. As COO, he leverages his mastery of pipeline management and agent performance systems to build the scalable operational blueprints that power Treemate.",
+    bio: "Ibraheem combines his technical edge as a full-stack developer with 5 years of hands-on experience in sales and BPO operations. With a background that includes driving enterprise campaigns at IBEX Global, he currently serves as COO, engineering the pipeline management and agent performance systems that keep Treemate scaling without friction.",
   },
 ];
 export function MeetTheTeam() {

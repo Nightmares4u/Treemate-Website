@@ -1,9 +1,8 @@
-import { motion, useReducedMotion } from "framer-motion";
-import type { Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { staggerContainer, fadeOnly, easeOutExpo, scaleIn } from "../../lib/motion";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import { cn } from "../../lib/cn";
 interface Milestone {
   year: string;
@@ -12,7 +11,7 @@ interface Milestone {
 }
 const milestones: Milestone[] = [
   {
-    year: "2024",
+    year: "2022",
     title: "The Beginning",
     description:
       "Treemate is founded on the closed-loop principle: build the software, staff the people, and support the customers — under one accountable partnership.",
@@ -37,20 +36,6 @@ const milestones: Milestone[] = [
   },
 ];
 export function OurStory() {
-  const reduced = useReducedMotion();
-
-  const slideVariants = (alignRight: boolean): Variants =>
-    reduced
-      ? fadeOnly
-      : {
-          hidden: { opacity: 0, x: alignRight ? 28 : -28 },
-          visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.7, ease: easeOutExpo },
-          },
-        };
-
   return (
     <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
       <BackgroundSpirals side="both" opacity={0.12} />
@@ -66,7 +51,7 @@ export function OurStory() {
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              Since 2024
+              Since 2022
             </p>
           </div>
         </div>
@@ -88,17 +73,16 @@ export function OurStory() {
             return (
               <motion.li
                 key={m.title}
-                variants={slideVariants(alignRight)}
-                className="relative pb-12 md:pb-16 last:pb-0"
+                variants={fadeIn}
+                className="group relative pb-12 md:pb-16 last:pb-0"
               >
                 {}
-                <motion.span
+                <span
                   aria-hidden="true"
-                  variants={reduced ? fadeOnly : scaleIn}
                   className="absolute left-4 md:left-1/2 top-2 -translate-x-1/2 flex items-center justify-center z-10"
                 >
-                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-cream" />
-                </motion.span>
+                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-cream transition-all duration-300 group-hover:scale-[1.6] group-hover:ring-teal/20" />
+                </span>
                 {}
                 <div
                   className={cn(
@@ -111,7 +95,7 @@ export function OurStory() {
                   <span className="text-sm font-semibold uppercase tracking-[0.14em] text-teal mb-2">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-navy leading-tight mb-3">
+                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-navy leading-tight mb-3 transition-colors duration-300 group-hover:text-teal">
                     {m.title}
                   </h3>
                   <p className="text-navy/70 leading-relaxed">
