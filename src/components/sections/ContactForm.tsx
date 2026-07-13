@@ -1,65 +1,93 @@
-import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronsRight, Check } from "lucide-react";
+import { ChevronsRight, Loader2, TriangleAlert } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
+import { FormSuccessDialog } from "../ui/FormSuccessDialog";
 import { fadeIn, staggerContainer } from "../../lib/motion";
-import { siteConfig } from "../../data/site";
 import { cn } from "../../lib/cn";
 interface FormState {
   firstName: string;
   lastName: string;
+  email: string;
+  phone: string;
   service: string;
   budget: string;
   subject: string;
   message: string;
+  /** Honeypot — hidden from real visitors, must stay empty. */
+  website: string;
 }
 const initialForm: FormState = {
   firstName: "",
   lastName: "",
+  email: "",
+  phone: "",
   service: "",
   budget: "",
   subject: "",
   message: "",
+  website: "",
 };
 const services = [
-  { value: "software-ai", label: "Software & AI" },
-  { value: "hr-solutions", label: "HR Solutions" },
-  { value: "customer-success", label: "Customer Success" },
-  { value: "not-sure", label: "Not sure yet — help me scope" },
+  { value: "Software & AI", label: "Software & AI" },
+  { value: "HR Solutions", label: "HR Solutions" },
+  { value: "BPO Services", label: "BPO Services" },
+  { value: "Not sure yet", label: "Not sure yet — help me scope" },
 ];
 const inputBase =
   "w-full rounded-xl border border-navy/15 bg-white px-4 py-3 text-navy placeholder-navy/40 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors";
+type Status = "idle" | "sending" | "error";
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm);
-  const [status, setStatus] = useState<"idle" | "sending">("idle");
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
   const onChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-  useEffect(() => {
-    if (status !== "sending") return;
-    const timer = window.setTimeout(() => setStatus("idle"), 2200);
-    return () => window.clearTimeout(timer);
-  }, [status]);
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (status === "sending") return;
+
     setStatus("sending");
-    const subject = form.subject.trim() || "New inquiry via treemate.us";
-    const body = [
-      `Name: ${form.firstName} ${form.lastName}`.trim(),
-      `Service: ${services.find((s) => s.value === form.service)?.label ?? "Not specified"}`,
-      form.budget ? `Budget: ${form.budget}` : null,
-      "",
-      form.message,
-    ]
-      .filter(Boolean)
-      .join("\n");
-    const href = `mailto:${siteConfig.emails.sales}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "The form could not be submitted.");
+      }
+
+      setForm(initialForm);
+      setStatus("idle");
+      setSuccessMessage(
+        result.message ??
+          "Your message was submitted successfully. We'll be in touch shortly.",
+      );
+      setSuccessOpen(true);
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    }
   };
   return (
     <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
@@ -110,6 +138,7 @@ export function ContactForm() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           onSubmit={onSubmit}
+          noValidate={false}
           className="max-w-4xl flex flex-col gap-8"
         >
           <div className="grid md:grid-cols-2 gap-6">
@@ -121,6 +150,8 @@ export function ContactForm() {
                 name="firstName"
                 type="text"
                 required
+                maxLength={100}
+                autoComplete="given-name"
                 value={form.firstName}
                 onChange={onChange}
                 placeholder="Ada"
@@ -128,11 +159,15 @@ export function ContactForm() {
               />
             </motion.label>
             <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Last Name</span>
+              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+                Last Name
+              </span>
               <input
                 name="lastName"
                 type="text"
                 required
+                maxLength={100}
+                autoComplete="family-name"
                 value={form.lastName}
                 onChange={onChange}
                 placeholder="Lovelace"
@@ -142,7 +177,45 @@ export function ContactForm() {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Service</span>
+              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+                Email Address
+              </span>
+              <input
+                name="email"
+                type="email"
+                required
+                maxLength={254}
+                autoComplete="email"
+                inputMode="email"
+                value={form.email}
+                onChange={onChange}
+                placeholder="ada@company.com"
+                className={inputBase}
+              />
+            </motion.label>
+            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
+              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+                Phone Number
+              </span>
+              <input
+                name="phone"
+                type="tel"
+                required
+                maxLength={50}
+                autoComplete="tel"
+                inputMode="tel"
+                value={form.phone}
+                onChange={onChange}
+                placeholder="+1 780 804 0473"
+                className={inputBase}
+              />
+            </motion.label>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
+              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+                Service
+              </span>
               <select
                 name="service"
                 required
@@ -161,10 +234,13 @@ export function ContactForm() {
               </select>
             </motion.label>
             <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Budget</span>
+              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+                Budget
+              </span>
               <input
                 name="budget"
                 type="text"
+                maxLength={100}
                 value={form.budget}
                 onChange={onChange}
                 placeholder="e.g. $25k–$50k / month"
@@ -173,10 +249,13 @@ export function ContactForm() {
             </motion.label>
           </div>
           <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Subject</span>
+            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+              Subject
+            </span>
             <input
               name="subject"
               type="text"
+              maxLength={200}
               value={form.subject}
               onChange={onChange}
               placeholder="What's this about?"
@@ -184,10 +263,13 @@ export function ContactForm() {
             />
           </motion.label>
           <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Message</span>
+            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+              Message
+            </span>
             <textarea
               name="message"
               required
+              maxLength={5000}
               value={form.message}
               onChange={onChange}
               rows={6}
@@ -195,13 +277,29 @@ export function ContactForm() {
               className={cn(inputBase, "resize-y min-h-[160px]")}
             />
           </motion.label>
-          <motion.div variants={fadeIn}>
+          {}
+          <div
+            aria-hidden="true"
+            className="absolute -left-[10000px] h-px w-px overflow-hidden"
+          >
+            <label htmlFor="website">Leave this field empty</label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.website}
+              onChange={onChange}
+            />
+          </div>
+          <motion.div variants={fadeIn} className="flex flex-col gap-4">
             <motion.button
               type="submit"
               disabled={status === "sending"}
-              whileHover={status === "idle" ? { scale: 1.03 } : undefined}
-              whileTap={status === "idle" ? { scale: 0.97 } : undefined}
-              className="inline-flex items-center gap-2 rounded-full bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-80"
+              whileHover={status !== "sending" ? { scale: 1.03 } : undefined}
+              whileTap={status !== "sending" ? { scale: 0.97 } : undefined}
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-80"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {status === "sending" ? (
@@ -213,8 +311,8 @@ export function ContactForm() {
                     transition={{ duration: 0.2 }}
                     className="inline-flex items-center gap-2"
                   >
-                    Opening your email
-                    <Check className="w-4 h-4" strokeWidth={2.4} />
+                    Sending
+                    <Loader2 className="w-4 h-4 animate-spin" strokeWidth={2.4} />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -231,9 +329,30 @@ export function ContactForm() {
                 )}
               </AnimatePresence>
             </motion.button>
+            <AnimatePresence>
+              {status === "error" && errorMessage && (
+                <motion.p
+                  role="alert"
+                  aria-live="assertive"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-flex w-fit items-center gap-2.5 rounded-xl border border-rose-500/30 bg-rose-500/5 px-4 py-3 text-sm font-medium text-rose-700"
+                >
+                  <TriangleAlert className="w-4 h-4 shrink-0" strokeWidth={2.2} />
+                  {errorMessage}
+                </motion.p>
+              )}
+            </AnimatePresence>
           </motion.div>
         </motion.form>
       </Container>
+      <FormSuccessDialog
+        open={successOpen}
+        message={successMessage}
+        onClose={() => setSuccessOpen(false)}
+      />
     </section>
   );
 }
