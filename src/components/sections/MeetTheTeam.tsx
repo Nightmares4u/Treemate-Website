@@ -11,14 +11,14 @@ import founder2 from "../../assets/team/yashal-treemate.jpeg";
 import founder3 from "../../assets/team/sir-raza-portrait.png";
 const executives = [
   {
-    name: "Syed Yashal Raza",
+    name: "Syed Yashal",
     role: "CEO, Treemate US",
     photo: "team/yashal-treemate.jpeg",
     src: founder2,
     bio: "Yashal pairs technical depth with entrepreneurial execution. He has built enterprise-grade systems as an AI Systems Engineer at Systems Ltd. and sharpened his auditing edge at KPMG. As CEO, he architects the technology and human capital systems that let businesses scale without friction.",
   },
   {
-    name: "Syed Ibraheem Hashmi",
+    name: "Ibraheem Hashmi",
     role: "COO, Treemate US",
     photo: "team/Ibraheem-treemate.jpeg",
     src: founder1,
