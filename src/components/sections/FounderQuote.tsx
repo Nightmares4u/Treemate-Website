@@ -5,7 +5,7 @@ import { AnimatedHeadline } from "../motion/AnimatedHeadline";
 import { fadeIn, staggerContainer } from "../../lib/motion";
 const quote =
   "Our focus is on building the loop — software, staff, and support — that lets clients grow without stitching together four vendors. That's the whole idea.";
-const name = "Mohommad Ibraheem Hashmi";
+const name = "Ibraheem Hashmi";
 const role = "COO, Treemate";
 export function FounderQuote() {
   return (
