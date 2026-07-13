@@ -40,7 +40,7 @@ export function TreemateLogo({
           "font-heading font-semibold leading-none",
           s.text,
           wordmarkCase === "upper" && "tracking-[0.14em]",
-          isWhite ? "text-white" : "text-ink",
+          isWhite ? "text-white" : "text-navy",
         )}
       >
         {wordmark}

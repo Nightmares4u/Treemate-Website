@@ -40,7 +40,7 @@ export function IllustrationSlot({
       role="img"
       aria-label={alt}
     >
-      <span className="text-[10px] text-ink/25 tracking-tight">
+      <span className="text-[10px] font-mono text-navy/25 tracking-tight">
         {filenameHint ?? "illustration"}
       </span>
     </div>

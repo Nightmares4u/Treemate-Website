@@ -1,9 +1,8 @@
-import { motion } from "framer-motion";
+import { RevealGroup } from "../motion/Reveal";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer } from "../../lib/motion";
 import closedLoopImg from "../../assets/why-choose/one-loop.png";
 import aiImg from "../../assets/why-choose/Gen-Ai.png";
 import globalImg from "../../assets/why-choose/US-AUS.png";
@@ -38,7 +37,7 @@ const reasons: Reason[] = [
 ];
 export function WhyChoose() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
       {}
       <MarkerAccent
         variant="scribble"
@@ -74,34 +73,32 @@ export function WhyChoose() {
             </p>
           </div>
         </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="frame"
+          stagger={0.12}
           className="grid md:grid-cols-3 gap-6"
         >
           {reasons.map((r) => (
-            <motion.article
+            <article
               key={r.title}
-              variants={fadeIn}
-              className="group flex flex-col"
+              className="group flex flex-col rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
             >
               <IllustrationSlot
                 src={r.src}
                 aspect="aspect-[4/3]"
                 filenameHint={r.filename}
                 alt={r.title}
-                className="u-media mb-6 rounded-xl overflow-hidden ring-1 ring-ink/5"
-                imgClassName="object-cover"
+                className="mb-6 rounded-xl overflow-hidden transition-[filter] duration-300 group-hover:drop-shadow-[0_12px_24px_rgba(13,148,136,0.25)]"
+                imgClassName="object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <h3 className="font-heading font-bold text-xl text-ink mb-3 transition-colors duration-300 group-hover:text-teal">
+              <h3 className="font-heading font-bold text-xl text-navy mb-3">
                 {r.title}
               </h3>
-              <p className="text-ink/70 leading-relaxed">{r.description}</p>
-            </motion.article>
+              <p className="text-navy/70 leading-relaxed">{r.description}</p>
+            </article>
           ))}
-        </motion.div>
+        </RevealGroup>
       </Container>
     </section>
   );

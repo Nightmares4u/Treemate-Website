@@ -7,7 +7,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Brand colors — stable across light/dark
         navy: {
           DEFAULT: '#0A1628',
           light: '#142542',
@@ -24,19 +23,13 @@ export default {
           DEFAULT: '#F5F3EC',
           soft: '#FAF9F5',
         },
-        // Semantic, theme-aware tokens (RGB channels via CSS vars so /opacity works)
-        page: 'rgb(var(--c-page) / <alpha-value>)',
-        surface: 'rgb(var(--c-surface) / <alpha-value>)',
-        'surface-2': 'rgb(var(--c-surface-2) / <alpha-value>)',
-        ink: 'rgb(var(--c-ink) / <alpha-value>)',
-        line: 'rgb(var(--c-line) / <alpha-value>)',
         base: '#F5F3EC',
         'base-dark': '#0A1628',
       },
       fontFamily: {
-        heading: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        body: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        heading: ['Geist', 'sans-serif'],
+        body: ['Geist', 'sans-serif'],
+        mono: ['Geist', 'sans-serif'],
       },
       animation: {
         'float-gentle': 'float-gentle 6s ease-in-out infinite',

@@ -3,37 +3,22 @@
 @tailwind utilities;
 @layer base {
   :root {
-    /* Brand */
     --color-navy: #0a1628;
     --color-teal: #0d9488;
     --color-mint: #b8f0dc;
     --color-cream: #f5f3ec;
-
-    /* Single balanced theme — soft warm-neutral surfaces, strong ink.
-       Space-separated RGB channels so Tailwind /opacity modifiers work. */
-    --c-page: 238 237 231; /* warm soft paper — calm, not glaring */
-    --c-surface: 251 250 246; /* near-white cards that lift off the page */
-    --c-surface-2: 244 242 235; /* subtle alternate band */
-    --c-ink: 10 22 40; /* deep navy text — high contrast */
-    --c-line: 10 22 40; /* borders/tints, used at low opacity */
-
-    /* Decorative */
-    --c-grid: 10 22 40;
-    --grid-opacity: 1;
   }
-
   html {
-    background-color: rgb(var(--c-page));
-    color: rgb(var(--c-ink));
+    background-color: var(--color-cream);
+    color: var(--color-navy);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
   body {
     @apply font-body min-h-screen;
-    background-color: rgb(var(--c-page));
+    background-color: var(--color-cream);
   }
-  /* Very subtle paper grain — texture without hurting legibility */
   body::after {
     content: "";
     position: fixed;
@@ -42,7 +27,9 @@
     pointer-events: none;
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADx+r92AAAACHRSTlMzMzMzMzMzM/6T10EAAACSSURBVDjLpZTBDoMwCEVB2qR/rP//z27bNmkSRXh8yF2M967XWkR8I6I+ERFf+BMR9Y2I+EREfCEiPhMRn4mIT0TEFyLiKxHxBxHxjYj4RER8ISLiCxHxNxHxiYj4TER8IiK+EBE3IuI/RMRnIuITERF/iIgvRMRXRETcIiK+ExEfiYgvRER8ISK+EhFfERHxN/gC/g/9g9Q+C24AAAAASUVORK5CYII=");
     background-repeat: repeat;
-    opacity: 0.05;
+    opacity: 0.7;
+    mix-blend-mode: color-burn;
+    filter: contrast(180%) brightness(70%);
   }
   ::selection {
     background-color: var(--color-teal);
@@ -57,7 +44,8 @@
     @apply font-heading tracking-tight;
   }
 }
-/* Reusable interaction system — consistent, on-brand hover motion */
+/* Reusable interaction system — consistent, on-brand hover motion
+   (ported from the Aakif's-mix design). */
 @layer components {
   /* Lifting card: pairs with an existing `border` on the element.
      Smooth expo ease + soft teal-tinted shadow (not a generic grey drop). */
@@ -129,12 +117,12 @@
   }
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgb(var(--c-grid) / 0.035) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.035) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--c-grid) / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.045) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--c-grid) / 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.055) 1px, transparent 1px);
+      linear-gradient(to right, rgba(10, 22, 40, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.03) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.05) 1px, transparent 1px);
     background-size:
       72px 72px,
       72px 72px,
@@ -145,12 +133,12 @@
   }
   .bg-grid-dense {
     background-image:
-      linear-gradient(to right, rgb(var(--c-grid) / 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.045) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--c-grid) / 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.055) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--c-grid) / 0.065) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--c-grid) / 0.065) 1px, transparent 1px);
+      linear-gradient(to right, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.04) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.05) 1px, transparent 1px),
+      linear-gradient(to right, rgba(10, 22, 40, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 22, 40, 0.06) 1px, transparent 1px);
     background-size:
       48px 48px,
       48px 48px,

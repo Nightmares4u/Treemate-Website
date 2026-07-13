@@ -22,7 +22,7 @@ import { footerNavigation } from "../../data/navigation";
 import { siteConfig } from "../../data/site";
 export function Footer() {
   return (
-    <footer className="relative bg-page text-ink overflow-hidden">
+    <footer className="relative bg-[#F8F9FA] text-navy overflow-hidden">
       {}
       <div className="absolute inset-0 bg-grid pointer-events-none opacity-100" />
       {}
@@ -45,13 +45,13 @@ export function Footer() {
             <div className="mb-5">
               <TreemateLogo size="lg" variant="navy" wordmarkCase="upper" />
             </div>
-            <p className="text-base font-semibold text-ink mb-3">
+            <p className="text-base font-semibold text-navy mb-3">
               {siteConfig.tagline}
             </p>
-            <p className="text-sm text-ink/60 leading-relaxed max-w-md mb-8">
+            <p className="text-sm text-navy/60 leading-relaxed max-w-md mb-8">
               {siteConfig.description}
             </p>
-            <ul className="flex flex-col gap-3 text-sm text-ink/70">
+            <ul className="flex flex-col gap-3 text-sm text-navy/70">
               <li className="flex items-start gap-2.5">
                 <MapPin
                   className="w-4 h-4 text-teal mt-0.5 shrink-0"
@@ -96,7 +96,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-ink/70 hover:text-teal font-medium transition-colors"
+                    className="text-sm text-navy/70 hover:text-teal font-medium transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -105,7 +105,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/"
-                  className="text-sm text-ink/70 hover:text-teal font-medium transition-colors"
+                  className="text-sm text-navy/70 hover:text-teal font-medium transition-colors"
                 >
                   Home
                 </Link>
@@ -122,7 +122,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-ink/70 hover:text-teal font-medium transition-colors"
+                    className="text-sm text-navy/70 hover:text-teal font-medium transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -135,20 +135,20 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Treemate on LinkedIn"
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-ink/5 border border-ink/10 text-ink/80 hover:bg-teal hover:border-teal hover:text-white transition-colors"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-navy/5 border border-navy/10 text-navy/80 hover:bg-teal hover:border-teal hover:text-white transition-colors"
               >
                 <LinkedinIcon className="w-4 h-4" />
               </a>
             </div>
           </motion.div>
         </motion.div>
-        <div className="border-t border-ink/10 pt-8">
+        <div className="border-t border-navy/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-ink/50 text-sm">
+            <p className="text-navy/50 text-sm">
               © {new Date().getFullYear()} {siteConfig.name}. All rights
               reserved.
             </p>
-            <p className="text-ink/40 text-sm">{siteConfig.hours}</p>
+            <p className="text-navy/40 text-sm">{siteConfig.hours}</p>
           </div>
         </div>
       </Container>
