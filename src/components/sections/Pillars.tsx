@@ -58,8 +58,8 @@ const capabilities: Capability[] = [
     src: payrollSvg,
   },
   {
-    pillar: "Customer Success",
-    pillarSlug: "customer-success",
+    pillar: "BPO Services",
+    pillarSlug: "bpo-services",
     title: "Tiered, Omnichannel Support",
     description:
       "Tier 1 to Tier 3 agents on phone, email, chat, and social — inside your custom CRM.",
@@ -67,8 +67,8 @@ const capabilities: Capability[] = [
     src: tieredConnectionSvg,
   },
   {
-    pillar: "Customer Success",
-    pillarSlug: "customer-success",
+    pillar: "BPO Services",
+    pillarSlug: "bpo-services",
     title: "Human-in-the-Loop AI",
     description:
       "AI pre-triages tickets and suggests resolutions; humans stay in control of every reply.",
@@ -110,7 +110,7 @@ export function Pillars() {
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              Software · HR · Customer Success
+              Software · HR · BPO Services
             </p>
           </div>
         </div>

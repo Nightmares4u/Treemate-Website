@@ -34,7 +34,7 @@ const steps: LoopStep[] = [
   },
   {
     icon: Headphones,
-    pillar: "Customer Success",
+    pillar: "BPO Services",
     title: "We support your customers in it",
     description:
       "Our CS team works your customers' tickets inside that exact CRM — no context lost between tools or teams.",

@@ -12,6 +12,7 @@ export function ContactPage() {
         description="Whether you need consulting, custom software, or a full operations partner — Treemate is here to help. Book a call or send us the details below."
         primaryCta={{ label: "Book A Meeting", href: "#send-us-a-message" }}
         secondaryCta={{ label: "See our services", to: "/software-ai" }}
+        backdrop
       />
       <BookingSection />
       <div id="send-us-a-message">

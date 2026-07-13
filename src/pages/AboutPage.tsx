@@ -15,6 +15,7 @@ export function AboutPage() {
         description="We build the software that runs your business, staff the people who manage it, and support the customers it serves. Across the US and Australia, under one accountable partnership."
         primaryCta={{ label: "Book A Meeting", to: "/contact" }}
         secondaryCta={{ label: "See our services", to: "/software-ai" }}
+        backdrop
       />
       <MeetTheTeam />
       <OurStory />

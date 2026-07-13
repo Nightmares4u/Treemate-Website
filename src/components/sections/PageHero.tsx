@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Container } from "../layout/Container";
 import { LinkButton } from "../ui/LinkButton";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
+import { HeroBackdrop } from "../ui/HeroBackdrop";
 import { AnimatedHeadline } from "../motion/AnimatedHeadline";
 import { fadeIn, staggerContainer } from "../../lib/motion";
 interface PageHeroCta {
@@ -18,6 +19,13 @@ interface PageHeroProps {
   description?: string;
   primaryCta?: PageHeroCta;
   secondaryCta?: PageHeroCta;
+  /**
+   * Draws the tree mark, a mint bloom, and marker accents into the hero's
+   * background. Pages whose headline wraps short leave a large gap beside it;
+   * this fills that gap without putting anything on top of the content.
+   * The right-hand spirals begin at 40% height, so the upper right is free.
+   */
+  backdrop?: boolean;
 }
 export function PageHero({
   eyebrow,
@@ -26,6 +34,7 @@ export function PageHero({
   description,
   primaryCta,
   secondaryCta,
+  backdrop = false,
 }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden bg-grid pt-32 pb-16 md:pt-40 md:pb-24">
@@ -34,6 +43,7 @@ export function PageHero({
         className="pointer-events-none absolute -top-24 -left-24 w-[520px] h-[520px] rounded-full bg-mint blur-[130px] opacity-60 animate-blob-drift"
       />
       <BackgroundSpirals side="both" opacity={0.18} />
+      {backdrop && <HeroBackdrop />}
       <Container className="relative z-10">
         <motion.div
           variants={staggerContainer}

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { HomePage } from "./pages/HomePage";
 import { ServicePage } from "./pages/ServicePage";
@@ -19,8 +19,13 @@ function App() {
           element={<ServicePage slug="hr-solutions" />}
         />
         <Route
+          path="/bpo-services"
+          element={<ServicePage slug="bpo-services" />}
+        />
+        {/* Renamed from "Customer Success" — keep old links and search results alive. */}
+        <Route
           path="/customer-success"
-          element={<ServicePage slug="customer-success" />}
+          element={<Navigate to="/bpo-services" replace />}
         />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />

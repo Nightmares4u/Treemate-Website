@@ -232,11 +232,11 @@ export const services: Service[] = [
     ],
   },
   {
-    slug: "customer-success",
-    nav: "Customer Success",
+    slug: "bpo-services",
+    nav: "BPO Services",
     icon: Headphones,
-    eyebrow: "Customer Success & Support",
-    title: "Customer Success & Support",
+    eyebrow: "BPO Services & Support",
+    title: "BPO Services & Support",
     summary:
       "Tiered, omnichannel support run inside your CRM — with human-in-the-loop AI and proactive retention.",
     intro:
@@ -315,7 +315,7 @@ export const services: Service[] = [
       "Churn caught early through behavioral signals",
     ],
     image: operationsFloor,
-    imageAlt: "Treemate customer success team on live support queues",
+    imageAlt: "Treemate BPO services team on live support queues",
     imageCaption:
       "Our support floor — dedicated agents working inside your CRM, around the clock.",
   },
