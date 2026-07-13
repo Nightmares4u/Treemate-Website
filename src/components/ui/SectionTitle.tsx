@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "../../lib/cn";
-import { fadeIn, staggerContainer, viewportConfig } from "../../lib/motion";
-import { AnimatedHeadline } from "../motion/AnimatedHeadline";
+import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
 import { MarkerAccent } from "./MarkerAccent";
 interface SectionTitleProps {
   eyebrow?: string;
@@ -28,8 +27,7 @@ export function SectionTitle({
     <motion.div
       variants={staggerContainer}
       initial="hidden"
-      whileInView="visible"
-      viewport={viewportConfig}
+      animate="visible"
       className={cn(
         "flex flex-col gap-4 mb-12 md:mb-16",
         align === "center"
@@ -50,14 +48,15 @@ export function SectionTitle({
         </motion.span>
       )}
       <div className="relative inline-block">
-        <AnimatedHeadline
-          as="h2"
-          text={title}
+        <motion.h2
+          variants={blurIn}
           className={cn(
             "font-heading font-semibold tracking-[-0.02em] leading-[1.02] text-4xl md:text-5xl lg:text-[3.75rem]",
-            isDark ? "text-white" : "text-navy",
+            isDark ? "text-white" : "text-ink",
           )}
-        />
+        >
+          {title}
+        </motion.h2>
         {}
         {marker !== "none" && (
           <motion.div
@@ -89,7 +88,7 @@ export function SectionTitle({
           variants={fadeIn}
           className={cn(
             "text-base md:text-lg leading-relaxed text-pretty",
-            isDark ? "text-slate-300" : "text-slate-600",
+            isDark ? "text-slate-300" : "text-ink/70",
             marker === "underline" || marker === "underline-double"
               ? "pt-3 md:pt-4"
               : "",

@@ -9,19 +9,19 @@ const variantClasses: Record<ButtonVariant, string> = {
     "shadow-sm hover:shadow-md hover:bg-navy-light",
   ),
   secondary: cn(
-    "bg-white text-navy",
-    "border border-slate-200",
-    "hover:bg-slate-50 hover:border-slate-300",
+    "bg-surface text-ink",
+    "border border-ink/15",
+    "hover:bg-ink/[0.04] hover:border-ink/25",
     "shadow-sm",
   ),
   ghost: cn(
-    "bg-transparent text-slate-600",
-    "hover:bg-slate-100 hover:text-navy",
+    "bg-transparent text-ink/70",
+    "hover:bg-ink/[0.06] hover:text-ink",
   ),
   outline: cn(
-    "bg-transparent text-navy",
-    "border border-slate-300",
-    "hover:border-navy hover:bg-slate-50",
+    "bg-transparent text-ink",
+    "border border-ink/25",
+    "hover:border-ink/50 hover:bg-ink/[0.04]",
   ),
   white: cn(
     "bg-white text-navy border-0",
@@ -43,8 +43,9 @@ export function buttonClasses(
   className?: string,
 ) {
   return cn(
-    "inline-flex items-center justify-center rounded-none font-semibold font-body",
+    "inline-flex items-center justify-center rounded-xl font-semibold font-body",
     "transition-all duration-300 ease-out-expo",
+    "hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2",
     "disabled:opacity-50 disabled:pointer-events-none",
     "select-none whitespace-nowrap cursor-pointer",

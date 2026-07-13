@@ -1,8 +1,9 @@
+import { motion } from "framer-motion";
 import { ShoppingBag, Rocket, Truck, type LucideIcon } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { RevealGroup } from "../motion/Reveal";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 interface Scenario {
   icon: LucideIcon;
   vertical: string;
@@ -35,7 +36,7 @@ const scenarios: Scenario[] = [
 ];
 export function LoopInAction() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
       {}
       <MarkerAccent
         variant="star"
@@ -44,14 +45,8 @@ export function LoopInAction() {
         rotate={-8}
       />
       <MarkerAccent
-        variant="scribble"
-        className="absolute bottom-24 left-[6%] w-20 h-14 opacity-60"
-        color="#0D9488"
-        rotate={12}
-      />
-      <MarkerAccent
         variant="arrow"
-        className="absolute top-1/2 right-[3%] w-16 h-12 opacity-50"
+        className="absolute top-1/2 right-[3%] w-16 h-12 opacity-45"
         color="#0D9488"
         rotate={-25}
       />
@@ -71,38 +66,40 @@ export function LoopInAction() {
             </p>
           </div>
         </div>
-        <RevealGroup
-          as="div"
-          variant="blur"
-          stagger={0.12}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           className="grid md:grid-cols-3 gap-6"
         >
           {scenarios.map((s) => {
             const Icon = s.icon;
             return (
-              <article
+              <motion.article
                 key={s.vertical}
-                className="group flex flex-col p-6 transition-transform duration-300 ease-out hover:-translate-y-1"
+                variants={fadeIn}
+                className="group u-card flex flex-col rounded-2xl border border-ink/10 bg-surface p-6"
               >
-                <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
-                  <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                <span className="u-icon w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center mb-5">
+                  <Icon className="w-6 h-6" strokeWidth={2} />
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                   {s.vertical}
                 </span>
-                <h3 className="font-heading font-bold text-lg text-navy leading-snug mb-3">
+                <h3 className="font-heading font-bold text-lg text-ink leading-snug mb-3 transition-colors duration-300 group-hover:text-teal">
                   {s.headline}
                 </h3>
-                <p className="text-sm text-navy/70 leading-relaxed mb-6 flex-1">
+                <p className="text-sm text-ink/70 leading-relaxed mb-6 flex-1">
                   {s.body}
                 </p>
-                <p className="pt-5 border-t border-navy/10 text-xs font-semibold text-navy/80">
+                <p className="pt-5 border-t border-ink/10 text-xs font-semibold text-ink/80">
                   {s.loopSummary}
                 </p>
-              </article>
+              </motion.article>
             );
           })}
-        </RevealGroup>
+        </motion.div>
       </Container>
     </section>
   );

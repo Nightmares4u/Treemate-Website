@@ -1,8 +1,9 @@
-import { RevealGroup } from "../motion/Reveal";
+import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import innovationImg from "../../assets/illustrations/about-page/innovation.svg";
 import reliabilityImg from "../../assets/illustrations/about-page/reliability.svg";
 import collaborationImg from "../../assets/illustrations/about-page/team-collaboration.svg";
@@ -45,7 +46,7 @@ const values: Value[] = [
 ];
 export function Values() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
       {}
       <MarkerAccent
         variant="star"
@@ -81,32 +82,34 @@ export function Values() {
             </p>
           </div>
         </div>
-        <RevealGroup
-          as="div"
-          variant="scale"
-          stagger={0.1}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10"
         >
           {values.map((v) => (
-            <article
+            <motion.article
               key={v.title}
-              className="group flex flex-col rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
+              variants={fadeIn}
+              className="group flex flex-col"
             >
               <IllustrationSlot
                 src={v.src}
                 aspect="aspect-square"
                 filenameHint={v.filename}
                 alt={v.title}
-                className="mb-8 rounded-2xl overflow-hidden transition-[filter] duration-300 group-hover:drop-shadow-[0_12px_24px_rgba(13,148,136,0.25)]"
-                imgClassName="object-contain transition-transform duration-300 group-hover:scale-105"
+                className="u-media mb-8 rounded-2xl overflow-hidden ring-1 ring-ink/5 transition-shadow duration-300 group-hover:shadow-lg group-hover:shadow-teal/10"
+                imgClassName="object-contain"
               />
-              <h3 className="font-heading font-bold text-xl text-navy mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3 transition-colors duration-300 group-hover:text-teal">
                 {v.title}
               </h3>
-              <p className="text-navy/70 leading-relaxed">{v.description}</p>
-            </article>
+              <p className="text-ink/70 leading-relaxed">{v.description}</p>
+            </motion.article>
           ))}
-        </RevealGroup>
+        </motion.div>
       </Container>
     </section>
   );

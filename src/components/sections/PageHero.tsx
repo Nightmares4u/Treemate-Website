@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { Container } from "../layout/Container";
 import { LinkButton } from "../ui/LinkButton";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { AnimatedHeadline } from "../motion/AnimatedHeadline";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
 interface PageHeroCta {
   label: string;
   to?: string;
@@ -50,19 +49,19 @@ export function PageHero({
                 {eyebrow}
               </motion.span>
             )}
-            <AnimatedHeadline
-              as="h1"
-              text={title}
-              className="font-heading font-normal tracking-tight leading-[1.1]"
+            <motion.h1
+              variants={blurIn}
+              className="font-heading font-normal tracking-tight leading-[1.1] text-ink"
               style={{
                 fontSize: "clamp(3rem, 6.5vw, 6.5rem)",
-                color: "#0A1628",
               }}
-            />
+            >
+              {title}
+            </motion.h1>
             {tagline && (
               <motion.p
                 variants={fadeIn}
-                className="text-base md:text-lg text-navy/70 leading-relaxed max-w-xl"
+                className="text-base md:text-lg text-ink/70 leading-relaxed max-w-xl"
               >
                 {tagline}
               </motion.p>
@@ -74,7 +73,7 @@ export function PageHero({
               className="lg:col-span-5 flex flex-col gap-6"
             >
               {description && (
-                <p className="text-navy leading-relaxed font-medium max-w-md">
+                <p className="text-ink leading-relaxed font-medium max-w-md">
                   {description}
                 </p>
               )}
@@ -96,14 +95,14 @@ export function PageHero({
                     (secondaryCta.to ? (
                       <Link
                         to={secondaryCta.to}
-                        className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+                        className="text-ink font-semibold text-sm underline underline-offset-4 decoration-ink/40 hover:decoration-ink transition-colors"
                       >
                         {secondaryCta.label}
                       </Link>
                     ) : (
                       <a
                         href={secondaryCta.href ?? "#"}
-                        className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+                        className="text-ink font-semibold text-sm underline underline-offset-4 decoration-ink/40 hover:decoration-ink transition-colors"
                       >
                         {secondaryCta.label}
                       </a>

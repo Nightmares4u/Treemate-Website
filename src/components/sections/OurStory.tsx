@@ -11,7 +11,7 @@ interface Milestone {
 }
 const milestones: Milestone[] = [
   {
-    year: "2022",
+    year: "2024",
     title: "The Beginning",
     description:
       "Treemate is founded on the closed-loop principle: build the software, staff the people, and support the customers — under one accountable partnership.",
@@ -37,7 +37,7 @@ const milestones: Milestone[] = [
 ];
 export function OurStory() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       <BackgroundSpirals side="both" opacity={0.12} />
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-12 gap-8 mb-14 md:mb-20 items-end">
@@ -51,7 +51,7 @@ export function OurStory() {
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              Since 2022
+              Since 2024
             </p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function OurStory() {
           {}
           <span
             aria-hidden="true"
-            className="absolute left-4 md:left-1/2 top-2 bottom-2 w-px bg-navy/15 md:-translate-x-1/2"
+            className="absolute left-4 md:left-1/2 top-2 bottom-2 w-px bg-ink/15 md:-translate-x-1/2"
           />
           {milestones.map((m, i) => {
             const alignRight = i % 2 === 1;
@@ -81,7 +81,7 @@ export function OurStory() {
                   aria-hidden="true"
                   className="absolute left-4 md:left-1/2 top-2 -translate-x-1/2 flex items-center justify-center z-10"
                 >
-                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-cream transition-all duration-300 group-hover:scale-[1.6] group-hover:ring-teal/20" />
+                  <span className="w-3 h-3 rounded-full bg-teal ring-4 ring-page transition-all duration-300 group-hover:scale-[1.6] group-hover:ring-teal/20" />
                 </span>
                 {}
                 <div
@@ -95,10 +95,10 @@ export function OurStory() {
                   <span className="text-sm font-semibold uppercase tracking-[0.14em] text-teal mb-2">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-navy leading-tight mb-3 transition-colors duration-300 group-hover:text-teal">
+                  <h3 className="font-heading font-bold text-2xl md:text-3xl text-ink leading-tight mb-3 transition-colors duration-300 group-hover:text-teal">
                     {m.title}
                   </h3>
-                  <p className="text-navy/70 leading-relaxed">
+                  <p className="text-ink/70 leading-relaxed">
                     {m.description}
                   </p>
                 </div>

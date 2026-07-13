@@ -5,7 +5,6 @@ import { LinkButton } from "../ui/LinkButton";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
 import { MarkerAccent } from "../ui/MarkerAccent";
 import { HighlighterMark } from "../ui/HighlighterMark";
-import { Reveal } from "../motion/Reveal";
 import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
 import { siteConfig } from "../../data/site";
 interface CTASectionProps {
@@ -23,7 +22,7 @@ export function CTASection({
 }: CTASectionProps) {
   const parts = heading.split(/(loop)/i);
   return (
-    <section className="relative overflow-hidden bg-cream py-24 md:py-32">
+    <section className="relative overflow-hidden bg-page py-24 md:py-32">
       <BackgroundSpirals side="both" opacity={0.18} />
       <MarkerAccent
         variant="star"
@@ -44,84 +43,75 @@ export function CTASection({
         rotate={-140}
       />
       <Container className="relative z-10">
-        <Reveal variant="frame" as="div">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+        >
+          {}
+          <div className="lg:col-span-7">
+            <motion.p
+              variants={fadeIn}
+              className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal mb-5"
+            >
+              Next Step
+            </motion.p>
+            <motion.h2
+              variants={blurIn}
+              className="font-heading font-semibold text-ink leading-[0.95] tracking-[-0.03em]"
+              style={{ fontSize: "clamp(2.5rem, 5.5vw, 4.75rem)" }}
+            >
+              {parts.map((part, i) =>
+                part.toLowerCase() === "loop" ? (
+                  <span key={i} className="relative inline-block">
+                    <HighlighterMark
+                      color="#B8F0DC"
+                      opacity={0.75}
+                      rotate={-1.4}
+                      className="absolute left-[-4%] right-[-4%] top-[18%] bottom-[10%] w-[108%] h-[72%] -z-10"
+                    />
+                    <span className="relative z-10">{part}</span>
+                  </span>
+                ) : (
+                  <span key={i}>{part}</span>
+                ),
+              )}
+            </motion.h2>
+          </div>
+          {}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+            variants={fadeIn}
+            className="lg:col-span-5 flex flex-col gap-8 lg:pt-4"
           >
-            {}
-            <div className="lg:col-span-7">
-              <motion.p
-                variants={fadeIn}
-                className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal mb-5"
+            <p className="text-ink/80 leading-relaxed max-w-md">{subtext}</p>
+            <div className="flex flex-wrap items-center gap-6">
+              <LinkButton to="/contact" size="lg" variant="primary">
+                Book a Discovery Call
+                <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
+              </LinkButton>
+              <a
+                href={`mailto:${siteConfig.emails.sales}`}
+                className="text-ink font-semibold text-sm underline underline-offset-4 decoration-ink/40 hover:decoration-navy transition-colors"
               >
-                Next Step
-              </motion.p>
-              <motion.h2
-                variants={blurIn}
-                className="font-heading font-semibold text-navy leading-[0.95] tracking-[-0.03em]"
-                style={{ fontSize: "clamp(2.5rem, 5.5vw, 4.75rem)" }}
-              >
-                {parts.map((part, i) =>
-                  part.toLowerCase() === "loop" ? (
-                    <span key={i} className="relative inline-block">
-                      <HighlighterMark
-                        color="#B8F0DC"
-                        opacity={0.75}
-                        rotate={-1.4}
-                        className="absolute left-[-4%] right-[-4%] top-[18%] bottom-[10%] w-[108%] h-[72%] -z-10"
-                      />
-                      <span className="relative z-10">{part}</span>
-                    </span>
-                  ) : (
-                    <span key={i}>{part}</span>
-                  ),
-                )}
-              </motion.h2>
+                Email sales
+              </a>
             </div>
             {}
-            <motion.div
-              variants={fadeIn}
-              className="lg:col-span-5 flex flex-col gap-8 lg:pt-4"
-            >
-              <p className="text-navy/80 leading-relaxed max-w-md">{subtext}</p>
-              <div className="flex flex-wrap items-center gap-6">
-                <LinkButton
-                  to="/contact"
-                  size="lg"
-                  variant="primary"
-                  className="group hover:scale-[1.03] active:scale-[0.98]"
+            <ul className="flex flex-col gap-3 pt-6 border-t border-ink/10">
+              {trustPoints.map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  className="flex items-center gap-2.5 text-ink/70 text-sm"
                 >
-                  Book a Discovery Call
-                  <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                    <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
-                  </span>
-                </LinkButton>
-                <a
-                  href={`mailto:${siteConfig.emails.sales}`}
-                  className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
-                >
-                  Email sales
-                </a>
-              </div>
-              {}
-              <ul className="flex flex-col gap-3 pt-6 border-t border-navy/10">
-                {trustPoints.map(({ icon: Icon, label }) => (
-                  <li
-                    key={label}
-                    className="flex items-center gap-2.5 text-navy/70 text-sm font-mono"
-                  >
-                    <Icon className="w-4 h-4 text-teal" strokeWidth={2} />
-                    <span>{label}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+                  <Icon className="w-4 h-4 text-teal" strokeWidth={2} />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
           </motion.div>
-        </Reveal>
+        </motion.div>
       </Container>
     </section>
   );

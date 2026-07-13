@@ -1,9 +1,10 @@
+import { motion } from "framer-motion";
 import { ChevronsRight } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { RevealGroup } from "../motion/Reveal";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import { siteConfig } from "../../data/site";
 import emailImg from "../../assets/office/Email-treemate.png";
 import callImg from "../../assets/office/Callus-treemate.png";
@@ -46,7 +47,7 @@ const cards: ContactCard[] = [
 ];
 export function ContactCards() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="star"
@@ -55,14 +56,8 @@ export function ContactCards() {
         rotate={-12}
       />
       <MarkerAccent
-        variant="scribble"
-        className="absolute bottom-24 left-[4%] w-20 h-14 opacity-55"
-        color="#0D9488"
-        rotate={12}
-      />
-      <MarkerAccent
         variant="arrow"
-        className="absolute top-1/2 left-[3%] w-16 h-12 opacity-45"
+        className="absolute top-1/2 left-[3%] w-16 h-12 opacity-40"
         color="#0D9488"
         rotate={-40}
       />
@@ -82,20 +77,22 @@ export function ContactCards() {
             </p>
           </div>
         </div>
-        <RevealGroup
-          as="div"
-          variant="scale"
-          stagger={0.1}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           className="grid md:grid-cols-3 gap-6"
         >
           {cards.map((c) => (
-            <a
+            <motion.a
               key={c.eyebrow}
+              variants={fadeIn}
               href={c.href}
               {...(c.external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
-              className="group flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1"
+              className="group flex flex-col"
             >
               <IllustrationSlot
                 src={c.src}
@@ -108,22 +105,22 @@ export function ContactCards() {
               <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                 {c.eyebrow}
               </span>
-              <h3 className="font-heading font-bold text-xl text-navy mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink mb-3">
                 {c.title}
               </h3>
-              <p className="text-navy/80 leading-relaxed mb-4 flex-1 break-words">
+              <p className="text-ink/80 leading-relaxed mb-4 flex-1 break-words">
                 {c.value}
               </p>
-              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy group-hover:text-teal transition-colors">
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink group-hover:text-teal transition-colors">
                 {c.eyebrow}
                 <ChevronsRight
                   className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   strokeWidth={2.4}
                 />
               </span>
-            </a>
+            </motion.a>
           ))}
-        </RevealGroup>
+        </motion.div>
       </Container>
     </section>
   );

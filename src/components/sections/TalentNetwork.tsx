@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 import { Layers, GraduationCap, Award, type LucideIcon } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
-import { Reveal } from "../motion/Reveal";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
 import careerFair from "../../assets/office/career-fair.jpg";
 interface Pillar {
   icon: LucideIcon;
@@ -32,7 +31,7 @@ const pillars: Pillar[] = [
 ];
 export function TalentNetwork() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-surface">
       <Container>
         <SectionTitle
           eyebrow="Talent Network"
@@ -41,7 +40,12 @@ export function TalentNetwork() {
         />
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {}
-          <Reveal variant="frame" as="div" className="relative overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: easeOutExpo }}
+            className="relative overflow-hidden"
+          >
             <div className="aspect-[3/2]">
               <img
                 src={careerFair}
@@ -51,35 +55,34 @@ export function TalentNetwork() {
                 className="h-full w-full object-cover"
               />
             </div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/5 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/25 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6 md:p-8">
               <p className="font-heading font-semibold text-white text-lg drop-shadow">
                 Recruiting on the ground — US &amp; Pakistan
               </p>
             </div>
-          </Reveal>
+          </motion.div>
           {}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            animate="visible"
             className="flex flex-col gap-5"
           >
             {pillars.map((pillar) => (
               <motion.div
                 key={pillar.title}
                 variants={fadeIn}
-                className="group flex gap-5 rounded-2xl p-3 transition-colors duration-300 hover:bg-cream-soft/70"
+                className="group flex gap-5 rounded-2xl p-3 transition-colors duration-300 hover:bg-surface/70"
               >
                 <div className="u-icon w-12 h-12 shrink-0 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center active:scale-90">
                   <pillar.icon className="w-6 h-6" strokeWidth={2} />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-navy mb-1.5 transition-colors duration-300 group-hover:text-teal">
+                  <h3 className="font-heading font-bold text-lg text-ink mb-1.5 transition-colors duration-300 group-hover:text-teal">
                     {pillar.title}
                   </h3>
-                  <p className="text-navy/70 leading-relaxed">
+                  <p className="text-ink/70 leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>

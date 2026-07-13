@@ -1,4 +1,4 @@
-import { Check, ChevronsRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { Container } from "../components/layout/Container";
 import { ImageBand } from "../components/sections/ImageBand";
 import { SaasTree } from "../components/sections/SaasTree";
@@ -8,8 +8,7 @@ import { CTASection } from "../components/sections/CTASection";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { BackgroundSpirals } from "../components/ui/BackgroundSpirals";
 import { MarkerAccent } from "../components/ui/MarkerAccent";
-import { RevealGroup } from "../components/motion/Reveal";
-import { Counter } from "../components/motion/Counter";
+import { fadeIn, staggerContainer } from "../lib/motion";
 import { getService } from "../data/services";
 import { NotFoundPage } from "./NotFoundPage";
 export function ServicePage({ slug }: { slug: string }) {
@@ -25,31 +24,6 @@ export function ServicePage({ slug }: { slug: string }) {
         primaryCta={{ label: "Book A Meeting", to: "/contact" }}
         secondaryCta={{ label: "Back to home", to: "/" }}
       />
-      {}
-      <section className="bg-base pb-16 md:pb-20">
-        <Container>
-          <RevealGroup
-            key={service.slug + "-points"}
-            variant="fade"
-            stagger={0.12}
-            as="ul"
-            className="grid sm:grid-cols-3 gap-6 pt-8 border-t border-navy/10"
-          >
-            {service.heroPoints.map((point) => (
-              <li
-                key={point}
-                className="flex items-start gap-3 text-navy/80 text-sm leading-relaxed"
-              >
-                <Check
-                  className="w-4 h-4 text-teal mt-0.5 shrink-0"
-                  strokeWidth={2.4}
-                />
-                <span>{point}</span>
-              </li>
-            ))}
-          </RevealGroup>
-        </Container>
-      </section>
       {service.image && (
         <ImageBand
           src={service.image}
@@ -58,87 +32,75 @@ export function ServicePage({ slug }: { slug: string }) {
         />
       )}
       {}
-      <section className="py-24 bg-base">
+      <section className="py-24 bg-page">
         <Container>
           <SectionTitle
             eyebrow="What we deliver"
             title="Capabilities"
             subtitle={service.summary}
           />
-          <RevealGroup
+          <motion.div
             key={service.slug + "-capabilities"}
-            variant="frame"
-            stagger={0.1}
-            as="div"
-            className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {service.capabilities.map((cap, i) => (
-              <div key={cap.title} className="group relative flex">
-                <div className="flex flex-col h-full w-full p-6 transition-transform duration-300 ease-out group-hover:-translate-y-1">
-                  <div className="flex items-center justify-between mb-5">
-                    <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                      <cap.icon className="w-6 h-6 text-teal" strokeWidth={2} />
-                    </span>
-                    <span className="font-heading font-semibold text-4xl text-navy/10 leading-none">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <h3 className="font-heading font-bold text-xl text-navy leading-snug mb-2">
-                    {cap.title}
-                  </h3>
-                  <p className="text-navy/70 leading-relaxed">
-                    {cap.description}
-                  </p>
+            {service.capabilities.map((cap) => (
+              <motion.div
+                key={cap.title}
+                variants={fadeIn}
+                className="group u-card flex flex-col rounded-2xl border border-ink/10 bg-surface p-7"
+              >
+                <div className="u-icon w-12 h-12 flex items-center justify-center mb-6 rounded-xl border border-teal/20 bg-teal/10 text-teal">
+                  <cap.icon className="w-6 h-6" strokeWidth={1.9} />
                 </div>
-              </div>
+                <h3 className="font-heading font-bold text-xl text-ink mb-3">
+                  {cap.title}
+                </h3>
+                <p className="text-ink/70 leading-relaxed">
+                  {cap.description}
+                </p>
+              </motion.div>
             ))}
-          </RevealGroup>
+          </motion.div>
         </Container>
       </section>
       {slug === "software-ai" && <SaasTree />}
       {slug === "hr-solutions" && <TalentNetwork />}
       {}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-surface">
         <Container>
           <SectionTitle
             eyebrow="How it works"
             title="From scope to live in four steps"
             subtitle="A clear, accountable path from first conversation to a team that's running your operation."
           />
-          <RevealGroup
-            key={service.slug + "-process"}
-            as="div"
-            variant="frame"
-            stagger={0.12}
-            className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 max-w-6xl mx-auto"
-          >
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {service.process.map((step, i) => (
-              <div key={step.title} className="group relative flex">
-                <div className="flex flex-col h-full w-full p-6 transition-transform duration-300 ease-out group-hover:-translate-y-1">
-                  <span className="font-heading font-semibold text-5xl text-teal/25 leading-none mb-5 transition-colors duration-300 group-hover:text-teal/50">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-heading font-bold text-lg text-navy leading-snug mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-navy/70 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-                {i < service.process.length - 1 && (
-                  <span className="absolute z-10 hidden lg:flex items-center justify-center -right-4 top-1/2 -translate-y-1/2 w-8 h-8">
-                    <ChevronsRight
-                      className="w-4 h-4 text-teal"
-                      strokeWidth={2.4}
-                    />
-                  </span>
-                )}
-              </div>
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="group u-card relative rounded-2xl border border-ink/10 bg-surface-2 p-6"
+              >
+                <span className="font-heading font-bold text-5xl text-teal/25 leading-none transition-colors duration-300 group-hover:text-teal/60">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-heading font-bold text-lg text-ink mt-4 mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-ink/70 leading-relaxed">
+                  {step.description}
+                </p>
+              </motion.div>
             ))}
-          </RevealGroup>
+          </div>
         </Container>
       </section>
-      <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+      <section className="relative overflow-hidden py-24 md:py-32 bg-surface-2">
         <BackgroundSpirals side="both" opacity={0.15} />
         <MarkerAccent
           variant="star"
@@ -174,59 +136,62 @@ export function ServicePage({ slug }: { slug: string }) {
               </p>
             </div>
           </div>
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            {/* Outcomes — numbered editorial list */}
             <div className="lg:col-span-7">
-              <RevealGroup
+              <motion.ol
                 key={service.slug + "-outcomes"}
-                variant="fade"
-                stagger={0.1}
-                as="ul"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
                 className="flex flex-col"
               >
                 {service.outcomes.map((outcome, i) => (
-                  <li
+                  <motion.li
                     key={outcome}
-                    className="flex items-start gap-6 py-5 border-b border-navy/10 last:border-b-0"
+                    variants={fadeIn}
+                    className="group flex items-baseline gap-6 py-5 border-b border-ink/10 last:border-b-0"
                   >
-                    <span className="relative flex items-center justify-center w-8 h-8 shrink-0 rounded-full bg-teal/10 mt-0.5">
-                      <Check
-                        className="w-4 h-4 text-teal"
-                        strokeWidth={2.6}
-                      />
+                    <span className="font-heading font-bold text-2xl text-teal/40 tabular-nums shrink-0 w-10 transition-colors duration-300 group-hover:text-teal">
+                      {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-navy text-lg leading-snug font-medium">
-                      <span className="font-mono font-bold text-teal text-xs tracking-[0.14em] mr-3 align-middle">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
+                    <span className="text-ink text-lg md:text-xl leading-snug font-medium transition-transform duration-300 group-hover:translate-x-1">
                       {outcome}
                     </span>
-                  </li>
+                  </motion.li>
                 ))}
-              </RevealGroup>
+              </motion.ol>
             </div>
-            {}
+            {/* Highlights — clean spec cards with a teal keyline */}
             <div className="lg:col-span-5">
-              <RevealGroup
+              <motion.div
                 key={service.slug + "-stats"}
-                variant="fade"
-                stagger={0.1}
-                as="div"
-                className="flex flex-col"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+                className="flex flex-col gap-4"
               >
                 {service.stats.map((stat) => (
-                  <div
+                  <motion.div
                     key={stat.label}
-                    className="flex flex-col py-6 border-b border-navy/10 last:border-b-0 items-start"
+                    variants={fadeIn}
+                    className="u-card group relative overflow-hidden rounded-2xl border border-ink/10 bg-surface p-6 pl-7"
                   >
-                    <span className="font-heading font-semibold leading-[0.95] tracking-[-0.03em] bg-teal text-white px-3 pb-1 pt-2 rounded-md text-3xl md:text-4xl mb-3">
-                      <Counter value={stat.value} />
-                    </span>
-                    <span className="text-xs font-mono text-navy/60 uppercase tracking-[0.14em]">
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-5 bottom-5 w-1 rounded-full bg-teal/70 transition-all duration-300 group-hover:top-4 group-hover:bottom-4 group-hover:bg-teal"
+                    />
+                    <div className="font-heading font-bold text-2xl md:text-[1.7rem] text-ink leading-tight mb-1.5">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-ink/60 leading-relaxed">
                       {stat.label}
-                    </span>
-                  </div>
+                    </div>
+                  </motion.div>
                 ))}
-              </RevealGroup>
+              </motion.div>
             </div>
           </div>
         </Container>

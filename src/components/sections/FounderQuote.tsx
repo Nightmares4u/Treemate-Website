@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import { Container } from "../layout/Container";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { AnimatedHeadline } from "../motion/AnimatedHeadline";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
 const quote =
   "Our focus is on building the loop — software, staff, and support — that lets clients grow without stitching together four vendors. That's the whole idea.";
 const name = "Mohommad Ibraheem Hashmi";
-const role = "COO, Treemate";
+const role = "Co-founder, Treemate";
 export function FounderQuote() {
   return (
     <section className="relative overflow-hidden bg-navy py-24 md:py-32">
@@ -28,15 +27,14 @@ export function FounderQuote() {
           viewport={{ once: true, margin: "-80px" }}
           className="max-w-4xl mx-auto text-center"
         >
-          <blockquote className="font-heading font-bold text-white leading-[1.1] tracking-[-0.02em] text-3xl md:text-4xl lg:text-5xl">
-            <span className="text-teal-light" aria-hidden="true">
-              &ldquo;
-            </span>
-            <AnimatedHeadline as="span" text={quote} className="inline" />
-            <span className="text-teal-light" aria-hidden="true">
-              &rdquo;
-            </span>
-          </blockquote>
+          <motion.blockquote
+            variants={blurIn}
+            className="font-heading font-bold text-white leading-[1.1] tracking-[-0.02em] text-3xl md:text-4xl lg:text-5xl"
+          >
+            <span className="text-teal-light">&ldquo;</span>
+            {quote}
+            <span className="text-teal-light">&rdquo;</span>
+          </motion.blockquote>
           <motion.figcaption
             variants={fadeIn}
             className="mt-10 flex flex-col items-center gap-1"

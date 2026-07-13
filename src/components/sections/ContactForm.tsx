@@ -1,6 +1,6 @@
-import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronsRight, Check } from "lucide-react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { motion } from "framer-motion";
+import { ChevronsRight } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
@@ -30,24 +30,17 @@ const services = [
   { value: "not-sure", label: "Not sure yet — help me scope" },
 ];
 const inputBase =
-  "w-full rounded-xl border border-navy/15 bg-white px-4 py-3 text-navy placeholder-navy/40 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors";
+  "w-full rounded-xl border border-ink/15 bg-surface px-4 py-3 text-ink placeholder-ink/40 focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/20 transition-colors";
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm);
-  const [status, setStatus] = useState<"idle" | "sending">("idle");
   const onChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-  useEffect(() => {
-    if (status !== "sending") return;
-    const timer = window.setTimeout(() => setStatus("idle"), 2200);
-    return () => window.clearTimeout(timer);
-  }, [status]);
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("sending");
     const subject = form.subject.trim() || "New inquiry via treemate.us";
     const body = [
       `Name: ${form.firstName} ${form.lastName}`.trim(),
@@ -62,7 +55,7 @@ export function ContactForm() {
     window.location.href = href;
   };
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="scribble"
@@ -113,8 +106,8 @@ export function ContactForm() {
           className="max-w-4xl flex flex-col gap-8"
         >
           <div className="grid md:grid-cols-2 gap-6">
-            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">
+            <motion.label variants={fadeIn} className="flex flex-col gap-2">
+              <span className="text-sm font-semibold text-ink">
                 First Name
               </span>
               <input
@@ -127,8 +120,8 @@ export function ContactForm() {
                 className={inputBase}
               />
             </motion.label>
-            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Last Name</span>
+            <motion.label variants={fadeIn} className="flex flex-col gap-2">
+              <span className="text-sm font-semibold text-ink">Last Name</span>
               <input
                 name="lastName"
                 type="text"
@@ -141,8 +134,8 @@ export function ContactForm() {
             </motion.label>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Service</span>
+            <motion.label variants={fadeIn} className="flex flex-col gap-2">
+              <span className="text-sm font-semibold text-ink">Service</span>
               <select
                 name="service"
                 required
@@ -160,8 +153,8 @@ export function ContactForm() {
                 ))}
               </select>
             </motion.label>
-            <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-              <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Budget</span>
+            <motion.label variants={fadeIn} className="flex flex-col gap-2">
+              <span className="text-sm font-semibold text-ink">Budget</span>
               <input
                 name="budget"
                 type="text"
@@ -172,8 +165,8 @@ export function ContactForm() {
               />
             </motion.label>
           </div>
-          <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Subject</span>
+          <motion.label variants={fadeIn} className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-ink">Subject</span>
             <input
               name="subject"
               type="text"
@@ -183,8 +176,8 @@ export function ContactForm() {
               className={inputBase}
             />
           </motion.label>
-          <motion.label variants={fadeIn} className="flex flex-col gap-2 group">
-            <span className="text-sm font-semibold text-navy transition-colors duration-200 group-focus-within:text-teal">Message</span>
+          <motion.label variants={fadeIn} className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-ink">Message</span>
             <textarea
               name="message"
               required
@@ -196,41 +189,13 @@ export function ContactForm() {
             />
           </motion.label>
           <motion.div variants={fadeIn}>
-            <motion.button
+            <button
               type="submit"
-              disabled={status === "sending"}
-              whileHover={status === "idle" ? { scale: 1.03 } : undefined}
-              whileTap={status === "idle" ? { scale: 0.97 } : undefined}
-              className="inline-flex items-center gap-2 rounded-full bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 disabled:opacity-80"
+              className="group inline-flex items-center gap-2 rounded-xl bg-navy hover:bg-navy-light text-white font-semibold px-8 py-3.5 text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2"
             >
-              <AnimatePresence mode="wait" initial={false}>
-                {status === "sending" ? (
-                  <motion.span
-                    key="sending"
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: 0.2 }}
-                    className="inline-flex items-center gap-2"
-                  >
-                    Opening your email
-                    <Check className="w-4 h-4" strokeWidth={2.4} />
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="idle"
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: 0.2 }}
-                    className="inline-flex items-center gap-2"
-                  >
-                    Send Message
-                    <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.button>
+              Send Message
+              <ChevronsRight className="u-arrow w-4 h-4" strokeWidth={2.4} />
+            </button>
           </motion.div>
         </motion.form>
       </Container>

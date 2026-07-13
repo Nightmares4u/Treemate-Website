@@ -5,7 +5,7 @@ import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { RevealGroup } from "../motion/Reveal";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import customSoftwareSvg from "../../assets/illustrations/our-expertise/custom-software.svg";
 import aiPoweredSvg from "../../assets/illustrations/our-expertise/Ai-powered.svg";
 import staffMeetSvg from "../../assets/illustrations/our-expertise/staff-meet.svg";
@@ -78,7 +78,7 @@ const capabilities: Capability[] = [
 ];
 export function Pillars() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32 bg-cream">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-page">
       {}
       <MarkerAccent
         variant="scribble"
@@ -114,37 +114,39 @@ export function Pillars() {
             </p>
           </div>
         </div>
-        <RevealGroup
-          as="div"
-          variant="scale"
-          stagger={0.1}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {capabilities.map((c) => (
-            <article
+            <motion.article
               key={c.title}
-              className="group flex flex-col rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
+              variants={fadeIn}
+              className="group flex flex-col"
             >
               <IllustrationSlot
                 src={c.src}
                 aspect="aspect-[4/3]"
                 filenameHint={c.filename}
                 alt={c.title}
-                className="mb-8 rounded-xl overflow-hidden p-4 lg:p-8 transition-[filter] duration-300 group-hover:drop-shadow-[0_12px_24px_rgba(13,148,136,0.25)]"
-                imgClassName="object-contain transition-transform duration-300 group-hover:scale-105"
+                className="u-media mb-8 rounded-xl overflow-hidden p-4 lg:p-8 bg-surface/60 ring-1 ring-ink/5"
+                imgClassName="object-contain"
               />
               <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
                 {c.pillar}
               </span>
-              <h3 className="font-heading font-bold text-xl text-navy leading-snug mb-3">
+              <h3 className="font-heading font-bold text-xl text-ink leading-snug mb-3 transition-colors duration-300 group-hover:text-teal">
                 {c.title}
               </h3>
-              <p className="text-sm text-navy/70 leading-relaxed">
+              <p className="text-sm text-ink/70 leading-relaxed">
                 {c.description}
               </p>
-            </article>
+            </motion.article>
           ))}
-        </RevealGroup>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -154,7 +156,7 @@ export function Pillars() {
         >
           <Link
             to="/software-ai"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-navy text-cream text-sm font-bold uppercase tracking-[0.1em] transition-all hover:bg-teal hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-3.5 bg-navy text-cream text-sm font-bold uppercase tracking-[0.1em] transition-all hover:bg-teal hover:scale-[1.02] active:scale-[0.98]"
           >
             Explore Our Solutions
             <ChevronsRight className="w-4.5 h-4.5" strokeWidth={2} />
