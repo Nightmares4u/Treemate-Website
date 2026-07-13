@@ -1,9 +1,8 @@
-import { motion } from "framer-motion";
+import { RevealGroup } from "../motion/Reveal";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer } from "../../lib/motion";
 import innovationImg from "../../assets/illustrations/about-page/innovation.svg";
 import reliabilityImg from "../../assets/illustrations/about-page/reliability.svg";
 import collaborationImg from "../../assets/illustrations/about-page/team-collaboration.svg";
@@ -82,34 +81,32 @@ export function Values() {
             </p>
           </div>
         </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="scale"
+          stagger={0.1}
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10"
         >
           {values.map((v) => (
-            <motion.article
+            <article
               key={v.title}
-              variants={fadeIn}
-              className="flex flex-col"
+              className="group flex flex-col rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-1"
             >
               <IllustrationSlot
                 src={v.src}
                 aspect="aspect-square"
                 filenameHint={v.filename}
                 alt={v.title}
-                className="mb-8 rounded-2xl overflow-hidden"
-                imgClassName="object-contain"
+                className="mb-8 rounded-2xl overflow-hidden transition-[filter] duration-300 group-hover:drop-shadow-[0_12px_24px_rgba(13,148,136,0.25)]"
+                imgClassName="object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <h3 className="font-heading font-bold text-xl text-navy mb-3">
                 {v.title}
               </h3>
               <p className="text-navy/70 leading-relaxed">{v.description}</p>
-            </motion.article>
+            </article>
           ))}
-        </motion.div>
+        </RevealGroup>
       </Container>
     </section>
   );

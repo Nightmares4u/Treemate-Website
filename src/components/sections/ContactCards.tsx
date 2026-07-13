@@ -1,10 +1,9 @@
-import { motion } from "framer-motion";
 import { ChevronsRight } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { RevealGroup } from "../motion/Reveal";
 import { siteConfig } from "../../data/site";
 import emailImg from "../../assets/office/Email-treemate.png";
 import callImg from "../../assets/office/Callus-treemate.png";
@@ -83,22 +82,20 @@ export function ContactCards() {
             </p>
           </div>
         </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="scale"
+          stagger={0.1}
           className="grid md:grid-cols-3 gap-6"
         >
           {cards.map((c) => (
-            <motion.a
+            <a
               key={c.eyebrow}
-              variants={fadeIn}
               href={c.href}
               {...(c.external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
-              className="group flex flex-col"
+              className="group flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1"
             >
               <IllustrationSlot
                 src={c.src}
@@ -124,9 +121,9 @@ export function ContactCards() {
                   strokeWidth={2.4}
                 />
               </span>
-            </motion.a>
+            </a>
           ))}
-        </motion.div>
+        </RevealGroup>
       </Container>
     </section>
   );

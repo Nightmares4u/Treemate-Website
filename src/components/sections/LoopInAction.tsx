@@ -1,9 +1,8 @@
-import { motion } from "framer-motion";
 import { ShoppingBag, Rocket, Truck, type LucideIcon } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import { fadeIn, staggerContainer } from "../../lib/motion";
+import { RevealGroup } from "../motion/Reveal";
 interface Scenario {
   icon: LucideIcon;
   vertical: string;
@@ -72,22 +71,20 @@ export function LoopInAction() {
             </p>
           </div>
         </div>
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+        <RevealGroup
+          as="div"
+          variant="blur"
+          stagger={0.12}
           className="grid md:grid-cols-3 gap-6"
         >
           {scenarios.map((s) => {
             const Icon = s.icon;
             return (
-              <motion.article
+              <article
                 key={s.vertical}
-                variants={fadeIn}
-                className="flex flex-col p-6 transition-all duration-300"
+                className="group flex flex-col p-6 transition-transform duration-300 ease-out hover:-translate-y-1"
               >
-                <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center mb-5">
+                <span className="w-12 h-12 rounded-xl bg-teal/10 border border-teal/20 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
                   <Icon className="w-6 h-6 text-teal" strokeWidth={2} />
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal mb-2">
@@ -102,10 +99,10 @@ export function LoopInAction() {
                 <p className="pt-5 border-t border-navy/10 text-xs font-semibold text-navy/80">
                   {s.loopSummary}
                 </p>
-              </motion.article>
+              </article>
             );
           })}
-        </motion.div>
+        </RevealGroup>
       </Container>
     </section>
   );

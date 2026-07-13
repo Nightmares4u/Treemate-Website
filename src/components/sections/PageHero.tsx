@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { Container } from "../layout/Container";
 import { LinkButton } from "../ui/LinkButton";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
-import { blurIn, fadeIn, staggerContainer } from "../../lib/motion";
+import { AnimatedHeadline } from "../motion/AnimatedHeadline";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 interface PageHeroCta {
   label: string;
   to?: string;
@@ -49,16 +50,15 @@ export function PageHero({
                 {eyebrow}
               </motion.span>
             )}
-            <motion.h1
-              variants={blurIn}
+            <AnimatedHeadline
+              as="h1"
+              text={title}
               className="font-heading font-normal tracking-tight leading-[1.1]"
               style={{
                 fontSize: "clamp(3rem, 6.5vw, 6.5rem)",
                 color: "#0A1628",
               }}
-            >
-              {title}
-            </motion.h1>
+            />
             {tagline && (
               <motion.p
                 variants={fadeIn}

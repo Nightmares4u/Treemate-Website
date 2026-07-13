@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Layers, GraduationCap, Award, type LucideIcon } from "lucide-react";
 import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
-import { fadeIn, staggerContainer, easeOutExpo } from "../../lib/motion";
+import { Reveal } from "../motion/Reveal";
+import { fadeIn, staggerContainer } from "../../lib/motion";
 import careerFair from "../../assets/office/career-fair.jpg";
 interface Pillar {
   icon: LucideIcon;
@@ -40,12 +41,7 @@ export function TalentNetwork() {
         />
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: easeOutExpo }}
-            className="relative overflow-hidden"
-          >
+          <Reveal variant="frame" as="div" className="relative overflow-hidden">
             <div className="aspect-[3/2]">
               <img
                 src={careerFair}
@@ -61,28 +57,29 @@ export function TalentNetwork() {
                 Recruiting on the ground — US &amp; Pakistan
               </p>
             </div>
-          </motion.div>
+          </Reveal>
           {}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
             className="flex flex-col gap-5"
           >
             {pillars.map((pillar) => (
               <motion.div
                 key={pillar.title}
                 variants={fadeIn}
-                className="flex gap-5 p-2 transition-colors"
+                className="group flex gap-5 rounded-2xl p-3 transition-colors duration-300 hover:bg-cream-soft/70"
               >
-                <div className="w-12 h-12 shrink-0 rounded-xl bg-teal/10 flex items-center justify-center">
-                  <pillar.icon className="w-6 h-6 text-teal" strokeWidth={2} />
+                <div className="u-icon w-12 h-12 shrink-0 rounded-xl bg-teal/10 border border-teal/20 text-teal flex items-center justify-center active:scale-90">
+                  <pillar.icon className="w-6 h-6" strokeWidth={2} />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-navy mb-1.5">
+                  <h3 className="font-heading font-bold text-lg text-navy mb-1.5 transition-colors duration-300 group-hover:text-teal">
                     {pillar.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-navy/70 leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>

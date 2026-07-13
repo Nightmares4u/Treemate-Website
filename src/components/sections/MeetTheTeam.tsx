@@ -4,6 +4,7 @@ import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
+import { Reveal } from "../motion/Reveal";
 import { fadeIn, staggerContainer } from "../../lib/motion";
 import founder1 from "../../assets/team/Ibraheem-treemate.jpeg";
 import founder2 from "../../assets/team/yashal-treemate.jpeg";
@@ -14,14 +15,14 @@ const executives = [
     role: "CEO, Treemate US",
     photo: "team/yashal-treemate.jpeg",
     src: founder2,
-    bio: "Yashal pairs technical depth with entrepreneurial execution. A Computer Science student at the University of Alberta, he has built enterprise-grade systems as an AI Systems Engineer at Systems Ltd. and sharpened his auditing edge at KPMG. As CEO, he architects the technology and human capital systems that let businesses scale without friction.",
+    bio: "Yashal pairs technical depth with entrepreneurial execution. He has built enterprise-grade systems as an AI Systems Engineer at Systems Ltd. and sharpened his auditing edge at KPMG. As CEO, he architects the technology and human capital systems that let businesses scale without friction.",
   },
   {
     name: "Syed Ibraheem Hashmi",
-    role: "Co-Founder & COO, Treemate US",
+    role: "COO, Treemate US",
     photo: "team/Ibraheem-treemate.jpeg",
     src: founder1,
-    bio: "Ibraheem combines full-stack development with a strong background in BPO operations. Previously at IBEX Global, he spent 5 years running high-volume campaigns for major accounts like Walmart and SquareTrade. As COO, he leverages his mastery of pipeline management and agent performance systems to build the scalable operational blueprints that power Treemate.",
+    bio: "Ibraheem combines his technical edge as a full-stack developer with 5 years of hands-on experience in sales and BPO operations. With a background that includes driving enterprise campaigns at IBEX Global, he currently serves as COO, engineering the pipeline management and agent performance systems that keep Treemate scaling without friction.",
   },
 ];
 export function MeetTheTeam() {
@@ -93,16 +94,16 @@ export function MeetTheTeam() {
             <div className="hidden lg:block"></div>
             {}
             <div className="flex justify-center w-full">
-              <div className="w-full">
+              <Reveal variant="frame" as="div" className="w-full group">
                 <IllustrationSlot
                   src={founder3}
                   aspect="aspect-square"
                   filenameHint="sir-raza-portrait.png"
                   alt="Syed Raza — Chairman, Treemate US"
                   className="rounded-[3rem] overflow-hidden w-full shadow-lg"
-                  imgClassName="object-cover object-top"
+                  imgClassName="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                 />
-              </div>
+              </Reveal>
             </div>
             {}
             <div className="flex flex-col justify-center text-center lg:text-left">
@@ -130,14 +131,21 @@ export function MeetTheTeam() {
                 variants={fadeIn}
                 className="flex flex-col w-full md:max-w-[420px] text-center mx-auto"
               >
-                <IllustrationSlot
-                  src={f.src}
-                  aspect="aspect-square"
-                  filenameHint={f.photo}
-                  alt={`${f.name} — ${f.role}`}
-                  className="mb-6 rounded-[2rem] overflow-hidden shadow-sm"
-                  imgClassName="object-cover object-top"
-                />
+                <Reveal
+                  variant="frame"
+                  as="div"
+                  delay={i * 0.1}
+                  className="mb-6 group"
+                >
+                  <IllustrationSlot
+                    src={f.src}
+                    aspect="aspect-square"
+                    filenameHint={f.photo}
+                    alt={`${f.name} — ${f.role}`}
+                    className="rounded-[2rem] overflow-hidden shadow-sm"
+                    imgClassName="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                </Reveal>
                 <figcaption className="flex flex-col flex-grow px-2">
                   <div className="font-heading font-bold text-2xl text-navy leading-tight">
                     {f.name}
