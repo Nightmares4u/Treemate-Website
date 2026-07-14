@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import { Check, ChevronsRight } from "lucide-react";
 import { Container } from "../components/layout/Container";
 import { ImageBand } from "../components/sections/ImageBand";
@@ -10,11 +11,21 @@ import { BackgroundSpirals } from "../components/ui/BackgroundSpirals";
 import { MarkerAccent } from "../components/ui/MarkerAccent";
 import { RevealGroup } from "../components/motion/Reveal";
 import { Counter } from "../components/motion/Counter";
+import { StackAside } from "../components/hero-asides/StackAside";
+import { ComplianceAside } from "../components/hero-asides/ComplianceAside";
+import { TiersAside } from "../components/hero-asides/TiersAside";
 import { getService } from "../data/services";
 import { NotFoundPage } from "./NotFoundPage";
+/** Each service hero gets an aside built around what that service actually does. */
+const heroAsides: Record<string, ComponentType> = {
+  "software-ai": StackAside,
+  "hr-solutions": ComplianceAside,
+  "customer-success": TiersAside,
+};
 export function ServicePage({ slug }: { slug: string }) {
   const service = getService(slug);
   if (!service) return <NotFoundPage />;
+  const Aside = heroAsides[slug];
   return (
     <>
       <PageHero
@@ -24,6 +35,7 @@ export function ServicePage({ slug }: { slug: string }) {
         description={service.intro}
         primaryCta={{ label: "Book A Meeting", to: "/contact" }}
         secondaryCta={{ label: "Back to home", to: "/" }}
+        aside={Aside ? <Aside /> : undefined}
       />
       {}
       <section className="bg-base pb-16 md:pb-20">

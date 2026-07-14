@@ -154,20 +154,20 @@ export const services: Service[] = [
     eyebrow: "Human Resources",
     title: "HR Solutions",
     summary:
-      "Talent acquisition, cross-border payroll, and US + Australian compliance — all run through the custom HRM we build.",
+      "Talent acquisition, cross-border payroll, and US + Pakistani compliance — all run through the custom HRM we build.",
     intro:
-      "We provide the human capital to scale your operations, managed through the custom HRM systems we build. From sourcing specialized talent to running cross-border payroll and staying compliant on both sides of the Pacific, we carry the people overhead so you don't.",
+      "We provide the human capital to scale your operations, managed through the custom HRM systems we build. From sourcing specialized talent to running cross-border payroll and staying compliant in both jurisdictions, we carry the people overhead so you don't.",
     heroPoints: [
       "Specialized talent sourced, vetted, and onboarded for you",
       "Cross-border payroll and currency conversion handled end to end",
-      "Compliant with US (Federal/State) and Australian (Fair Work) law",
+      "Compliant with US (Federal/State) and Pakistani labor law",
     ],
     capabilities: [
       {
         icon: Search,
         title: "Talent Acquisition & Staffing",
         description:
-          "Sourcing, vetting, and onboarding specialized tech, sales, and administrative talent for US and Australian clients.",
+          "Sourcing, vetting, and onboarding specialized tech, sales, and administrative talent for US clients, from our Karachi floor.",
       },
       {
         icon: UserCog,
@@ -179,13 +179,13 @@ export const services: Service[] = [
         icon: Banknote,
         title: "Cross-Border Payroll",
         description:
-          "Managing payroll, currency conversion, and remote-worker benefits across the US and Australia without the administrative drag.",
+          "Managing payroll, currency conversion, and remote-worker benefits across the US and Pakistan without the administrative drag.",
       },
       {
         icon: ShieldCheck,
         title: "Compliance",
         description:
-          "Strict adherence to complex US (Federal/State) and Australian (Fair Work) labor laws, so cross-border staffing stays clean.",
+          "Strict adherence to complex US (Federal/State) and Pakistani labor laws, so cross-border staffing stays clean.",
       },
       {
         icon: BarChart3,
@@ -203,12 +203,12 @@ export const services: Service[] = [
       {
         title: "Source & vet",
         description:
-          "We recruit for US and Australian roles, screen candidates, and onboard them through our custom HRM.",
+          "We recruit for your US roles, screen candidates, and onboard them through our custom HRM.",
       },
       {
         title: "Payroll & compliance",
         description:
-          "We run cross-border payroll and keep every hire compliant with US Federal/State and Australian Fair Work law.",
+          "We run cross-border payroll and keep every hire compliant with US Federal/State and Pakistani labor law.",
       },
       {
         title: "Manage & review",
@@ -217,7 +217,7 @@ export const services: Service[] = [
       },
     ],
     stats: [
-      { value: "US + AU", label: "Compliant staffing across both markets" },
+      { value: "US + PK", label: "Compliant staffing across both jurisdictions" },
       {
         value: "Cross-border",
         label: "Payroll and currency handled end to end",
@@ -227,7 +227,7 @@ export const services: Service[] = [
     outcomes: [
       "Specialized talent without a long internal hiring cycle",
       "Payroll and compliance overhead off your plate",
-      "US and Australian labor law handled correctly",
+      "US and Pakistani labor law handled correctly",
       "Team performance visible through live HR dashboards",
     ],
   },

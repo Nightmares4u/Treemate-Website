@@ -29,8 +29,8 @@ const scenarios: Scenario[] = [
     icon: Truck,
     vertical: "Logistics operator",
     headline: "Dispatch, coverage, and compliance — under one partner.",
-    body: "We build the dispatch dashboard, staff 24/7 dispatchers across US and Australian time zones, and keep every hire compliant with Fair Work and US labor law.",
-    loopSummary: "Software → Staffing → Support, US + AU.",
+    body: "We build the dispatch dashboard, staff 24/7 dispatchers from our Karachi floor to cover every US time zone, and keep every hire compliant with US and Pakistani labor law.",
+    loopSummary: "Software → Staffing → Support, US + PK.",
   },
 ];
 export function LoopInAction() {

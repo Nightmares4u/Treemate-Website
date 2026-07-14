@@ -26,7 +26,7 @@ const milestones: Milestone[] = [
     year: "2025",
     title: "Cross-Border Operations",
     description:
-      "US and Australia coverage established; compliance frameworks in place for both markets, cross-border payroll running through our own HRM.",
+      "Wyoming HQ and the Karachi delivery floor established; compliance frameworks in place for both jurisdictions, cross-border payroll running through our own HRM.",
   },
   {
     year: "2026",

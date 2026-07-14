@@ -2,6 +2,7 @@ import { PageHero } from "../components/sections/PageHero";
 import { ContactForm } from "../components/sections/ContactForm";
 import { ContactCards } from "../components/sections/ContactCards";
 import { BookingSection } from "../components/sections/BookingSection";
+import { ContactAside } from "../components/hero-asides/ContactAside";
 export function ContactPage() {
   return (
     <>
@@ -12,6 +13,7 @@ export function ContactPage() {
         description="Whether you need consulting, custom software, or a full operations partner — Treemate is here to help. Book a call or send us the details below."
         primaryCta={{ label: "Book A Meeting", href: "#send-us-a-message" }}
         secondaryCta={{ label: "See our services", to: "/software-ai" }}
+        aside={<ContactAside />}
       />
       <BookingSection />
       <div id="send-us-a-message">

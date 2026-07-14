@@ -74,7 +74,7 @@ export function MeetTheTeam() {
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              Leadership · US & Australia
+              Leadership · US & Pakistan
             </p>
           </div>
         </div>
