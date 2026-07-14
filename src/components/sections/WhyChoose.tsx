@@ -5,7 +5,7 @@ import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
 import closedLoopImg from "../../assets/why-choose/one-loop.png";
 import aiImg from "../../assets/why-choose/Gen-Ai.png";
-import globalImg from "../../assets/why-choose/US-AUS.png";
+import globalImg from "../../assets/why-choose/US-PK.png";
 interface Reason {
   title: string;
   description: string;
@@ -28,10 +28,10 @@ const reasons: Reason[] = [
     src: aiImg,
   },
   {
-    title: "US + Australia, Compliant",
+    title: "US + Pakistan, Compliant",
     description:
-      "We staff and operate across both markets, with strict adherence to US (Federal/State) and Australian (Fair Work) labor law.",
-    filename: "/why-choose/US-AUS.png",
+      "We contract from Wyoming and deliver from Karachi, with strict adherence to US (Federal/State) and Pakistani labor law.",
+    filename: "/why-choose/US-PK.png",
     src: globalImg,
   },
 ];

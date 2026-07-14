@@ -44,7 +44,7 @@ const capabilities: Capability[] = [
     pillarSlug: "hr-solutions",
     title: "Talent Acquisition & Staffing",
     description:
-      "Specialized talent sourced, vetted, and onboarded for US and Australian roles.",
+      "Specialized talent sourced, vetted, and onboarded for your US roles.",
     filename: "illustrations/our-expertise/staff-meet.svg",
     src: staffMeetSvg,
   },
@@ -53,7 +53,7 @@ const capabilities: Capability[] = [
     pillarSlug: "hr-solutions",
     title: "Payroll & Compliance",
     description:
-      "Cross-border payroll and strict US (Federal/State) + Australian (Fair Work) compliance.",
+      "Cross-border payroll and strict US (Federal/State) + Pakistani labor-law compliance.",
     filename: "illustrations/our-expertise/payroll.svg",
     src: payrollSvg,
   },

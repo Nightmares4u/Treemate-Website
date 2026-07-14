@@ -19,7 +19,7 @@ const pillars: Pillar[] = [
   {
     title: "Inclusive Environment",
     description:
-      "We hire across the US and Australia — cultures, backgrounds, and time zones — and design work around what makes each team member effective.",
+      "We hire across the US and Pakistan — cultures, backgrounds, and time zones — and design work around what makes each team member effective.",
     filename: "office/office-1.jpeg",
     src: inclusiveImg,
   },

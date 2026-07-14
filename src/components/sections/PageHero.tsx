@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronsRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -6,6 +7,7 @@ import { LinkButton } from "../ui/LinkButton";
 import { BackgroundSpirals } from "../ui/BackgroundSpirals";
 import { AnimatedHeadline } from "../motion/AnimatedHeadline";
 import { fadeIn, staggerContainer } from "../../lib/motion";
+import { cn } from "../../lib/cn";
 interface PageHeroCta {
   label: string;
   to?: string;
@@ -18,6 +20,8 @@ interface PageHeroProps {
   description?: string;
   primaryCta?: PageHeroCta;
   secondaryCta?: PageHeroCta;
+  /** Optional panel pinned to the top of the right-hand column. */
+  aside?: ReactNode;
 }
 export function PageHero({
   eyebrow,
@@ -26,6 +30,7 @@ export function PageHero({
   description,
   primaryCta,
   secondaryCta,
+  aside,
 }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden bg-grid pt-32 pb-16 md:pt-40 md:pb-24">
@@ -39,7 +44,10 @@ export function PageHero({
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end"
+          className={cn(
+            "grid lg:grid-cols-12 gap-10 lg:gap-16",
+            aside ? "items-stretch" : "items-end",
+          )}
         >
           <div className="lg:col-span-7 flex flex-col gap-6">
             {eyebrow && (
@@ -68,48 +76,51 @@ export function PageHero({
               </motion.p>
             )}
           </div>
-          {(description || primaryCta || secondaryCta) && (
+          {(aside || description || primaryCta || secondaryCta) && (
             <motion.div
               variants={fadeIn}
-              className="lg:col-span-5 flex flex-col gap-6"
+              className="lg:col-span-5 flex flex-col justify-between gap-10"
             >
-              {description && (
-                <p className="text-navy leading-relaxed font-medium max-w-md">
-                  {description}
-                </p>
-              )}
-              {(primaryCta || secondaryCta) && (
-                <div className="flex flex-wrap items-center gap-6">
-                  {primaryCta && (
-                    <LinkButton
-                      {...(primaryCta.to
-                        ? { to: primaryCta.to }
-                        : { href: primaryCta.href ?? "#" })}
-                      variant="primary"
-                      size="lg"
-                    >
-                      {primaryCta.label}
-                      <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
-                    </LinkButton>
-                  )}
-                  {secondaryCta &&
-                    (secondaryCta.to ? (
-                      <Link
-                        to={secondaryCta.to}
-                        className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+              {aside}
+              <div className="flex flex-col gap-6">
+                {description && (
+                  <p className="text-navy leading-relaxed font-medium max-w-md">
+                    {description}
+                  </p>
+                )}
+                {(primaryCta || secondaryCta) && (
+                  <div className="flex flex-wrap items-center gap-6">
+                    {primaryCta && (
+                      <LinkButton
+                        {...(primaryCta.to
+                          ? { to: primaryCta.to }
+                          : { href: primaryCta.href ?? "#" })}
+                        variant="primary"
+                        size="lg"
                       >
-                        {secondaryCta.label}
-                      </Link>
-                    ) : (
-                      <a
-                        href={secondaryCta.href ?? "#"}
-                        className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
-                      >
-                        {secondaryCta.label}
-                      </a>
-                    ))}
-                </div>
-              )}
+                        {primaryCta.label}
+                        <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />
+                      </LinkButton>
+                    )}
+                    {secondaryCta &&
+                      (secondaryCta.to ? (
+                        <Link
+                          to={secondaryCta.to}
+                          className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+                        >
+                          {secondaryCta.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={secondaryCta.href ?? "#"}
+                          className="text-navy font-semibold text-sm underline underline-offset-4 decoration-navy/40 hover:decoration-navy transition-colors"
+                        >
+                          {secondaryCta.label}
+                        </a>
+                      ))}
+                  </div>
+                )}
+              </div>
             </motion.div>
           )}
         </motion.div>

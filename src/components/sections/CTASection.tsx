@@ -13,8 +13,8 @@ interface CTASectionProps {
   subtext?: string;
 }
 const trustPoints = [
-  { icon: Globe2, label: "US & Australia" },
-  { icon: ShieldCheck, label: "US & Fair Work compliant" },
+  { icon: Globe2, label: "US & Pakistan" },
+  { icon: ShieldCheck, label: "US & Pakistan compliant" },
   { icon: MapPin, label: "HQ in Sheridan, WY" },
 ];
 export function CTASection({

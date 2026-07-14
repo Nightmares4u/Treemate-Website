@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "Treemate",
   tagline: "People-Powered. Tech-Enabled.",
   description:
-    "Treemate is a hybrid IT consultancy and business process outsourcer serving the US and Australian markets. We build the software that runs a business, staff the people who manage it, and support the customers it serves.",
+    "Treemate is a hybrid IT consultancy and business process outsourcer serving the US market from Wyoming and Karachi. We build the software that runs a business, staff the people who manage it, and support the customers it serves.",
   domain: "treemate.us",
   url: "https://treemate.us",
   emails: {
@@ -25,8 +25,25 @@ export const siteConfig = {
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=30+N+Gould+St+Ste+R+Sheridan+WY+82801",
   },
+  /** Where we actually are: Wyoming contracts the work, Karachi delivers it. */
+  offices: [
+    {
+      city: "Sheridan",
+      region: "Wyoming, USA",
+      role: "HQ & contracting",
+      tz: "America/Denver",
+    },
+    {
+      city: "Karachi",
+      region: "Pakistan",
+      role: "Operations & delivery",
+      tz: "Asia/Karachi",
+    },
+  ],
   social: {
     linkedin: "https://www.linkedin.com/company/treemate-us/posts/",
+    instagram: "https://www.instagram.com/treemate.us/",
+    facebook: "https://www.facebook.com/treemate0",
   },
   hours: "24/7 coverage · Headquartered in the Mountain Time Zone",
   founded: 2024,

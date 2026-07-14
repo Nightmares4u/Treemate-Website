@@ -14,7 +14,7 @@ const faqs: FaqItem[] = [
   {
     question: "What industries do you serve?",
     answer:
-      "We're built for operations-heavy businesses across the US and Australia — including e-commerce, SaaS, logistics, real estate, healthcare services, and professional services. Any business where custom software, staffing, and customer support have to work together.",
+      "We're built for operations-heavy businesses across the US — including e-commerce, SaaS, logistics, real estate, healthcare services, and professional services. Any business where custom software, staffing, and customer support have to work together.",
   },
   {
     question: "Can your solutions scale with my business?",
