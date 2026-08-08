@@ -76,7 +76,7 @@ export function Header() {
         )}
       >
         <Container className="flex items-center justify-between">
-          <TreemateLogo size="md" wordmarkCase="upper" />
+          <TreemateLogo size="md" wordmarkCase="simple" className="-ml-1 md:-ml-2 lg:-ml-3" />
 
           <nav
             className="hidden lg:flex items-center gap-1"

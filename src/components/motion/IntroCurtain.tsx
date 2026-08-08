@@ -75,7 +75,7 @@ export function IntroCurtain() {
         transition={{ duration: 1.2, times: [0, 0.35, 0.62, 0.85], ease: easeOutExpo }}
         className="absolute inset-0 flex items-center justify-center"
       >
-        <TreemateLogo size="lg" wordmarkCase="upper" asLink={false} />
+        <TreemateLogo size="lg" wordmarkCase="simple" asLink={false} />
       </motion.div>
     </div>
   );
