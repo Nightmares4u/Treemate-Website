@@ -15,6 +15,10 @@ function App() {
           element={<ServicePage slug="software-ai" />}
         />
         <Route
+          path="/marketing"
+          element={<ServicePage slug="marketing" />}
+        />
+        <Route
           path="/hr-solutions"
           element={<ServicePage slug="hr-solutions" />}
         />

@@ -165,11 +165,6 @@ function Diagram({
               stroke="#0A1628"
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
-              style={{
-                filter: isActive
-                  ? "drop-shadow(0 0 3px rgba(13,148,136,0.45))"
-                  : "none",
-              }}
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{
                 pathLength: 1,

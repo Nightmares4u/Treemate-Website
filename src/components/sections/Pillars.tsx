@@ -58,6 +58,15 @@ const capabilities: Capability[] = [
     src: payrollSvg,
   },
   {
+    pillar: "Marketing",
+    pillarSlug: "marketing",
+    title: "Growth & Performance Marketing",
+    description:
+      "Paid ads, technical SEO, brand strategy, graphic design, and video production engineered for ROAS.",
+    filename: "illustrations/our-expertise/Ai-powered.svg",
+    src: aiPoweredSvg,
+  },
+  {
     pillar: "Customer Success",
     pillarSlug: "customer-success",
     title: "Tiered, Omnichannel Support",
@@ -103,14 +112,14 @@ export function Pillars() {
           <div className="lg:col-span-8">
             <SectionTitle
               title="Our Expertise"
-              subtitle="Three pillars, one integrated partner — software-first, staffed by us, backed by AI. We specialize in delivering tailored solutions across your business."
+              subtitle="Integrated operational pillars, one accountable partner — software-first, marketing-driven, staffed by us, backed by AI."
               align="left"
               className="mb-0 max-w-none"
             />
           </div>
           <div className="lg:col-span-4 lg:justify-self-end">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal">
-              Software · HR · Customer Success
+              Software · Marketing · HR · Support
             </p>
           </div>
         </div>

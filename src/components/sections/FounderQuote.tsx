@@ -12,11 +12,11 @@ export function FounderQuote() {
     <section className="relative overflow-hidden bg-navy py-24 md:py-32">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 -right-24 w-[520px] h-[520px] rounded-full bg-teal blur-[160px] opacity-20"
+        className="pointer-events-none absolute -top-24 -right-24 w-[520px] h-[520px] rounded-full bg-teal blur-[160px] opacity-20 transform-gpu"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 -left-24 w-[520px] h-[520px] rounded-full bg-teal blur-[160px] opacity-15"
+        className="pointer-events-none absolute -bottom-24 -left-24 w-[520px] h-[520px] rounded-full bg-teal blur-[160px] opacity-15 transform-gpu"
       />
       {}
       <BackgroundSpirals side="both" color="#5EEAD4" opacity={0.14} />

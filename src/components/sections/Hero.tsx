@@ -20,7 +20,7 @@ export function Hero() {
       {}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[10%] left-[15%] w-[800px] h-[700px] rounded-[100%] bg-[#A7F3D0]/50 blur-[130px]"
+        className="pointer-events-none absolute top-[10%] left-[15%] w-[800px] h-[700px] rounded-[100%] bg-[#A7F3D0]/50 blur-[130px] transform-gpu"
       />
       <Container className="relative z-10 w-full flex-1 flex flex-col justify-between h-full gap-4 lg:gap-6">
         <motion.div
