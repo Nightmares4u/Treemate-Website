@@ -86,7 +86,7 @@ export function Footer() {
           {}
           <motion.div variants={fadeIn} className="md:col-span-5">
             <div className="mb-5">
-              <TreemateLogo size="lg" variant="navy" wordmarkCase="upper" />
+              <TreemateLogo size="lg" variant="navy" wordmarkCase="simple" />
             </div>
             <p className="text-base font-semibold text-navy mb-3">
               {siteConfig.tagline}

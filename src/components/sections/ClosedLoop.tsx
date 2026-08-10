@@ -56,7 +56,7 @@ export function ClosedLoop() {
       {}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 -left-32 w-[420px] h-[420px] rounded-full bg-mint blur-[130px] opacity-60"
+        className="pointer-events-none absolute top-1/4 -left-32 w-[420px] h-[420px] rounded-full bg-mint blur-[130px] opacity-60 transform-gpu"
       />
       {}
       <MarkerAccent

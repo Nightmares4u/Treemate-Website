@@ -36,12 +36,11 @@ export const fadeIn: Variants = {
 };
 
 export const blurIn: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(12px)" },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 1.1, ease: easeOutExpo },
+    transition: { duration: 0.8, ease: easeOutExpo },
   },
 };
 
@@ -88,13 +87,12 @@ export const lineRise: Variants = {
   },
 };
 
-/** Word that rises and un-blurs — used by AnimatedHeadline. */
+/** Word that rises — used by AnimatedHeadline. */
 export const wordRise: Variants = {
-  hidden: { opacity: 0, y: "0.5em", filter: "blur(8px)" },
+  hidden: { opacity: 0, y: "0.3em" },
   visible: {
     opacity: 1,
     y: "0em",
-    filter: "blur(0px)",
     transition: { duration: 0.7, ease: easeOutExpo },
   },
 };

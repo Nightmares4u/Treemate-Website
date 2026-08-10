@@ -14,11 +14,13 @@ import { Counter } from "../components/motion/Counter";
 import { StackAside } from "../components/hero-asides/StackAside";
 import { ComplianceAside } from "../components/hero-asides/ComplianceAside";
 import { TiersAside } from "../components/hero-asides/TiersAside";
+import { MarketingAside } from "../components/hero-asides/MarketingAside";
 import { getService } from "../data/services";
 import { NotFoundPage } from "./NotFoundPage";
 /** Each service hero gets an aside built around what that service actually does. */
 const heroAsides: Record<string, ComponentType> = {
   "software-ai": StackAside,
+  marketing: MarketingAside,
   "hr-solutions": ComplianceAside,
   "customer-success": TiersAside,
 };
@@ -70,8 +72,39 @@ export function ServicePage({ slug }: { slug: string }) {
         />
       )}
       {}
-      <section className="py-24 bg-base">
-        <Container>
+      <section className="relative overflow-hidden py-24 md:py-32 bg-cream-soft">
+        <BackgroundSpirals side="both" opacity={0.15} />
+        {/* Subtle ambient mint glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/4 -right-32 w-[420px] h-[420px] rounded-full bg-mint blur-[130px] opacity-50 transform-gpu"
+        />
+        {/* Graceful hand-drawn marker accents */}
+        <MarkerAccent
+          variant="star"
+          className="absolute top-20 right-[5%] w-12 h-12 opacity-55 z-0 pointer-events-none"
+          color="#0D9488"
+          rotate={15}
+        />
+        <MarkerAccent
+          variant="scribble"
+          className="absolute top-1/2 left-[3%] w-20 h-14 opacity-50 z-0 pointer-events-none"
+          color="#0D9488"
+          rotate={-12}
+        />
+        <MarkerAccent
+          variant="arrow"
+          className="absolute bottom-24 right-[4%] w-16 h-12 opacity-45 z-0 pointer-events-none"
+          color="#0D9488"
+          rotate={-35}
+        />
+        <MarkerAccent
+          variant="circle"
+          className="absolute bottom-16 left-[6%] w-24 h-16 opacity-40 z-0 pointer-events-none"
+          color="#0D9488"
+          rotate={8}
+        />
+        <Container className="relative z-10">
           <SectionTitle
             eyebrow="What we deliver"
             title="Capabilities"

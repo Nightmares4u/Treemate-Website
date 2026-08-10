@@ -4,6 +4,7 @@ export interface NavLink {
 }
 export const navigationLinks: NavLink[] = [
   { name: "Software & AI", href: "/software-ai" },
+  { name: "Marketing", href: "/marketing" },
   { name: "HR Solutions", href: "/hr-solutions" },
   { name: "Customer Success", href: "/customer-success" },
   { name: "About", href: "/about" },
@@ -12,6 +13,7 @@ export const navigationLinks: NavLink[] = [
 export const footerNavigation = {
   services: [
     { name: "Software & AI", href: "/software-ai" },
+    { name: "Marketing", href: "/marketing" },
     { name: "HR Solutions", href: "/hr-solutions" },
     { name: "Customer Success", href: "/customer-success" },
   ],

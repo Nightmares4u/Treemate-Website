@@ -17,6 +17,16 @@ import {
   Bot,
   HeartHandshake,
   Truck,
+  Megaphone,
+  TrendingUp,
+  SearchCheck,
+  Palette,
+  Video,
+  Compass,
+  FileText,
+  Share2,
+  ShoppingBag,
+  Globe,
   type LucideIcon,
 } from "lucide-react";
 import operationsFloor from "../assets/office/operations-floor.jpg";
@@ -24,6 +34,7 @@ interface Capability {
   icon: LucideIcon;
   title: string;
   description: string;
+  tags?: string[];
 }
 interface ProcessStep {
   title: string;
@@ -145,6 +156,129 @@ export const services: Service[] = [
       "AI embedded where it removes cost and manual work",
       "Scalable full-stack apps engineered for performance",
       "Zero-downtime releases on managed cloud infrastructure",
+    ],
+  },
+  {
+    slug: "marketing",
+    nav: "Marketing",
+    icon: Megaphone,
+    eyebrow: "Growth & Digital Marketing",
+    title: "Growth & Marketing Solutions",
+    summary:
+      "Full-funnel performance marketing, brand strategy, creative production, and revenue acceleration — managed end to end by a dedicated growth team.",
+    intro:
+      "We build and execute high-ROI marketing engines that acquire, engage, and retain ideal customers. From paid campaigns and brand strategy to high-converting creative, video production, and technical SEO, we run your entire growth stack so every dollar works harder.",
+    heroPoints: [
+      "Full-funnel customer acquisition across paid search, paid social, and organic SEO",
+      "High-converting creative studio: graphic design, video production, and brand copywriting",
+      "Ecommerce solutions, conversion rate optimization (CRO), and custom web development",
+    ],
+    capabilities: [
+      {
+        icon: TrendingUp,
+        title: "Performance Marketing",
+        description:
+          "Data-driven paid search and social campaigns across Google Ads, Meta, LinkedIn, and TikTok engineered for high ROAS and efficient CAC.",
+        tags: ["Google Ads", "Meta Ads", "LinkedIn B2B", "ROAS Optimization"],
+      },
+      {
+        icon: SearchCheck,
+        title: "Search Engine Optimization",
+        description:
+          "Technical, programmatic, and content SEO strategies designed to dominate organic search rankings and capture qualified intent.",
+        tags: ["Technical SEO", "Programmatic", "On-Page Strategy", "Keyword Intent"],
+      },
+      {
+        icon: Compass,
+        title: "Brand Strategy",
+        description:
+          "Comprehensive positioning, messaging frameworks, competitive differentiation, and visual identity that make your brand unmistakable.",
+        tags: ["Positioning", "Brand Identity", "Messaging Matrix", "Market Research"],
+      },
+      {
+        icon: Share2,
+        title: "Social Media Management",
+        description:
+          "Multi-channel content calendars, community engagement, brand voice curation, and active audience growth across all major platforms.",
+        tags: ["Content Calendar", "Community Growth", "Brand Voice", "Multi-Channel"],
+      },
+      {
+        icon: FileText,
+        title: "Content Creation",
+        description:
+          "High-converting sales copy, lead magnets, blogs, email marketing campaigns, and whitepapers that turn interest into qualified pipeline.",
+        tags: ["Conversion Copy", "Lead Magnets", "Email Sequences", "Blogs & Guides"],
+      },
+      {
+        icon: Palette,
+        title: "Graphic Designing",
+        description:
+          "High-performing visual ad creatives, brand collateral, marketing kits, and UI/UX design assets that elevate your brand presence.",
+        tags: ["Ad Creatives", "Brand Collateral", "Marketing Kits", "UI/UX Visuals"],
+      },
+      {
+        icon: Video,
+        title: "Video Production",
+        description:
+          "Engaging short-form reels, product demos, motion graphics, and high-impact ad video creative built to capture attention and convert.",
+        tags: ["Short-Form Reels", "Motion Graphics", "Product Demos", "Social Ads"],
+      },
+      {
+        icon: Globe,
+        title: "Website Development",
+        description:
+          "Conversion-engineered websites, landing pages, and web applications built for blazing speed, seamless UX, and high lead capture.",
+        tags: ["Conversion UX", "Landing Pages", "Lead Capture", "Fast Web Apps"],
+      },
+      {
+        icon: ShoppingBag,
+        title: "Ecommerce Solutions",
+        description:
+          "Conversion Rate Optimization (CRO), cart abandonment recovery, storefront UX enhancement, and automated catalog growth engines.",
+        tags: ["Storefront CRO", "Cart Recovery", "Catalog Growth", "Checkout Flow"],
+      },
+    ],
+    process: [
+      {
+        title: "Audit & strategy",
+        description:
+          "We analyze your current channel mix, audience data, and funnel metrics to build a high-conviction growth roadmap.",
+      },
+      {
+        title: "Build & produce",
+        description:
+          "Our creative studio produces high-converting ad assets, video reels, and landing pages while engineers set up analytics tracking.",
+      },
+      {
+        title: "Launch & scale",
+        description:
+          "We deploy multi-channel campaigns, execute technical SEO, and continuously test creative angles and audience targeting.",
+      },
+      {
+        title: "Optimize & retain",
+        description:
+          "Real-time attribution, conversion rate optimization, and automated email/retargeting drive compounding ROI over time.",
+      },
+    ],
+    stats: [
+      {
+        value: "ROAS-First",
+        label: "Paid campaigns optimized for profitable return",
+      },
+      {
+        value: "9 Services",
+        label: "Full-spectrum marketing & creative capabilities",
+      },
+      {
+        value: "US + PK",
+        label: "Global growth studio operating 24/7",
+      },
+    ],
+    outcomes: [
+      "Predictable customer acquisition across paid search, paid social, and organic SEO",
+      "High-converting graphic design, video reels, and brand creative assets",
+      "Unified attribution connecting ad spend directly to closed-won revenue",
+      "Conversion-engineered website development and ecommerce optimization",
     ],
   },
   {
