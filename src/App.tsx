@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { ServicePage } from "./pages/ServicePage";
 import { PortfolioPage } from "./pages/PortfolioPage";
 import { AboutPage } from "./pages/AboutPage";
+import { CareersPage } from "./pages/CareersPage";
 import { ContactPage } from "./pages/ContactPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 function App() {
@@ -29,6 +30,7 @@ function App() {
         />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/careers" element={<CareersPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

@@ -9,6 +9,7 @@ export const navigationLinks: NavLink[] = [
   { name: "Customer Success", href: "/customer-success" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "About", href: "/about" },
+  { name: "Careers", href: "/careers" },
   { name: "Contact", href: "/contact" },
 ];
 export const footerNavigation = {
@@ -21,6 +22,7 @@ export const footerNavigation = {
   company: [
     { name: "Portfolio", href: "/portfolio" },
     { name: "About", href: "/about" },
+    { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
   ],
 };
