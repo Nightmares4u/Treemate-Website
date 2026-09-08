@@ -100,13 +100,19 @@ Google Cloud side is done. Two steps remain that no API can perform.
 
 STEP 1 — grant the service account access to the property (required)
 
-  Go to:  https://search.google.com/search-console/users?resource_id=https://treemate.us/
+  Go to:  https://search.google.com/search-console
 
-  Click "Add user", paste this address, and set permission to "Restricted":
+  Pick the treemate.us property in the switcher at the top left, then go to
+  Settings -> Users and permissions -> Add user. Paste this address and set
+  permission to "Restricted":
 
       $SA_EMAIL
 
-  Without this the API returns 403 no matter how the key is configured.
+  If the switcher lists BOTH an apex and a www property, add the address to
+  both — 'npm run seo:sites' will then show which one actually holds the data,
+  which is the open question recorded in CLAUDE.md under "Canonical host".
+
+  Until this is done the API can authenticate but sees no properties at all.
 
 STEP 2 — store the key for the weekly GitHub Actions run (optional)
 

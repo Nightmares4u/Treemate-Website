@@ -25,13 +25,23 @@
  *   node scripts/seo/gsc-report.mjs
  *   node scripts/seo/gsc-report.mjs --days 7   (default 28)
  */
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { createSign } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..", "..");
+
+// Load .env.local for interactive local runs — that's where setup-gsc.sh writes
+// GSC_SERVICE_ACCOUNT_KEY_FILE, and without this the file would sit there being
+// silently ignored. Real environment variables take precedence over the file,
+// so CI passing GSC_SERVICE_ACCOUNT_JSON as a secret still wins, and a missing
+// file is normal rather than an error.
+const envFile = join(root, ".env.local");
+if (existsSync(envFile) && typeof process.loadEnvFile === "function") {
+  process.loadEnvFile(envFile);
+}
 
 const DAYS = Number(
   process.argv.find((a) => a.startsWith("--days="))?.split("=")[1] ??
