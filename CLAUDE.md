@@ -193,6 +193,35 @@ extensions. That is deliberate: the build script imports the same file under
 Node's native type stripping, which needs the extension. `engines.node` is
 pinned to `22.x` for the same reason.
 
+## Canonical host — an open question, deliberately not yet decided
+
+The repo and the hosting disagree about which hostname is canonical, and as of
+2026-09-08 this is unresolved on purpose:
+
+- `src/data/site.ts` (`siteConfig.url`), `public/sitemap.xml`, and
+  `public/robots.txt` all say **`https://treemate.us`**.
+- Vercel serves **`https://www.treemate.us`** and 307-redirects every apex URL
+  to it, sitewide. Verified with `curl` on `/`, `/software-ai`, `/blog`,
+  `/careers`.
+
+So every URL in the sitemap redirects, `robots.txt` advertises a redirecting
+sitemap URL, and the canonical tags generated from `siteConfig.url` point at
+URLs that don't serve a 200. Search engines tolerate this but it splits signals
+between two hosts and wastes a hop on every crawl.
+
+**The user chose to decide this on Search Console data rather than inference** —
+whichever host Google has actually indexed and is sending traffic to should win.
+Once reporting is live:
+
+1. Run `npm run seo:sites` to see which host the property is registered under.
+2. Compare impressions between the hosts if both properties exist.
+3. Then either update `siteConfig.url` + sitemap + robots to `www` (code-only,
+   no hosting change), or flip Vercel's primary domain to the apex (one
+   dashboard setting, but moves whatever is indexed on `www`).
+
+Do not silently pick one during a routine run. Surface the numbers and let the
+user decide; it's a one-line change either way once the data is in.
+
 ## The GBP / registered-agent address issue — human action needed, not yours to fix in code
 
 Research during setup found that the company's public address, used in
@@ -346,6 +375,14 @@ The environment variables involved (see `.env.example`):
   Search Console property is domain-scoped rather than URL-prefix (then use
   `sc-domain:treemate.us`) — check which under Search Console → Settings →
   Ownership verification.
+
+**Check the property host first with `npm run seo:sites`.** It lists every
+property the service account can read. `https://treemate.us/`,
+`https://www.treemate.us/` and `sc-domain:treemate.us` are three *different*
+properties and only the matching one returns data — see the open question in
+"Canonical host" below. If the listed host isn't the default, set `SITE_URL`.
+An empty list means the credential works but the Search Console permission
+step hasn't taken effect.
 
 Test the whole chain with `npm run seo:report`. On success it prints a report
 and saves it to `reports/seo/<date>.md`. A 403 almost always means the Search

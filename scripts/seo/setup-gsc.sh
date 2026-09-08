@@ -116,7 +116,14 @@ STEP 2 — store the key for the weekly GitHub Actions run (optional)
 
 Then confirm the whole chain works:
 
-  npm run seo:report
+  npm run seo:sites     # lists the properties this account can read
+  npm run seo:report    # pulls the actual performance data
+
+Run seo:sites first. It confirms the key works and shows which host the
+property is registered under — "https://treemate.us/", "https://www.treemate.us/"
+and "sc-domain:treemate.us" are three separate properties, and only the right
+one returns data. If it lists a host other than the default, set SITE_URL in
+.env.local to match.
 
 The key itself lives at $KEY_PATH, outside the repo. Treat it like a
 password: anyone holding it can read this site's Search Console data.
