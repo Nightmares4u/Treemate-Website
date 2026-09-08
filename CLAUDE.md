@@ -34,8 +34,10 @@ Concretely:
 - Always run `npm run build` and `npm run lint` before committing. Both
   must pass clean.
 - Ship every change as a PR (see "How to ship a change" below), never a
-  direct push to `main`. The user reviews and merges PRs; you don't need
-  their real-time input to open one, but don't merge it yourself.
+  direct push to `main`. **You may merge your own PRs** — but only under the
+  conditions in "Autonomous merges and the audit trail" below, and never
+  without leaving the trail that section requires. A merge deploys to the
+  live site within a minute or two, so the trail is what makes it reversible.
 
 ## Project overview
 
@@ -414,10 +416,97 @@ API for opening the PR. Standard flow:
    for exactly this reason; if that's gone, a human needs to supply a
    fresh GitHub PAT with `repo` scope).
 6. Open a PR against `main` (via `gh pr create` or the GitHub REST API).
-   Write a real description: what changed, why, what you verified. Do not
-   merge it yourself — leave it for the user to review, unless a task
-   explicitly says to auto-merge low-risk scheduled changes (it currently
-   does not — always leave PRs open for review).
+   Write a real description: what changed, why, what you verified.
+7. Merge it yourself if — and only if — every condition in "Autonomous merges
+   and the audit trail" below is met. If any one of them isn't, leave the PR
+   open, say plainly in the PR description what you're waiting on, and move on
+   to other work. An open PR is a normal outcome, not a failure.
+
+## Autonomous merges and the audit trail
+
+You are allowed to merge your own PRs to `main` without waiting for a human.
+`main` auto-deploys to the live site, so this is a real production release
+every time. The trade the user made is explicit: **speed in exchange for a
+trail good enough to diagnose and undo any change without you present.**
+
+Nothing here loosens the prime directive. Merge permission changes *who
+presses the button*, not *what is allowed to change*.
+
+### Before you merge — all six, no exceptions
+
+1. **CI is green.** `seo-check` must pass on the PR. Never merge a red or
+   still-running check, and never disable, skip, or "fix" a check by loosening
+   it in the same PR that needs it to pass.
+2. **The preview deployment was checked, not assumed.** Vercel builds a preview
+   for every PR. Fetch the routes you touched on that preview URL and confirm
+   the change is really there:
+   `curl -s <preview-url>/<route> | grep -o '<title>[^<]*</title>'`
+   A green build only proves it compiled, not that it does what you intended.
+3. **The diff is only what you meant to change.** Re-read `git diff` against
+   `main` one more time before merging.
+4. **It's inside the autonomous scope** — see the escalation list below.
+5. **The PR description is complete**: what changed, why, what data drove it,
+   what you verified, and what you'd look at first if it broke.
+6. **You can state how to undo it.** If you can't write the rollback line for
+   the log, you don't understand the change well enough to merge it.
+
+Use `gh pr merge <n> --squash` for a single-commit change, or `--merge` for a
+stack. Never `--admin`, and never force-push `main`.
+
+### After you merge — verify production, then log it
+
+A merge you don't check is worse than an open PR, because everyone assumes
+it worked.
+
+1. **Wait for the production deploy and verify the live site.** Fetch the
+   affected route on `www.treemate.us` and confirm the change is live and the
+   page still renders. `gh run list` and the Vercel deployment status tell you
+   when the deploy finished.
+2. **If production is broken, roll back immediately — before investigating.**
+   Fastest path is Vercel: Deployments → the last known-good production
+   deployment → Promote to Production. That's live in seconds and needs no
+   build. Then `git revert -m 1 <merge-sha>` and push, so the code matches
+   what's deployed. Diagnose afterwards, not while the site is broken.
+3. **Append one line to `reports/agent-log.md`** (create it if missing):
+
+   ```
+   | 2026-09-08 | #12 | 7ffbfcc | Weekly GSC workflow + SEO checks | git revert -m 1 7ffbfcc |
+   ```
+
+   Date, PR number, merge SHA, one-line summary, and the exact rollback
+   command. This file exists so that a human debugging a broken site at speed
+   has one place to look, with commands they can paste. Keep it newest-first
+   and never rewrite past entries.
+4. **Comment on the merged PR with the production verification result** — what
+   you fetched, what you saw. That's the evidence the trail rests on.
+
+The log is a curated view, not the source of truth. If it's ever out of date
+or you suspect an entry is missing, `git log --merges --first-parent main`
+is authoritative.
+
+### Always escalate instead of merging
+
+Open the PR, explain what you need, and stop. These stay human decisions:
+
+- **Anything in the human-only list**: the GBP/registered-agent address,
+  career role changes you weren't explicitly told about, and anything touching
+  secrets or credentials.
+- **The canonical host question** (see "Canonical host" above). The user chose
+  to settle it on real Search Console data. Present the numbers; don't pick.
+- **Existing page copy, the design system, or the header navigation** — beyond
+  a precise, specifically-requested fix.
+- **New dependencies**, or changes to `vercel.json`, the build pipeline, or
+  the workflows themselves. The tooling that verifies your work is not
+  something to change on your own authority.
+- **Anything you're genuinely unsure about.** Uncertainty is a reason to leave
+  it open, not a thing to resolve by merging and watching what happens.
+- **More than one substantial change at once.** Merge them as separate PRs so
+  a revert of one doesn't take the others with it.
+
+If a merge went wrong and you're the one who finds it, say so directly in your
+summary — what broke, what you did about it, and what you'd change. An honest
+report of a bad merge is far more useful than a clean-looking one.
+
 
 ## Scheduling — what already runs on its own
 
@@ -446,7 +535,7 @@ that happen unattended too, schedule a headless Claude Code run against a
 persistent local clone (macOS `launchd`, or any always-on machine's cron):
 
 ```
-claude -p "Read CLAUDE.md and run the weekly SEO runbook end to end. Open a PR with anything you changed and summarise the GSC numbers in the PR description." --cwd /path/to/treemate-website
+claude -p "Read CLAUDE.md and run the weekly SEO runbook end to end. Ship what you change as a PR, merge it only if it meets the autonomous-merge checklist, and leave the audit trail that section requires." --cwd /path/to/treemate-website
 ```
 
 That needs: a clone with working push credentials already configured, the GSC
@@ -466,9 +555,12 @@ beyond "handle Treemate's SEO":
   there to answer.
 - Never guess on the things this file explicitly says are human-only
   (GBP settings, career role changes not already instructed, secrets/
-  credentials, merging PRs). Do the rest of the work, note what's blocked
-  on a human, and stop there for that item — don't skip the whole run over
-  one blocked item.
+  credentials, the canonical host decision). Do the rest of the work, note
+  what's blocked on a human, and stop there for that item — don't skip the
+  whole run over one blocked item.
+- You can merge your own work, but only against the checklist in "Autonomous
+  merges and the audit trail". Leaving a PR open because a condition wasn't
+  met is a correct outcome — report it as a decision, not as a blocker.
 - Always leave a clear paper trail: a PR description or a final summary
   that states what changed, what the numbers showed, and what (if
   anything) needs a human decision.
