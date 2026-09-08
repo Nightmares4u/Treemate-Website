@@ -1,0 +1,69 @@
+name: Weekly SEO report
+
+# Pulls Search Console performance data every Monday and commits the dated
+# report to reports/seo/, which is the history the weekly runbook in CLAUDE.md
+# compares against week over week.
+#
+# Requires the repository secret GSC_SERVICE_ACCOUNT_JSON — the contents of the
+# service-account key created by scripts/seo/setup-gsc.sh. Until that exists
+# this job fails on purpose: a silent skip would leave the site looking
+# monitored while no data was ever collected.
+
+on:
+  schedule:
+    # Mondays, 15:00 UTC. Search Console data lags ~2 days, which the script
+    # already accounts for in its date window.
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Look-back window in days"
+        required: false
+        default: "28"
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Check the Search Console credential is configured
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$GSC_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::GSC_SERVICE_ACCOUNT_JSON is not set, so no Search Console data can be pulled. Run scripts/seo/setup-gsc.sh, then: gh secret set GSC_SERVICE_ACCOUNT_JSON --repo $GITHUB_REPOSITORY < <key file>"
+            exit 1
+          fi
+
+      - name: Pull the Search Console report
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          SITE_URL: ${{ vars.GSC_SITE_URL || 'https://treemate.us/' }}
+        run: node scripts/seo/gsc-report.mjs --days "${{ inputs.days || '28' }}"
+
+      - name: Add the report to the run summary
+        run: |
+          latest="$(ls -1 reports/seo/*.md | sort | tail -1)"
+          cat "$latest" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/seo
+          if git diff --cached --quiet; then
+            echo "No new report content — nothing to commit."
+            exit 0
+          fi
+          # [skip ci] keeps a data-only commit from triggering a redeploy of an
+          # otherwise identical site build.
+          git commit -m "SEO auto: Search Console report for $(date -u +%F) [skip ci]"
+          git push
