@@ -23,6 +23,7 @@ export const footerNavigation = {
     { name: "Portfolio", href: "/portfolio" },
     { name: "About", href: "/about" },
     { name: "Careers", href: "/careers" },
+    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ],
 };
