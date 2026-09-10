@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
     "seo:report": "node scripts/seo/gsc-report.mjs",
+    "seo:sites": "node scripts/seo/gsc-report.mjs --list-sites",
     "seo:meta": "node scripts/seo/generate-static-meta.mjs"
   },
   "dependencies": {

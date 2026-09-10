@@ -1,0 +1,43 @@
+name: SEO checks
+
+# Guards against the two SEO regressions that are invisible in review:
+# a sitemap that no longer matches the site's routes (a new blog post that
+# never gets submitted for indexing), and a route that ends up without its own
+# title and description.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - run: npm ci
+
+      - name: Build (also generates the per-route metadata)
+        run: npm run build
+
+      - name: Sitemap is up to date with the current routes and posts
+        run: |
+          cp public/sitemap.xml /tmp/sitemap-committed.xml
+          npm run seo:sitemap
+          # lastmod on static routes is today's date by design, so compare the
+          # set of URLs rather than the whole file.
+          grep -o '<loc>[^<]*</loc>' /tmp/sitemap-committed.xml | sort > /tmp/urls-committed.txt
+          grep -o '<loc>[^<]*</loc>' public/sitemap.xml | sort > /tmp/urls-fresh.txt
+          if ! diff -u /tmp/urls-committed.txt /tmp/urls-fresh.txt; then
+            echo "::error::public/sitemap.xml is missing routes or blog posts. Run 'npm run seo:sitemap' and commit the result."
+            exit 1
+          fi
+          git checkout -- public/sitemap.xml
+
+      - name: Every route has its own title and description
+        run: node scripts/seo/verify-route-meta.mjs

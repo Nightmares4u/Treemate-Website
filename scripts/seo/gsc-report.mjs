@@ -25,13 +25,23 @@
  *   node scripts/seo/gsc-report.mjs
  *   node scripts/seo/gsc-report.mjs --days 7   (default 28)
  */
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { createSign } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..", "..");
+
+// Load .env.local for interactive local runs — that's where setup-gsc.sh writes
+// GSC_SERVICE_ACCOUNT_KEY_FILE, and without this the file would sit there being
+// silently ignored. Real environment variables take precedence over the file,
+// so CI passing GSC_SERVICE_ACCOUNT_JSON as a secret still wins, and a missing
+// file is normal rather than an error.
+const envFile = join(root, ".env.local");
+if (existsSync(envFile) && typeof process.loadEnvFile === "function") {
+  process.loadEnvFile(envFile);
+}
 
 const DAYS = Number(
   process.argv.find((a) => a.startsWith("--days="))?.split("=")[1] ??
@@ -110,6 +120,26 @@ async function getAccessToken(sa) {
   return body.access_token;
 }
 
+/**
+ * Lists the Search Console properties this service account can read.
+ *
+ * A property is identified by the exact host it was registered under, so
+ * "https://treemate.us/", "https://www.treemate.us/" and "sc-domain:treemate.us"
+ * are three different properties and only the right one returns data. This is
+ * also the quickest way to confirm the Search Console permission step actually
+ * took effect: an account that hasn't been added anywhere lists nothing.
+ */
+async function listSites(token) {
+  const res = await fetch("https://searchconsole.googleapis.com/webmasters/v3/sites", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const body = await res.json();
+  if (!res.ok) {
+    throw new Error(`sites.list failed (${res.status}): ${JSON.stringify(body)}`);
+  }
+  return body.siteEntry ?? [];
+}
+
 async function queryAnalytics(token, dimensions, rowLimit = 25) {
   const end = new Date();
   end.setDate(end.getDate() - 2); // GSC data lags ~2 days
@@ -135,7 +165,25 @@ async function queryAnalytics(token, dimensions, rowLimit = 25) {
   );
   const body = await res.json();
   if (!res.ok) {
-    throw new Error(`searchAnalytics.query failed (${res.status}): ${JSON.stringify(body)}`);
+    // The overwhelmingly common cause is SITE_URL naming a property that
+    // exists but this account can't read, or naming the wrong host entirely.
+    // Listing what it *can* read turns a bare 403 into an actionable answer.
+    let hint = "";
+    try {
+      const sites = await listSites(token);
+      hint = sites.length
+        ? `\n\nProperties this service account can read:\n${sites
+            .map((s) => `  ${s.siteUrl}  (${s.permissionLevel})`)
+            .join("\n")}\n\nSet SITE_URL to the one you want (currently "${SITE_URL}").`
+        : "\n\nThis service account can't read any Search Console property yet. " +
+          "Add its email address under Search Console -> Settings -> Users and " +
+          "permissions, with Restricted access. See CLAUDE.md.";
+    } catch {
+      // Listing is a nicety; if it fails too, the original error still stands.
+    }
+    throw new Error(
+      `searchAnalytics.query failed (${res.status}): ${JSON.stringify(body)}${hint}`,
+    );
   }
   return { rows: body.rows ?? [], startDate: fmt(start), endDate: fmt(end) };
 }
@@ -152,6 +200,30 @@ function table(headers, rows) {
 async function main() {
   const sa = loadServiceAccount();
   const token = await getAccessToken(sa);
+
+  // `npm run seo:sites` — answers "is the credential working, and which host is
+  // the property registered under?" without pulling a full report.
+  if (process.argv.includes("--list-sites")) {
+    const sites = await listSites(token);
+    if (!sites.length) {
+      console.log(
+        [
+          `No Search Console properties are readable by ${sa.client_email}.`,
+          "",
+          "The credential itself works — this is the Search Console permission",
+          "step. Add that address under Settings -> Users and permissions on the",
+          "property, with Restricted access, then run this again.",
+        ].join("\n"),
+      );
+      return;
+    }
+    console.log(`Properties readable by ${sa.client_email}:\n`);
+    for (const site of sites) {
+      console.log(`  ${site.siteUrl}  (${site.permissionLevel})`);
+    }
+    console.log(`\nSITE_URL is currently "${SITE_URL}".`);
+    return;
+  }
 
   const [byQuery, byPage] = await Promise.all([
     queryAnalytics(token, ["query"]),

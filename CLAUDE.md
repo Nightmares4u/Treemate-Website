@@ -34,8 +34,10 @@ Concretely:
 - Always run `npm run build` and `npm run lint` before committing. Both
   must pass clean.
 - Ship every change as a PR (see "How to ship a change" below), never a
-  direct push to `main`. The user reviews and merges PRs; you don't need
-  their real-time input to open one, but don't merge it yourself.
+  direct push to `main`. **You may merge your own PRs** — but only under the
+  conditions in "Autonomous merges and the audit trail" below, and never
+  without leaving the trail that section requires. A merge deploys to the
+  live site within a minute or two, so the trail is what makes it reversible.
 
 ## Project overview
 
@@ -51,10 +53,10 @@ Concretely:
   `Nightmares4u/Treemate-Website`. There is no staging environment — a
   merged PR to `main` goes live. This is exactly why every PR must be
   clean, additive, and verified locally first.
-- **No SSR/prerendering**: it's a pure client-side SPA. This matters for
-  SEO — see "Known SEO gaps" below; per-route `<title>`/meta tags need
-  `react-helmet-async` (or similar) since there's currently only one static
-  `<title>` in `index.html` shared by every route.
+- **No SSR, but the head is per-route**: it's a client-side SPA, so there's
+  one `index.html` template. Per-route `<title>`/meta tags are handled at
+  build time instead of with a runtime library — see "Per-route metadata"
+  below before touching anything in `<head>` or adding a route.
 
 ## Design system — match this exactly for anything new
 
@@ -103,6 +105,13 @@ Already shipped to `main`:
   Needs the credentials described in "Google Search Console API setup"
   below — until those are set up, it exits with a clear error rather than
   crashing.
+- **Per-route metadata** (see the dedicated section below): every route gets
+  its own title, description, canonical, and social tags, plus `Organization`
+  and `BlogPosting` structured data.
+- **Automated monitoring**: `.github/workflows/seo-report.yml` pulls Search
+  Console data every Monday and commits the report;
+  `.github/workflows/seo-check.yml` blocks PRs that leave the sitemap stale or
+  a route without unique metadata.
 - **Redirect fix**: `/ai-services` (an old, still-indexed route name from
   a previous brand/site iteration, "Treemate Growth Partners") now
   permanently redirects to `/software-ai` (`vercel.json` → `redirects`).
@@ -115,18 +124,12 @@ Work through these opportunistically, one PR at a time, always verified
 with build+lint+diff review first. None of these are urgent/blocking; treat
 this as a backlog to chip away at during otherwise-quiet weekly runs.
 
-1. **No per-route meta tags** (highest impact, most work). Every route
-   currently shares the one static `<title>`/`<meta description>` in
-   `index.html`. Add `react-helmet-async`: wrap `App` in
-   `HelmetProvider`, add a `<Helmet>` block to each page component with a
-   unique title/description/OG tags. Blog posts especially need this —
-   right now every blog post has an identical `<title>` in search results.
-2. **No structured data**. Add `Organization` JSON-LD to the site (name,
-   url, logo, sameAs → social links) via a `<script type="application/
-   ld+json">` in `index.html` or injected via Helmet. **Do not include a
-   `streetAddress` in this markup** — see "GBP / address issue" below for
-   why. Add `BlogPosting` JSON-LD per blog post once react-helmet-async is
-   in place (headline, datePublished, author).
+1. ~~**No per-route meta tags**~~ — **done**, see "Per-route metadata" below.
+   Handled at build time rather than with `react-helmet-async`, which the
+   earlier version of this file suggested; no runtime dependency was needed.
+2. ~~**No structured data**~~ — **done**. `Organization` JSON-LD is in
+   `index.html`, `BlogPosting` is injected per post by the build step. Both
+   deliberately omit `streetAddress`; see "GBP / address issue" below.
 3. **No analytics**. Confirmed via Vercel API that Web Analytics isn't
    enabled on the project. Either enable Vercel Web Analytics (adds
    `@vercel/analytics`, minimal setup, privacy-friendly, no cookie banner
@@ -150,6 +153,76 @@ this as a backlog to chip away at during otherwise-quiet weekly runs.
    real problem — check the GSC report / PageSpeed Insights before
    spending time here. If you do: route-based code-splitting via
    `React.lazy` on the page components in `App.tsx` is the standard fix.
+
+## Per-route metadata — how the head works, and what to do when you add a route
+
+The site serves one `index.html`, so without help every URL would share one
+title and description. Two pieces fix that, and neither adds a dependency:
+
+- **`scripts/seo/generate-static-meta.mjs`** runs automatically as the last
+  step of `npm run build`. It takes the built `dist/index.html`, swaps in each
+  route's own title/description/canonical/OG/Twitter tags, and writes
+  `dist/<route>/index.html`. Vercel checks the filesystem before the SPA
+  catch-all rewrite in `vercel.json`, so these files are what crawlers
+  actually receive. Blog posts additionally get `BlogPosting` JSON-LD.
+  `/` is deliberately skipped — `dist/index.html` *is* the homepage, and
+  re-rendering it would overwrite its hand-written `og:description`.
+- **`src/components/RouteMeta.tsx`** is mounted once in `Layout` and updates
+  the same tags in place on client-side navigation, where no new document is
+  ever fetched. It edits existing tags rather than appending, so the head
+  never accumulates duplicates.
+
+**The copy lives in `src/data/seo.ts`** — one entry per static route. Blog post
+titles and descriptions are derived from `src/data/blog.ts`, not duplicated.
+
+**When you add a route**, do all three or CI will fail:
+1. Add the `<Route>` in `src/App.tsx`.
+2. Add a `routeMeta` entry in `src/data/seo.ts` (title under ~60 chars,
+   description 140-160, both unique — the check enforces uniqueness).
+3. Add the path to `staticRoutes` in `scripts/generate-sitemap.mjs`, then run
+   `npm run seo:sitemap` and commit `public/sitemap.xml`.
+
+Adding a blog post only needs step 3's sitemap regeneration — its metadata is
+picked up from `blogPosts` automatically.
+
+`scripts/seo/verify-route-meta.mjs` (run by CI after every build) fails the
+PR if any route is missing a title, description, or canonical, or if two
+routes share either. Run `npm run build && node scripts/seo/verify-route-meta.mjs`
+locally to check before pushing.
+
+Note that `src/data/seo.ts` imports its siblings with explicit `.ts`
+extensions. That is deliberate: the build script imports the same file under
+Node's native type stripping, which needs the extension. `engines.node` is
+pinned to `22.x` for the same reason.
+
+## Canonical host — an open question, deliberately not yet decided
+
+The repo and the hosting disagree about which hostname is canonical, and as of
+2026-09-08 this is unresolved on purpose:
+
+- `src/data/site.ts` (`siteConfig.url`), `public/sitemap.xml`, and
+  `public/robots.txt` all say **`https://treemate.us`**.
+- Vercel serves **`https://www.treemate.us`** and 307-redirects every apex URL
+  to it, sitewide. Verified with `curl` on `/`, `/software-ai`, `/blog`,
+  `/careers`.
+
+So every URL in the sitemap redirects, `robots.txt` advertises a redirecting
+sitemap URL, and the canonical tags generated from `siteConfig.url` point at
+URLs that don't serve a 200. Search engines tolerate this but it splits signals
+between two hosts and wastes a hop on every crawl.
+
+**The user chose to decide this on Search Console data rather than inference** —
+whichever host Google has actually indexed and is sending traffic to should win.
+Once reporting is live:
+
+1. Run `npm run seo:sites` to see which host the property is registered under.
+2. Compare impressions between the hosts if both properties exist.
+3. Then either update `siteConfig.url` + sitemap + robots to `www` (code-only,
+   no hosting change), or flip Vercel's primary domain to the apex (one
+   dashboard setting, but moves whatever is indexed on `www`).
+
+Do not silently pick one during a routine run. Surface the numbers and let the
+user decide; it's a one-line change either way once the data is in.
 
 ## The GBP / registered-agent address issue — human action needed, not yours to fix in code
 
@@ -269,52 +342,54 @@ judgment during a routine SEO pass. What you *can* do autonomously:
   summary (not fixing) — the user may want to refresh copy or reconsider
   the role, but that's their call.
 
-## Google Search Console API setup (one-time, human-only)
+## Google Search Console API setup (one-time)
 
-`scripts/seo/gsc-report.mjs` needs a Google Cloud service account. This is
-a one-time setup that requires a human with access to the Google account
-that owns the `treemate.us` Search Console property (this cannot be done
-by an agent — it requires clicking through Google's own consoles and
-logging into a real Google account). If these env vars aren't set yet when
-you run a weekly check, **tell the user exactly what's missing and give
-them these steps** rather than trying to work around it:
+`scripts/seo/gsc-report.mjs` needs a Google Cloud service account.
+**`scripts/seo/setup-gsc.sh` does almost all of this for you** — it creates the
+project, enables the Search Console API, creates the service account, issues a
+JSON key into `~/.secrets/treemate/`, and writes the env var into `.env.local`.
+It is idempotent, so re-running it is safe.
 
-1. Go to [console.cloud.google.com](https://console.cloud.google.com) and
-   create a new project (or reuse an existing one) — e.g. "treemate-seo".
-2. In that project, go to **APIs & Services → Library**, search for
-   "Google Search Console API", and click **Enable**.
-3. Go to **APIs & Services → Credentials → Create Credentials → Service
-   account**. Give it any name (e.g. "gsc-reporter"). No special IAM roles
-   are needed at the project level — access is granted separately in
-   Search Console itself (step 5).
-4. Open the new service account → **Keys** tab → **Add Key → Create new
-   key → JSON**. This downloads a `.json` file — **treat it like a
-   password, never commit it to the repo**. Note the service account's
-   email address (looks like
-   `gsc-reporter@treemate-seo.iam.gserviceaccount.com`) — you'll need it
-   in the next step.
-5. Go to [search.google.com/search-console](https://search.google.com/search-console),
-   select the `treemate.us` property, go to **Settings → Users and
-   permissions → Add user**, paste the service account's email address,
-   and grant it **Restricted** (read-only) access. This is the step that
-   actually grants the script permission to read data — the GCP project
-   setup alone does nothing without this.
-6. Set the environment variables the script reads (see `.env.example`):
-   - `GSC_SERVICE_ACCOUNT_JSON` — the full content of the downloaded JSON
-     key file, as a single-line string. This is the easiest option for a
-     scheduled/headless job (see "Scheduling" below) since it's just one
-     env var, no file path to manage.
-   - *or* `GSC_SERVICE_ACCOUNT_KEY_FILE` — a path to the downloaded JSON
-     file, kept somewhere outside the repo (e.g. `~/secrets/gsc-key.json`).
-     Easier for interactive local runs.
-   - `SITE_URL` — defaults to `https://treemate.us/`. Only change this if
-     the Search Console property is domain-scoped instead of URL-prefix
-     (in which case use `sc-domain:treemate.us`) — check which type the
-     property is under Search Console → Settings → Ownership verification.
-7. Test it: `npm run seo:report`. On success it prints a report and saves
-   it to `reports/seo/<date>.md`. If it fails with a 403/permission error,
-   the most common cause is step 5 not being done yet, or done with the
-   wrong service account email.
+    gcloud auth login          # human step: real Google account, real browser
+    ./scripts/seo/setup-gsc.sh
+
+Two things the script cannot do, because Google exposes no API for either:
+
+- **Granting the service account access to the property.** Search Console has
+  no permissions API — it is a Settings → Users and permissions screen and it
+  must be a human click. The script prints the exact URL and the service
+  account address to paste, with "Restricted" (read-only) permission. Without
+  this step the API returns 403 no matter how the key is configured.
+- **Storing the key as a GitHub Actions secret**, if the weekly workflow should
+  run. The script prints the `gh secret set` command for that too.
+
+If you are a scheduled run and the credential still isn't configured, say so
+explicitly in your summary and carry on with the rest of the runbook — do not
+try to work around it, and do not touch the key material yourself.
+
+The environment variables involved (see `.env.example`):
+- `GSC_SERVICE_ACCOUNT_JSON` — the full content of the JSON key, as a
+  single-line string. This is what the GitHub Actions workflow uses: one
+  secret, no file path to manage.
+- *or* `GSC_SERVICE_ACCOUNT_KEY_FILE` — a path to the key file, kept outside
+  the repo. This is what `setup-gsc.sh` configures for local runs.
+- `SITE_URL` — defaults to `https://treemate.us/`. Only change this if the
+  Search Console property is domain-scoped rather than URL-prefix (then use
+  `sc-domain:treemate.us`) — check which under Search Console → Settings →
+  Ownership verification.
+
+**Check the property host first with `npm run seo:sites`.** It lists every
+property the service account can read. `https://treemate.us/`,
+`https://www.treemate.us/` and `sc-domain:treemate.us` are three *different*
+properties and only the matching one returns data — see the open question in
+"Canonical host" below. If the listed host isn't the default, set `SITE_URL`.
+An empty list means the credential works but the Search Console permission
+step hasn't taken effect.
+
+Test the whole chain with `npm run seo:report`. On success it prints a report
+and saves it to `reports/seo/<date>.md`. A 403 almost always means the Search
+Console user step above hasn't been done, or was done with a different
+service account address.
 
 None of this touches the website's own Google Search Console verification
 tag (`google-site-verification` in `index.html`) — that's separate and
@@ -341,43 +416,132 @@ API for opening the PR. Standard flow:
    for exactly this reason; if that's gone, a human needs to supply a
    fresh GitHub PAT with `repo` scope).
 6. Open a PR against `main` (via `gh pr create` or the GitHub REST API).
-   Write a real description: what changed, why, what you verified. Do not
-   merge it yourself — leave it for the user to review, unless a task
-   explicitly says to auto-merge low-risk scheduled changes (it currently
-   does not — always leave PRs open for review).
+   Write a real description: what changed, why, what you verified.
+7. Merge it yourself if — and only if — every condition in "Autonomous merges
+   and the audit trail" below is met. If any one of them isn't, leave the PR
+   open, say plainly in the PR description what you're waiting on, and move on
+   to other work. An open PR is a normal outcome, not a failure.
 
-## Scheduling this to actually run weekly with zero manual input
+## Autonomous merges and the audit trail
 
-Cowork's own scheduling tools don't apply here since this is a repo meant
-to be run via the standalone Claude Code CLI, invoked by the user outside
-of any specific chat session. The practical way to get a true "runs every
-week with no one touching it" setup is an OS-level scheduler on a machine
-that's on, calling `claude` headlessly:
+You are allowed to merge your own PRs to `main` without waiting for a human.
+`main` auto-deploys to the live site, so this is a real production release
+every time. The trade the user made is explicit: **speed in exchange for a
+trail good enough to diagnose and undo any change without you present.**
 
-**macOS (launchd)** — more reliable than cron for a laptop that sleeps:
-create `~/Library/LaunchAgents/us.treemate.seo-weekly.plist` running
-something like:
+Nothing here loosens the prime directive. Merge permission changes *who
+presses the button*, not *what is allowed to change*.
+
+### Before you merge — all six, no exceptions
+
+1. **CI is green.** `seo-check` must pass on the PR. Never merge a red or
+   still-running check, and never disable, skip, or "fix" a check by loosening
+   it in the same PR that needs it to pass.
+2. **The preview deployment was checked, not assumed.** Vercel builds a preview
+   for every PR. Fetch the routes you touched on that preview URL and confirm
+   the change is really there:
+   `curl -s <preview-url>/<route> | grep -o '<title>[^<]*</title>'`
+   A green build only proves it compiled, not that it does what you intended.
+3. **The diff is only what you meant to change.** Re-read `git diff` against
+   `main` one more time before merging.
+4. **It's inside the autonomous scope** — see the escalation list below.
+5. **The PR description is complete**: what changed, why, what data drove it,
+   what you verified, and what you'd look at first if it broke.
+6. **You can state how to undo it.** If you can't write the rollback line for
+   the log, you don't understand the change well enough to merge it.
+
+Use `gh pr merge <n> --squash` for a single-commit change, or `--merge` for a
+stack. Never `--admin`, and never force-push `main`.
+
+### After you merge — verify production, then log it
+
+A merge you don't check is worse than an open PR, because everyone assumes
+it worked.
+
+1. **Wait for the production deploy and verify the live site.** Fetch the
+   affected route on `www.treemate.us` and confirm the change is live and the
+   page still renders. `gh run list` and the Vercel deployment status tell you
+   when the deploy finished.
+2. **If production is broken, roll back immediately — before investigating.**
+   Fastest path is Vercel: Deployments → the last known-good production
+   deployment → Promote to Production. That's live in seconds and needs no
+   build. Then `git revert -m 1 <merge-sha>` and push, so the code matches
+   what's deployed. Diagnose afterwards, not while the site is broken.
+3. **Append one line to `reports/agent-log.md`** (create it if missing):
+
+   ```
+   | 2026-09-08 | #12 | 7ffbfcc | Weekly GSC workflow + SEO checks | git revert -m 1 7ffbfcc |
+   ```
+
+   Date, PR number, merge SHA, one-line summary, and the exact rollback
+   command. This file exists so that a human debugging a broken site at speed
+   has one place to look, with commands they can paste. Keep it newest-first
+   and never rewrite past entries.
+4. **Comment on the merged PR with the production verification result** — what
+   you fetched, what you saw. That's the evidence the trail rests on.
+
+The log is a curated view, not the source of truth. If it's ever out of date
+or you suspect an entry is missing, `git log --merges --first-parent main`
+is authoritative.
+
+### Always escalate instead of merging
+
+Open the PR, explain what you need, and stop. These stay human decisions:
+
+- **Anything in the human-only list**: the GBP/registered-agent address,
+  career role changes you weren't explicitly told about, and anything touching
+  secrets or credentials.
+- **The canonical host question** (see "Canonical host" above). The user chose
+  to settle it on real Search Console data. Present the numbers; don't pick.
+- **Existing page copy, the design system, or the header navigation** — beyond
+  a precise, specifically-requested fix.
+- **New dependencies**, or changes to `vercel.json`, the build pipeline, or
+  the workflows themselves. The tooling that verifies your work is not
+  something to change on your own authority.
+- **Anything you're genuinely unsure about.** Uncertainty is a reason to leave
+  it open, not a thing to resolve by merging and watching what happens.
+- **More than one substantial change at once.** Merge them as separate PRs so
+  a revert of one doesn't take the others with it.
+
+If a merge went wrong and you're the one who finds it, say so directly in your
+summary — what broke, what you did about it, and what you'd change. An honest
+report of a bad merge is far more useful than a clean-looking one.
+
+
+## Scheduling — what already runs on its own
+
+Two GitHub Actions workflows handle the unattended half. They run on GitHub's
+infrastructure, so nothing depends on anyone's laptop being awake.
+
+- **`.github/workflows/seo-report.yml`** — Mondays 15:00 UTC. Runs
+  `scripts/seo/gsc-report.mjs`, writes the report into the run summary, and
+  commits it to `reports/seo/<date>.md` on `main`. Needs the
+  `GSC_SERVICE_ACCOUNT_JSON` repository secret; if it isn't set the job fails
+  loudly rather than skipping, so a site that looks monitored is never
+  silently collecting nothing. Can also be run on demand from the Actions tab
+  (`workflow_dispatch`), with a configurable look-back window.
+- **`.github/workflows/seo-check.yml`** — on every PR and push to `main`.
+  Builds, then fails if `public/sitemap.xml` no longer matches the site's
+  routes and posts, or if any route lost its unique title/description/canonical.
+
+**This is the one exception to "never push directly to `main`":** the report
+workflow commits to `reports/seo/` and nothing else, and its commit message
+carries `[skip ci]` so a data-only commit doesn't trigger a redeploy of an
+identical build. Everything that touches the site itself still goes through a PR.
+
+**What is still not automatic** is the judgment half of the weekly runbook —
+reading the report, deciding which query deserves a post, writing it. To have
+that happen unattended too, schedule a headless Claude Code run against a
+persistent local clone (macOS `launchd`, or any always-on machine's cron):
+
 ```
-claude -p "Read CLAUDE.md and run the weekly SEO runbook end to end. Open a PR with anything you changed and summarize the GSC numbers in the PR description." --cwd /path/to/treemate-src
+claude -p "Read CLAUDE.md and run the weekly SEO runbook end to end. Ship what you change as a PR, merge it only if it meets the autonomous-merge checklist, and leave the audit trail that section requires." --cwd /path/to/treemate-website
 ```
-on a `StartCalendarInterval` (e.g. Monday 9am), with `RunAtLoad` false.
-Load it with `launchctl load ~/Library/LaunchAgents/us.treemate.seo-weekly.plist`.
 
-**Linux/always-on machine (cron)**: a weekly crontab entry calling the same
-`claude -p "..."` command with `--cwd` pointed at a persistent local clone
-of this repo (with git remote credentials already configured, and the GSC
-env vars set in the shell's environment or a sourced `.env` file — `claude
--p` runs non-interactively and won't prompt for anything, so all required
-env vars must already be present in the calling shell's environment before
-it starts).
-
-Either way, the key requirements are: (1) a persistent local clone with
-working git push credentials already configured (not something to redo
-every run), (2) the GSC env vars available in the environment the
-scheduler runs the command in, (3) `claude -p` (non-interactive/print mode)
-rather than the interactive REPL, since nothing will be there to type
-responses. The user should verify the schedule actually fires at least
-once before trusting it to run unattended long-term.
+That needs: a clone with working push credentials already configured, the GSC
+env vars present in the scheduler's environment, and `claude -p` rather than
+the interactive REPL, since nothing will be there to answer prompts. Verify the
+schedule fires at least once before trusting it unattended.
 
 ## What "no constant input" means in practice for you
 
@@ -391,9 +555,12 @@ beyond "handle Treemate's SEO":
   there to answer.
 - Never guess on the things this file explicitly says are human-only
   (GBP settings, career role changes not already instructed, secrets/
-  credentials, merging PRs). Do the rest of the work, note what's blocked
-  on a human, and stop there for that item — don't skip the whole run over
-  one blocked item.
+  credentials, the canonical host decision). Do the rest of the work, note
+  what's blocked on a human, and stop there for that item — don't skip the
+  whole run over one blocked item.
+- You can merge your own work, but only against the checklist in "Autonomous
+  merges and the audit trail". Leaving a PR open because a condition wasn't
+  met is a correct outcome — report it as a decision, not as a blocker.
 - Always leave a clear paper trail: a PR description or a final summary
   that states what changed, what the numbers showed, and what (if
   anything) needs a human decision.
