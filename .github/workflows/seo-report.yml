@@ -46,7 +46,7 @@ jobs:
       - name: Pull the Search Console report
         env:
           GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
-          SITE_URL: ${{ vars.GSC_SITE_URL || 'https://treemate.us/' }}
+          SITE_URL: ${{ vars.GSC_SITE_URL || 'https://www.treemate.us/' }}
         run: node scripts/seo/gsc-report.mjs --days "${{ inputs.days || '28' }}"
 
       - name: Add the report to the run summary

@@ -14,7 +14,7 @@ import { dirname, join } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
-const SITE_URL = process.env.SITE_URL ?? "https://treemate.us";
+const SITE_URL = process.env.SITE_URL ?? "https://www.treemate.us";
 
 // Static routes — keep this in sync with the <Route> list in src/App.tsx.
 const staticRoutes = [

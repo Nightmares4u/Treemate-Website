@@ -5,7 +5,13 @@ export const siteConfig = {
   description:
     "Treemate is a hybrid IT consultancy and business process outsourcer serving the US market from Wyoming and Karachi. We build the software that runs a business, staff the people who manage it, and support the customers it serves.",
   domain: "treemate.us",
-  url: "https://treemate.us",
+  /**
+   * The canonical origin. This is the www host, not the apex: Vercel serves
+   * www and 307-redirects every apex URL to it, and the Search Console
+   * property is registered as https://www.treemate.us/. Canonical tags must
+   * point at a URL that answers 200, not one that redirects.
+   */
+  url: "https://www.treemate.us",
   emails: {
     primary: "contact@treemate.us",
     sales: "sales@treemate.us",
