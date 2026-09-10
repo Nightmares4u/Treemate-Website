@@ -17,6 +17,7 @@ This is a curated view. The authoritative history is
 
 | Date | PR | Merge SHA | What changed | Rollback |
 | --- | --- | --- | --- | --- |
+| 2026-09-10 | [#18](https://github.com/Nightmares4u/Treemate-Website/pull/18) | `3a401df` | Favicon 282 KB JPEG → 1 KB PNG + apple-touch-icon; corrected the declared MIME type | `git revert 3a401df` |
 | 2026-09-10 | [#17](https://github.com/Nightmares4u/Treemate-Website/pull/17) | `2f37587` | Two blog posts targeting commercial queries (build-vs-buy, in-house-vs-outsourced support) + sitemap | `git revert 2f37587` |
 | 2026-09-10 | [#16](https://github.com/Nightmares4u/Treemate-Website/pull/16) | `ab84587` | Canonical host set to www everywhere (canonicals, sitemap, robots, SITE_URL defaults) — resolved on GSC data showing www is the only property | `git revert ab84587` |
 | 2026-09-10 | [#15](https://github.com/Nightmares4u/Treemate-Website/pull/15) | `fd61bea` | Seven heaviest images converted to WebP — homepage images 9.9 MB → 613 KB, verified live | `git revert fd61bea` |
