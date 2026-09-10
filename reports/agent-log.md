@@ -17,4 +17,5 @@ This is a curated view. The authoritative history is
 
 | Date | PR | Merge SHA | What changed | Rollback |
 | --- | --- | --- | --- | --- |
-| _no autonomous merges yet_ | | | | |
+| 2026-09-10 | [#15](https://github.com/Nightmares4u/Treemate-Website/pull/15) | `fd61bea` | Seven heaviest images converted to WebP — homepage images 9.9 MB → 613 KB, verified live | `git revert fd61bea` |
+| 2026-09-10 | [#14](https://github.com/Nightmares4u/Treemate-Website/pull/14) | `d2c4fb8` | Landed the monitoring workflows, setup script and merge policy on `main` (recovery: #12/#13 merged into side branches, never reached `main`) | `git revert -m 1 d2c4fb8` |
