@@ -17,6 +17,7 @@ This is a curated view. The authoritative history is
 
 | Date | PR | Merge SHA | What changed | Rollback |
 | --- | --- | --- | --- | --- |
+| 2026-09-10 | [#17](https://github.com/Nightmares4u/Treemate-Website/pull/17) | `2f37587` | Two blog posts targeting commercial queries (build-vs-buy, in-house-vs-outsourced support) + sitemap | `git revert 2f37587` |
 | 2026-09-10 | [#16](https://github.com/Nightmares4u/Treemate-Website/pull/16) | `ab84587` | Canonical host set to www everywhere (canonicals, sitemap, robots, SITE_URL defaults) — resolved on GSC data showing www is the only property | `git revert ab84587` |
 | 2026-09-10 | [#15](https://github.com/Nightmares4u/Treemate-Website/pull/15) | `fd61bea` | Seven heaviest images converted to WebP — homepage images 9.9 MB → 613 KB, verified live | `git revert fd61bea` |
 | 2026-09-10 | [#14](https://github.com/Nightmares4u/Treemate-Website/pull/14) | `d2c4fb8` | Landed the monitoring workflows, setup script and merge policy on `main` (recovery: #12/#13 merged into side branches, never reached `main`) | `git revert -m 1 d2c4fb8` |
