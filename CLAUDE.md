@@ -195,34 +195,29 @@ extensions. That is deliberate: the build script imports the same file under
 Node's native type stripping, which needs the extension. `engines.node` is
 pinned to `22.x` for the same reason.
 
-## Canonical host — an open question, deliberately not yet decided
+## Canonical host — resolved: www
 
-The repo and the hosting disagree about which hostname is canonical, and as of
-2026-09-08 this is unresolved on purpose:
+Settled 2026-09-10 on Search Console data, which is how the user asked for it
+to be decided rather than by inference.
 
-- `src/data/site.ts` (`siteConfig.url`), `public/sitemap.xml`, and
-  `public/robots.txt` all say **`https://treemate.us`**.
-- Vercel serves **`https://www.treemate.us`** and 307-redirects every apex URL
-  to it, sitewide. Verified with `curl` on `/`, `/software-ai`, `/blog`,
-  `/careers`.
+**The canonical host is `https://www.treemate.us`.** The evidence:
 
-So every URL in the sitemap redirects, `robots.txt` advertises a redirecting
-sitemap URL, and the canonical tags generated from `siteConfig.url` point at
-URLs that don't serve a 200. Search engines tolerate this but it splits signals
-between two hosts and wastes a hop on every crawl.
+- `npm run seo:sites` lists exactly one readable property:
+  `https://www.treemate.us/`. There is no apex property holding data.
+- Vercel serves www and 307-redirects every apex URL to it, sitewide.
 
-**The user chose to decide this on Search Console data rather than inference** —
-whichever host Google has actually indexed and is sending traffic to should win.
-Once reporting is live:
+So the apex was never the real host — the repo just claimed it was. Canonical
+tags, the sitemap, `robots.txt`, and every `SITE_URL` default now point at www,
+because a canonical URL must resolve 200 rather than redirect.
 
-1. Run `npm run seo:sites` to see which host the property is registered under.
-2. Compare impressions between the hosts if both properties exist.
-3. Then either update `siteConfig.url` + sitemap + robots to `www` (code-only,
-   no hosting change), or flip Vercel's primary domain to the apex (one
-   dashboard setting, but moves whatever is indexed on `www`).
+`siteConfig.url` in `src/data/site.ts` is the single source of truth; the
+sitemap generator, the static-meta build step, and `RouteMeta` all derive from
+it. `siteConfig.domain` stays `treemate.us` — that's the brand string for
+display, not a URL.
 
-Do not silently pick one during a routine run. Surface the numbers and let the
-user decide; it's a one-line change either way once the data is in.
+If the primary domain is ever flipped to the apex in Vercel, all of this has to
+flip with it, and a new Search Console property has to be created and verified
+for the apex — the existing history does not transfer.
 
 ## The GBP / registered-agent address issue — human action needed, not yours to fix in code
 
@@ -491,8 +486,10 @@ Open the PR, explain what you need, and stop. These stay human decisions:
 - **Anything in the human-only list**: the GBP/registered-agent address,
   career role changes you weren't explicitly told about, and anything touching
   secrets or credentials.
-- **The canonical host question** (see "Canonical host" above). The user chose
-  to settle it on real Search Console data. Present the numbers; don't pick.
+- **Changing the canonical host.** It's settled as www (see "Canonical host"
+  above) and every URL in the codebase derives from it. Moving it again means
+  a new Search Console property with no history, so it's a user decision even
+  though the first one has been made.
 - **Existing page copy, the design system, or the header navigation** — beyond
   a precise, specifically-requested fix.
 - **New dependencies**, or changes to `vercel.json`, the build pipeline, or
@@ -524,10 +521,11 @@ infrastructure, so nothing depends on anyone's laptop being awake.
   Builds, then fails if `public/sitemap.xml` no longer matches the site's
   routes and posts, or if any route lost its unique title/description/canonical.
 
-**This is the one exception to "never push directly to `main`":** the report
-workflow commits to `reports/seo/` and nothing else, and its commit message
-carries `[skip ci]` so a data-only commit doesn't trigger a redeploy of an
-identical build. Everything that touches the site itself still goes through a PR.
+**This is the one exception to "never push directly to `main`":** commits that
+touch only `reports/` — the weekly Search Console reports under `reports/seo/`,
+and the `reports/agent-log.md` audit entries. Both carry `[skip ci]` so a
+data-only commit doesn't trigger a redeploy of an identical build. Everything
+that touches the site itself still goes through a PR.
 
 **What is still not automatic** is the judgment half of the weekly runbook —
 reading the report, deciding which query deserves a post, writing it. To have

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://treemate.us/sitemap.xml
+Sitemap: https://www.treemate.us/sitemap.xml

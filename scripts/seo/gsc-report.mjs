@@ -17,9 +17,9 @@
  * environment the scheduled job runs under — never commit the key):
  *   GSC_SERVICE_ACCOUNT_JSON   Full JSON key content, as a single-line string
  *                              (or set GSC_SERVICE_ACCOUNT_KEY_FILE to a path instead)
- *   SITE_URL                   Defaults to "https://treemate.us/" (URL-prefix
- *                              property format — use "sc-domain:treemate.us"
- *                              instead if the property is domain-scoped)
+ *   SITE_URL                   Defaults to "https://www.treemate.us/" (the host the
+ *                              property is actually registered under — use
+ *                              "sc-domain:treemate.us" if it is domain-scoped)
  *
  * Usage:
  *   node scripts/seo/gsc-report.mjs
@@ -50,7 +50,7 @@ const DAYS = Number(
       : 28),
 );
 
-const SITE_URL = process.env.SITE_URL ?? "https://treemate.us/";
+const SITE_URL = process.env.SITE_URL ?? "https://www.treemate.us/";
 
 function loadServiceAccount() {
   if (process.env.GSC_SERVICE_ACCOUNT_JSON) {
