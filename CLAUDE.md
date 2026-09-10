@@ -112,6 +112,14 @@ Already shipped to `main`:
   Console data every Monday and commits the report;
   `.github/workflows/seo-check.yml` blocks PRs that leave the sitemap stale or
   a route without unique metadata.
+- **Vercel Web Analytics**: enabled on the project, with `<Analytics />` from
+  `@vercel/analytics/react` mounted in `src/main.tsx`. Note the entry point —
+  this is a Vite SPA, so `@vercel/analytics/next` does **not** apply. The SPA
+  catch-all rewrite in `vercel.json` excludes `_vercel/` as well as `api/`,
+  because Vercel serves the analytics script from `/_vercel/insights/script.js`
+  and the rewrite would otherwise return `index.html` for it. `vercel.json` is
+  JSON and can't hold a comment, so that reason is recorded here instead — do
+  not "simplify" that regex back.
 - **Redirect fix**: `/ai-services` (an old, still-indexed route name from
   a previous brand/site iteration, "Treemate Growth Partners") now
   permanently redirects to `/software-ai` (`vercel.json` → `redirects`).
@@ -130,13 +138,10 @@ this as a backlog to chip away at during otherwise-quiet weekly runs.
 2. ~~**No structured data**~~ — **done**. `Organization` JSON-LD is in
    `index.html`, `BlogPosting` is injected per post by the build step. Both
    deliberately omit `streetAddress`; see "GBP / address issue" below.
-3. **No analytics**. Confirmed via Vercel API that Web Analytics isn't
-   enabled on the project. Either enable Vercel Web Analytics (adds
-   `@vercel/analytics`, minimal setup, privacy-friendly, no cookie banner
-   needed) or wire up GA4 — Vercel Analytics is the lower-effort/lower-risk
-   option and is the recommended default unless the user asks for GA4
-   specifically (e.g. for GSC-adjacent audience data Vercel doesn't give
-   you).
+3. ~~**No analytics**~~ — **done**. Vercel Web Analytics is enabled and wired
+   up; see "Current state" above. Speed Insights (Core Web Vitals from real
+   visitors) is a separate product and is still off — it needs
+   `@vercel/speed-insights` plus enabling on the project.
 4. **Oversized, unoptimized images.** Several images in the build are
    >1.5MB, some >2MB: `Callus-treemate.png` (2.24MB), `one-loop.png`
    (2.01MB), `US-PK.png` (1.85MB), `Gen-Ai.png` (1.77MB),
