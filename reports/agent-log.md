@@ -17,6 +17,7 @@ This is a curated view. The authoritative history is
 
 | Date | PR | Merge SHA | What changed | Rollback |
 | --- | --- | --- | --- | --- |
+| 2026-09-10 | [#19](https://github.com/Nightmares4u/Treemate-Website/pull/19) | `dd620ca` | Vercel Web Analytics wired up (`/react` entry, not `/next`) + SPA rewrite excludes `_vercel/` so the beacon isn't swallowed | `git revert dd620ca` |
 | 2026-09-10 | [#18](https://github.com/Nightmares4u/Treemate-Website/pull/18) | `3a401df` | Favicon 282 KB JPEG → 1 KB PNG + apple-touch-icon; corrected the declared MIME type | `git revert 3a401df` |
 | 2026-09-10 | [#17](https://github.com/Nightmares4u/Treemate-Website/pull/17) | `2f37587` | Two blog posts targeting commercial queries (build-vs-buy, in-house-vs-outsourced support) + sitemap | `git revert 2f37587` |
 | 2026-09-10 | [#16](https://github.com/Nightmares4u/Treemate-Website/pull/16) | `ab84587` | Canonical host set to www everywhere (canonicals, sitemap, robots, SITE_URL defaults) — resolved on GSC data showing www is the only property | `git revert ab84587` |
