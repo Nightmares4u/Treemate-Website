@@ -5,8 +5,8 @@ import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
 import { RevealGroup } from "../motion/Reveal";
 import { siteConfig } from "../../data/site";
-import emailImg from "../../assets/office/Email-treemate.png";
-import callImg from "../../assets/office/Callus-treemate.png";
+import emailImg from "../../assets/office/Email-treemate.webp";
+import callImg from "../../assets/office/Callus-treemate.webp";
 import visitImg from "../../assets/office/reception.jpg";
 interface ContactCard {
   eyebrow: string;
@@ -23,7 +23,7 @@ const cards: ContactCard[] = [
     title: "Start a conversation",
     value: siteConfig.emails.primary,
     href: `mailto:${siteConfig.emails.primary}`,
-    filename: "office/Email-treemate.png",
+    filename: "office/Email-treemate.webp",
     src: emailImg,
   },
   {
@@ -31,7 +31,7 @@ const cards: ContactCard[] = [
     title: "Talk to the team",
     value: siteConfig.phone.display,
     href: siteConfig.phone.href,
-    filename: "office/Callus-treemate.png",
+    filename: "office/Callus-treemate.webp",
     src: callImg,
   },
   {
