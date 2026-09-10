@@ -8,7 +8,7 @@ import { Reveal } from "../motion/Reveal";
 import { fadeIn, staggerContainer } from "../../lib/motion";
 import founder1 from "../../assets/team/Ibraheem-treemate.jpeg";
 import founder2 from "../../assets/team/yashal-treemate.jpeg";
-import founder3 from "../../assets/team/sir-raza-portrait.png";
+import founder3 from "../../assets/team/sir-raza-portrait.webp";
 const executives = [
   {
     name: "Syed Yashal",
@@ -98,7 +98,7 @@ export function MeetTheTeam() {
                 <IllustrationSlot
                   src={founder3}
                   aspect="aspect-square"
-                  filenameHint="sir-raza-portrait.png"
+                  filenameHint="sir-raza-portrait.webp"
                   alt="Syed Raza — Chairman, Treemate US"
                   className="rounded-[3rem] overflow-hidden w-full shadow-lg"
                   imgClassName="object-cover object-top transition-transform duration-500 group-hover:scale-105"

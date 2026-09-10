@@ -8,7 +8,7 @@ import { CornerMarks } from "../ui/CornerMarks";
 import { Reveal } from "../motion/Reveal";
 import { AnimatedHeadline } from "../motion/AnimatedHeadline";
 import { fadeIn, staggerContainer } from "../../lib/motion";
-import heroMeeting from "../../assets/illustrations/hero-meeting.png";
+import heroMeeting from "../../assets/illustrations/hero-meeting.webp";
 import bigTreeLogo from "../../assets/logo-treemate.png";
 export function Hero() {
   return (
@@ -90,7 +90,7 @@ export function Hero() {
             <IllustrationSlot
               src={heroMeeting}
               aspect="aspect-[4/3]"
-              filenameHint="illustrations/hero-meeting.png"
+              filenameHint="illustrations/hero-meeting.webp"
               alt="Team collaborating"
               loading="eager"
               className="w-full h-full max-w-3xl"

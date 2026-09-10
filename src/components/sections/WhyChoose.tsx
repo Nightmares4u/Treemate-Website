@@ -3,9 +3,9 @@ import { Container } from "../layout/Container";
 import { SectionTitle } from "../ui/SectionTitle";
 import { IllustrationSlot } from "../ui/IllustrationSlot";
 import { MarkerAccent } from "../ui/MarkerAccent";
-import closedLoopImg from "../../assets/why-choose/one-loop.png";
-import aiImg from "../../assets/why-choose/Gen-Ai.png";
-import globalImg from "../../assets/why-choose/US-PK.png";
+import closedLoopImg from "../../assets/why-choose/one-loop.webp";
+import aiImg from "../../assets/why-choose/Gen-Ai.webp";
+import globalImg from "../../assets/why-choose/US-PK.webp";
 interface Reason {
   title: string;
   description: string;
@@ -17,21 +17,21 @@ const reasons: Reason[] = [
     title: "One Closed Loop",
     description:
       "Software, staff, and support built to run as a single system — one accountable partner instead of four disconnected vendors.",
-    filename: "/why-choose/one-loop.png",
+    filename: "/why-choose/one-loop.webp",
     src: closedLoopImg,
   },
   {
     title: "AI Woven Through",
     description:
       "Generative AI, predictive analytics, and intelligent automation aren't add-ons. They're in the software we ship and the support we run.",
-    filename: "/why-choose/Gen-Ai.png",
+    filename: "/why-choose/Gen-Ai.webp",
     src: aiImg,
   },
   {
     title: "US + Pakistan, Compliant",
     description:
       "We contract from Wyoming and deliver from Karachi, with strict adherence to US (Federal/State) and Pakistani labor law.",
-    filename: "/why-choose/US-PK.png",
+    filename: "/why-choose/US-PK.webp",
     src: globalImg,
   },
 ];
