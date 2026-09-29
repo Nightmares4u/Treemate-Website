@@ -75,7 +75,7 @@ export function Header() {
             : "py-4 bg-transparent border-b border-transparent",
         )}
       >
-        <Container className="flex items-center justify-between">
+        <Container className="flex items-center justify-between lg:grid lg:grid-cols-[minmax(220px,1fr)_auto_minmax(220px,1fr)]">
           <TreemateLogo size="md" wordmarkCase="simple" className="-ml-1 md:-ml-2 lg:-ml-3" />
 
           <nav
@@ -113,7 +113,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center justify-self-end">
             <LinkButton to="/contact" variant="teal" size="sm">
               Get a Booking
               <ChevronsRight className="w-4 h-4" strokeWidth={2.4} />

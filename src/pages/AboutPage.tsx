@@ -1,9 +1,7 @@
 import { PageHero } from "../components/sections/PageHero";
 import { OurStory } from "../components/sections/OurStory";
 import { Values } from "../components/sections/Values";
-import { MeetTheTeam } from "../components/sections/MeetTheTeam";
 import { JoinUs } from "../components/sections/JoinUs";
-import { FounderQuote } from "../components/sections/FounderQuote";
 import { ContactCards } from "../components/sections/ContactCards";
 import { LoopAside } from "../components/hero-asides/LoopAside";
 export function AboutPage() {
@@ -11,18 +9,16 @@ export function AboutPage() {
     <>
       <PageHero
         eyebrow="About Us"
-        title="Driving Innovation. Building the Loop."
+        title="One Company. One Accountable Operating Model."
         tagline="Treemate is a hybrid IT consultancy and BPO built on one idea: software, staffing, and support should run as one integrated system — not three separate contracts."
-        description="We build the software that runs your business, staff the people who manage it, and support the customers it serves. From Wyoming and Karachi, under one accountable partnership."
+        description="Treemate brings product engineering, managed operations, and customer support together under one accountable company. We take responsibility for the systems, delivery, and outcomes that keep client operations moving."
         primaryCta={{ label: "Book A Meeting", to: "/contact" }}
         secondaryCta={{ label: "See our services", to: "/software-ai" }}
         aside={<LoopAside />}
       />
-      <MeetTheTeam />
       <OurStory />
       <Values />
       <JoinUs />
-      <FounderQuote />
       <ContactCards />
     </>
   );
