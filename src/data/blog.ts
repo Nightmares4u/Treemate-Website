@@ -278,12 +278,15 @@ export const blogPosts: BlogPost[] = [
     category: "Customer Success",
     excerpt:
       "This gets argued as a cost decision. It's a control decision — and the teams that get it wrong usually outsourced the wrong tier.",
-    readMinutes: 4,
+    readMinutes: 5,
     seoKeywords: [
       "in-house vs outsourced customer support",
       "when to outsource customer support",
       "outsourced customer support for SMBs",
       "customer support outsourcing",
+      "in-house vs outsourced ecommerce support",
+      "outsourced ecommerce customer support",
+      "how to balance workload between in-house and outsourced support",
     ],
     body: [
       {
@@ -376,6 +379,33 @@ export const blogPosts: BlogPost[] = [
       {
         type: "p",
         text: "If repeat contacts aren't falling by month three, the problem is the knowledge base or the tier split. It is almost never the agents, and replacing them will reset the clock without changing the number.",
+      },
+      {
+        type: "h2",
+        text: "In-house vs. outsourced ecommerce support",
+      },
+      {
+        type: "p",
+        text: "Ecommerce is the clearest case for splitting tiers. Most tickets are where-is-my-order, returns, exchanges and address changes: high volume, rules-based, and tied to peaks like Black Friday and post-holiday returns. A flat in-house team is either idle in March or buried in December.",
+      },
+      {
+        type: "p",
+        text: "Outsource the predictable tier and keep the rest in-house:",
+      },
+      {
+        type: "list",
+        items: [
+          "Outsource: order status, shipping and tracking, return and exchange requests, sizing and product questions answered from the catalogue, and after-hours chat and email",
+          "Keep in-house: damaged or lost high-value orders, refunds outside policy, wholesale and repeat-buyer accounts, chargebacks, and anything that could become a public review",
+        ],
+      },
+      {
+        type: "p",
+        text: "Two things make this work in ecommerce specifically. Agents need live access to your storefront, order system and carrier tracking, because an agent who can only read a script cannot say where a parcel is. And your return and refund policy has to be written as rules an agent can apply without asking, with explicit limits on what they can approve alone.",
+      },
+      {
+        type: "p",
+        text: "For a US or Australian store, the time-zone question is practical: overnight coverage means a customer who emails at 9pm has an answer before the workday starts. That only holds if the offshore tier can close the ticket, not just acknowledge it.",
       },
       {
         type: "h2",
