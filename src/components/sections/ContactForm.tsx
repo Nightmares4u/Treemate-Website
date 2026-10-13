@@ -58,6 +58,22 @@ export function ContactForm() {
     setStatus("sending");
     setErrorMessage("");
 
+    // Open the tab synchronously inside the click handler so popup blockers
+    // allow it; it is pointed at WhatsApp once the submission settles.
+    const waTab = window.open("", "_blank");
+    const openWhatsApp = () => {
+      const text =
+        `New inquiry from treemate.us — Name: ${form.firstName} ${form.lastName}`.trim() +
+        `, Email: ${form.email}, Phone: ${form.phone}, Message: ${form.message}`;
+      const url = `https://wa.me/17808040473?text=${encodeURIComponent(text)}`;
+      if (waTab) {
+        waTab.opener = null;
+        waTab.location.href = url;
+      } else {
+        window.open(url, "_blank", "noopener");
+      }
+    };
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -73,6 +89,7 @@ export function ContactForm() {
         throw new Error(result.message || "The form could not be submitted.");
       }
 
+      openWhatsApp();
       setForm(initialForm);
       setStatus("idle");
       setSuccessMessage(
@@ -81,6 +98,8 @@ export function ContactForm() {
       );
       setSuccessOpen(true);
     } catch (error) {
+      // Lead capture matters more than the Sheet: still hand off to WhatsApp.
+      openWhatsApp();
       setStatus("error");
       setErrorMessage(
         error instanceof Error
